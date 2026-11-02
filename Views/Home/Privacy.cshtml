@@ -1,0 +1,256 @@
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+<style>
+    .privacy-page {
+        background: #f5f8ff;
+        color: #27364b;
+        padding-bottom: 45px;
+    }
+
+    .privacy-hero {
+        background: linear-gradient(135deg, #12376b, #2874c8);
+        color: white;
+        padding: 48px 20px;
+        text-align: center;
+        border-radius: 0 0 25px 25px;
+    }
+
+    .privacy-hero h1 {
+        font-size: clamp(2rem, 5vw, 2.8rem);
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+
+    .privacy-hero p {
+        max-width: 750px;
+        margin: auto;
+        color: #edf5ff;
+        line-height: 1.8;
+    }
+
+    .privacy-container {
+        max-width: 1000px;
+        margin: auto;
+        padding: 32px 18px 0;
+    }
+
+    .privacy-card {
+        background: white;
+        border: 1px solid #e2eaf5;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 18px rgba(25, 55, 95, 0.05);
+    }
+
+    .privacy-card h2 {
+        color: #193f70;
+        font-size: 1.25rem;
+        font-weight: 800;
+        margin-bottom: 13px;
+    }
+
+    .privacy-card p,
+    .privacy-card li {
+        color: #596a80;
+        line-height: 1.8;
+        font-size: 0.97rem;
+    }
+
+    .privacy-card ul {
+        padding-left: 22px;
+        margin-bottom: 0;
+    }
+
+    .privacy-icon {
+        font-size: 1.5rem;
+        margin-right: 8px;
+    }
+
+    .privacy-notice {
+        background: #eaf3ff;
+        border-left: 4px solid #2874c8;
+        border-radius: 10px;
+        padding: 20px;
+        color: #294b77;
+        line-height: 1.8;
+        margin-bottom: 25px;
+    }
+
+    @@media (max-width: 767.98px) {
+        .privacy-hero {
+            padding: 38px 16px;
+        }
+
+        .privacy-container {
+            padding: 22px 13px 0;
+        }
+
+        .privacy-card {
+            padding: 19px;
+        }
+    }
+</style>
+
+<div class="privacy-page">
+
+    <section class="privacy-hero">
+        <div class="container">
+            <div style="font-size: 2.7rem;" class="mb-2">🔐</div>
+            <h1>Privacy Policy</h1>
+            <p>
+                Your privacy matters to us. This page explains how information
+                may be collected, used, and protected when you use the
+                CivicTrace.
+            </p>
+        </div>
+    </section>
+
+    <div class="privacy-container">
+
+        <div class="privacy-notice">
+            <strong>Important information</strong>
+            <p class="mb-0 mt-2">
+                This policy describes the intended privacy practices of this
+                project. The actual handling of information depends on the
+                application's implementation, database configuration, and
+                hosting environment.
+            </p>
+        </div>
+
+        <section class="privacy-card">
+            <h2><span class="privacy-icon">📌</span>1. Purpose of the Website</h2>
+            <p class="mb-0">
+                The CivicTrace provides an online platform for
+                citizens to report public problems, submit supporting
+                information, and follow the progress of their complaints.
+                Information is used to help authorized officials review
+                complaints and manage their resolution.
+            </p>
+        </section>
+
+        <section class="privacy-card">
+            <h2><span class="privacy-icon">🧾</span>2. Information We May Collect</h2>
+            <p>The application may process the following information when it is provided or generated through its features:</p>
+            <ul>
+                <li><strong>Account information:</strong> Details associated with registration and login, such as email address.</li>
+                <li><strong>Complaint information:</strong> Complaint title, description, category, priority, and status.</li>
+                <li><strong>Location information:</strong> Coordinates, address, or PIN code associated with a complaint, when provided or enabled.</li>
+                <li><strong>Images and evidence:</strong> Photographs uploaded to explain a reported issue.</li>
+                <li><strong>Complaint history:</strong> Status changes, timestamps, department assignments, and remarks recorded by the application.</li>
+            </ul>
+        </section>
+
+        <section class="privacy-card">
+            <h2><span class="privacy-icon">🎯</span>3. How Information Is Used</h2>
+            <p>Information may be used to:</p>
+            <ul>
+                <li>Create, store, and manage public complaints.</li>
+                <li>Help identify the location of a reported issue.</li>
+                <li>Support complaint categorization and priority suggestions.</li>
+                <li>Help authorized officials review and process complaints.</li>
+                <li>Display complaint status, history, and available updates to the relevant citizen.</li>
+                <li>Identify possible duplicate complaints where the feature is enabled.</li>
+            </ul>
+        </section>
+
+        <section class="privacy-card">
+            <h2><span class="privacy-icon">👁️</span>4. Who Can Access Complaint Information?</h2>
+            <p>
+                Citizens should access only their own complaint details through
+                the citizen-facing pages. Authorized officials may access
+                complaint information needed for their assigned duties,
+                according to their roles and permissions.
+            </p>
+            <p class="mb-0">
+                Users should avoid including passwords, banking details,
+                government identification numbers, or other unnecessary
+                sensitive information in complaint descriptions or uploaded
+                images.
+            </p>
+        </section>
+
+        <section class="privacy-card">
+            <h2><span class="privacy-icon">📍</span>5. Location and Uploaded Images</h2>
+            <p>
+                Location details help officials understand where a public
+                issue occurred. Uploaded images may help explain the problem
+                and support complaint review.
+            </p>
+            <p class="mb-0">
+                Citizens should check photographs before uploading them and
+                avoid including faces, private documents, or personal details
+                unless they are necessary for reporting the issue.
+            </p>
+        </section>
+
+        <section class="privacy-card">
+            <h2><span class="privacy-icon">🤖</span>6. AI-Assisted Features</h2>
+            <p class="mb-0">
+                The system includes AI-assisted components intended to help
+                classify complaint descriptions and identify possible
+                duplicate complaints. Additional image-analysis capabilities
+                depend on the configured implementation. Automated
+                suggestions may not always be correct and should be reviewed
+                where appropriate.
+            </p>
+        </section>
+
+        <section class="privacy-card">
+            <h2><span class="privacy-icon">🛡️</span>7. Security</h2>
+            <p class="mb-0">
+                The application is designed to use authentication and
+                role-based access to protect its pages and complaint
+                information. Users should keep their passwords private,
+                log out when using a shared device, and report suspected
+                unauthorized access. No website or storage system can
+                guarantee absolute security.
+            </p>
+        </section>
+
+        <section class="privacy-card">
+            <h2><span class="privacy-icon">🗄️</span>8. Data Storage and Retention</h2>
+            <p class="mb-0">
+                Account details, complaints, uploaded files, and status
+                history may be stored by the application to provide its
+                services. How long this information is retained and when it
+                is deleted depends on the project's actual storage and
+                retention settings.
+            </p>
+        </section>
+
+        <section class="privacy-card">
+            <h2><span class="privacy-icon">🔗</span>9. Third-Party Services</h2>
+            <p class="mb-0">
+                Mapping, hosting, or other external services may process
+                information when those integrations are enabled. Their
+                handling of data is governed by their own terms and privacy
+                policies. Users should review those policies where relevant.
+            </p>
+        </section>
+
+        <section class="privacy-card">
+            <h2><span class="privacy-icon">✏️</span>10. Changes to This Policy</h2>
+            <p class="mb-0">
+                This policy may be updated when the application's features,
+                data practices, or security arrangements change. The
+                information displayed on this page should be reviewed
+                periodically to keep it accurate.
+            </p>
+        </section>
+
+        <section class="privacy-card">
+            <h2><span class="privacy-icon">📩</span>11. Questions About Privacy</h2>
+            <p class="mb-0">
+                If you have questions about information handled by this
+                project, contact the website administrator or the
+                organization responsible for operating the system.
+                Official contact details should be provided by the
+                organization when available.
+            </p>
+        </section>
+
+    </div>
+</div>
