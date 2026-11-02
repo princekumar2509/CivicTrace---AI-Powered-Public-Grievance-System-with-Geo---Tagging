@@ -1,0 +1,993 @@
+
+@model IEnumerable<PublicGrievanceSystem.Models.Complaint>
+@using System
+@using System.Linq
+
+@{
+    ViewData["Title"] = "Reports & Analytics";
+
+    var complaints = Model?.ToList()
+        ?? new List<PublicGrievanceSystem.Models.Complaint>();
+
+    var total = complaints.Count;
+
+    var resolved = complaints.Count(c =>
+        c.Status == "Resolved");
+
+    var unresolved = total - resolved;
+
+    var resolutionRate = total > 0
+        ? Math.Round((double)resolved / total * 100, 1)
+        : 0;
+
+    // Proposed SLA: High = 2 days, Medium = 5 days, Low = 10 days.
+    int SlaDays(string? priority) =>
+        priority?.Trim().ToLowerInvariant() switch
+        {
+            "high" => 2,
+            "medium" => 5,
+            "low" => 10,
+            _ => 5
+        };
+
+    var resolvedWithTime = complaints
+        .Where(c =>
+            c.Status == "Resolved" &&
+            c.ResolvedAt.HasValue)
+        .ToList();
+
+    double? averageResolutionDays =
+        resolvedWithTime.Count > 0
+            ? resolvedWithTime.Average(c =>
+                (c.ResolvedAt!.Value - c.CreatedAt).TotalDays)
+            : null;
+
+    var resolvedOnTime = resolvedWithTime.Count(c =>
+        c.ResolvedAt!.Value <=
+        c.CreatedAt.AddDays(SlaDays(c.Priority)));
+
+    var onTimeRate = resolvedWithTime.Count > 0
+        ? Math.Round(
+            (double)resolvedOnTime /
+            resolvedWithTime.Count * 100, 1)
+        : 0;
+
+        var beyondDeadline = Math.Max(
+    0,
+    resolvedWithTime.Count - resolvedOnTime);
+
+    var highPriorityUnresolved = complaints
+        .Where(c =>
+            string.Equals(
+                c.Priority, "High",
+                StringComparison.OrdinalIgnoreCase) &&
+            !string.Equals(
+                c.Status, "Resolved",
+                StringComparison.OrdinalIgnoreCase))
+        .OrderBy(c => c.CreatedAt)
+        .ToList();
+
+    var monthlyCounts = complaints
+        .GroupBy(c => new DateTime(
+            c.CreatedAt.Year,
+            c.CreatedAt.Month,
+            1))
+        .Select(g => new
+        {
+            Month = g.Key,
+            Count = g.Count()
+        })
+        .OrderByDescending(x => x.Month)
+        .Take(12)
+        .OrderBy(x => x.Month)
+        .ToList();
+
+var monthlyResolvedSeries = monthlyCounts.Select(m =>
+    complaints.Count(c =>
+        c.CreatedAt.Year == m.Month.Year &&
+        c.CreatedAt.Month == m.Month.Month &&
+        string.Equals(
+            c.Status,
+            "Resolved",
+            StringComparison.OrdinalIgnoreCase)))
+    .ToList();
+
+    var maxMonthly = monthlyCounts.Any()
+        ? monthlyCounts.Max(x => x.Count)
+        : 1;
+
+    var categoryCounts = complaints
+        .GroupBy(c =>
+            string.IsNullOrWhiteSpace(c.Category)
+                ? "Uncategorized"
+                : c.Category.Trim())
+        .Select(g => new
+        {
+            Category = g.Key,
+            Count = g.Count()
+        })
+        .OrderByDescending(x => x.Count)
+        .ToList();
+
+    var maxCategory = categoryCounts.Any()
+        ? categoryCounts.Max(x => x.Count)
+        : 1;
+
+    var departmentCounts = complaints
+        .GroupBy(c =>
+            string.IsNullOrWhiteSpace(c.Department)
+                ? "Unassigned"
+                : c.Department.Trim())
+        .Select(g =>
+        {
+            var resolvedInDept = g
+                .Where(c =>
+                    c.Status == "Resolved" &&
+                    c.ResolvedAt.HasValue)
+                .ToList();
+
+            return new
+            {
+                Department = g.Key,
+                Total = g.Count(),
+                Resolved = g.Count(c =>
+                    c.Status == "Resolved"),
+                Rate = g.Count() > 0
+                    ? Math.Round(
+                        (double)g.Count(c =>
+                            c.Status == "Resolved") /
+                        g.Count() * 100, 1)
+                    : 0,
+                AverageDays = resolvedInDept.Count > 0
+                    ? (double?)resolvedInDept.Average(c =>
+                        (c.ResolvedAt!.Value -
+                         c.CreatedAt).TotalDays)
+                    : null
+            };
+        })
+        .OrderByDescending(x => x.Total)
+        .ToList();
+
+    var areaCounts = complaints
+        .GroupBy(c =>
+            !string.IsNullOrWhiteSpace(c.PinCode)
+                ? "PIN " + c.PinCode.Trim()
+                : !string.IsNullOrWhiteSpace(c.Address)
+                    ? c.Address.Trim()
+                    : "Location unavailable")
+        .Select(g => new
+        {
+            Area = g.Key,
+            Count = g.Count()
+        })
+        .OrderByDescending(x => x.Count)
+        .Take(10)
+        .ToList();
+
+    var fromDate = ViewBag.FromDate as string ?? "";
+    var toDate = ViewBag.ToDate as string ?? "";
+}
+
+<style>
+    .reports-page {
+        padding: 24px 0 48px;
+        color: #213652;
+    }
+
+    .reports-hero {
+        padding: 28px;
+        margin-bottom: 24px;
+        color: white;
+        border-radius: 18px;
+        background: linear-gradient(120deg, #153b6d, #2874c8);
+        box-shadow: 0 8px 24px rgba(21, 59, 109, .14);
+    }
+
+    .reports-hero h1 {
+        font-size: clamp(1.7rem, 3vw, 2.3rem);
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .reports-panel {
+        background: white;
+        border: 1px solid #e1eafa;
+        border-radius: 16px;
+        padding: 22px;
+        margin-bottom: 24px;
+        box-shadow: 0 5px 20px rgba(25, 55, 95, .05);
+    }
+
+    .reports-panel h2 {
+        color: #153b6d;
+        font-size: 1.25rem;
+        font-weight: 750;
+        margin-bottom: 18px;
+    }
+
+    .report-kpi {
+        background: white;
+        border: 1px solid #e1eafa;
+        border-radius: 15px;
+        padding: 20px;
+        height: 100%;
+        box-shadow: 0 5px 18px rgba(25, 55, 95, .05);
+    }
+
+    .report-kpi-label {
+        color: #62758c;
+        font-size: .92rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .report-kpi-value {
+        color: #153b6d;
+        font-size: 2rem;
+        font-weight: 800;
+        line-height: 1.2;
+    }
+
+    .report-kpi-note {
+        font-size: .82rem;
+        color: #6c7c90;
+        margin-top: 8px;
+    }
+
+    .report-bar-row {
+        display: grid;
+        grid-template-columns: minmax(100px, 150px) 1fr 45px;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .report-bar-track {
+        background: #edf3fb;
+        border-radius: 20px;
+        height: 13px;
+        overflow: hidden;
+    }
+
+    .report-bar-fill {
+        background: linear-gradient(90deg, #153b6d, #2874c8);
+        height: 100%;
+        border-radius: 20px;
+        min-width: 2px;
+    }
+
+    .reports-page .table {
+        margin-bottom: 0;
+    }
+
+    .reports-page .table thead th {
+        background: #edf4ff;
+        color: #153b6d;
+        border-bottom: 1px solid #cbdcf3;
+        white-space: nowrap;
+    }
+
+    .reports-page .table td,
+    .reports-page .table th {
+        padding: 13px 12px;
+        vertical-align: middle;
+    }
+
+    .reports-page .form-control {
+        border-color: #d5e1f1;
+        border-radius: 9px;
+        min-height: 42px;
+    }
+
+    .reports-page .btn-primary {
+        background: linear-gradient(120deg, #153b6d, #2874c8);
+        border: none;
+        border-radius: 9px;
+        font-weight: 650;
+    }
+
+    .reports-page .btn-outline-primary {
+        border-radius: 9px;
+    }
+
+    .reports-empty {
+        padding: 24px;
+        text-align: center;
+        color: #718096;
+        background: #f7faff;
+        border-radius: 10px;
+    }
+
+    @@media (max-width: 767.98px) {
+        .reports-hero {
+            padding: 22px 18px;
+        }
+
+        .reports-panel {
+            padding: 17px;
+        }
+
+        .report-bar-row {
+            grid-template-columns: 95px 1fr 35px;
+            gap: 8px;
+            font-size: .88rem;
+        }
+    }
+</style>
+
+<div class="container reports-page">
+
+    <div class="reports-hero">
+        <h1>📊 Reports & Analytics</h1>
+        <p class="mb-3">
+            Monitor complaint trends, resolution performance,
+            department workload and service deadlines.
+        </p>
+
+        <a asp-controller="Admin"
+           asp-action="Index"
+           class="btn btn-light">
+            ← Back to Admin Dashboard
+        </a>
+    </div>
+
+    <!-- Date filter -->
+    <div class="reports-panel">
+        <h2>Filter Reports by Submission Date</h2>
+
+        <form asp-controller="Reports"
+              asp-action="Index"
+              method="get"
+              class="row g-3 align-items-end">
+
+            <div class="col-md-4">
+                <label for="fromDate" class="form-label">
+                    From date
+                </label>
+                <input type="date"
+                       id="fromDate"
+                       name="fromDate"
+                       value="@fromDate"
+                       class="form-control" />
+            </div>
+
+            <div class="col-md-4">
+                <label for="toDate" class="form-label">
+                    To date
+                </label>
+                <input type="date"
+                       id="toDate"
+                       name="toDate"
+                       value="@toDate"
+                       class="form-control" />
+            </div>
+
+            <div class="col-md-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    Apply Filter
+                </button>
+
+                <a asp-controller="Reports"
+                   asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    Clear
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Summary cards -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-6 col-lg-3">
+            <div class="report-kpi">
+                <div class="report-kpi-label">
+                    Total Complaints
+                </div>
+                <div class="report-kpi-value">@total</div>
+                <div class="report-kpi-note">
+                    In the selected period
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+            <div class="report-kpi">
+                <div class="report-kpi-label">
+                    Resolved
+                </div>
+                <div class="report-kpi-value text-success">
+                    @resolved
+                </div>
+                <div class="report-kpi-note">
+                    @resolutionRate% resolution rate
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+            <div class="report-kpi">
+                <div class="report-kpi-label">
+                    Unresolved
+                </div>
+                <div class="report-kpi-value text-warning">
+                    @unresolved
+                </div>
+                <div class="report-kpi-note">
+                    Not marked resolved
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+            <div class="report-kpi">
+                <div class="report-kpi-label">
+                    Average Resolution
+                </div>
+                <div class="report-kpi-value">
+                    @(averageResolutionDays.HasValue
+                        ? averageResolutionDays.Value.ToString("0.0") + " d"
+                        : "N/A")
+                </div>
+                <div class="report-kpi-note">
+                    Resolved records with timestamps
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    
+<!-- Interactive complaint trends and status -->
+<div class="row g-4 mb-4">
+
+    <div class="col-lg-8">
+        <div class="reports-panel h-100">
+            <h2>Complaint Trends</h2>
+            <p class="report-chart-subtitle">
+                Registered versus resolved complaints by month
+            </p>
+
+            <div class="chart-container">
+                <canvas id="monthlyChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="reports-panel h-100">
+            <h2>Resolved vs Unresolved</h2>
+            <p class="report-chart-subtitle">
+                Current status of complaints in this report
+            </p>
+
+            <div class="chart-container chart-container-sm">
+                <canvas id="statusChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+    <!-- Category and area analysis -->
+    <div class="row g-4">
+
+        <div class="col-lg-6">
+            <div class="reports-panel h-100">
+                <h2>Category-wise Distribution</h2>
+
+                <div class="chart-container chart-container-sm">
+    <canvas id="categoryChart"></canvas>
+</div>  
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="reports-panel h-100">
+                <h2>Areas with Most Complaints</h2>
+
+                @if (areaCounts.Any())
+                {
+                    <div class="chart-container chart-container-area mb-4">
+    <canvas id="areaChart"></canvas>
+</div>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Area / PIN</th>
+                                    <th>Complaints</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var area in areaCounts)
+                                {
+                                    <tr>
+                                        <td>@area.Area</td>
+                                        <td>
+                                            <strong>@area.Count</strong>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="reports-empty">
+                        No location data available.
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Department performance -->
+    <div class="reports-panel">
+        <h2>Department-wise Performance</h2>
+
+        @if (departmentCounts.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>Total</th>
+                            <th>Resolved</th>
+                            <th>Resolution Rate</th>
+                            <th>Average Resolution</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var dept in departmentCounts)
+                        {
+                            <tr>
+                                <td>@dept.Department</td>
+                                <td>@dept.Total</td>
+                                <td>@dept.Resolved</td>
+                                <td>
+                                    <strong>@dept.Rate%</strong>
+                                </td>
+                                <td>
+                                    @(dept.AverageDays.HasValue
+                                        ? dept.AverageDays.Value.ToString("0.0") + " days"
+                                        : "N/A")
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="reports-empty">
+                No department data available.
+            </div>
+        }
+    </div>
+
+    <!-- Deadline compliance -->
+    <div class="reports-panel">
+        <h2>Resolution Deadline Performance</h2>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="report-kpi">
+                    <div class="report-kpi-label">
+                        Resolved Within Deadline
+                    </div>
+                    <div class="report-kpi-value text-success">
+                        @resolvedOnTime
+                    </div>
+                    <div class="report-kpi-note">
+                        Of @resolvedWithTime.Count resolved complaints
+                        with timestamps
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="report-kpi">
+                    <div class="report-kpi-label">
+                        On-time Resolution Rate
+                    </div>
+                    <div class="report-kpi-value">
+                        @(resolvedWithTime.Count > 0
+                            ? onTimeRate + "%"
+                            : "N/A")
+                    </div>
+                    <div class="report-kpi-note">
+                        Based on the proposed priority SLA rules
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="report-kpi">
+                    <div class="report-kpi-label">
+                        SLA Rules
+                    </div>
+                    <div class="fw-semibold mt-2">High: 2 days</div>
+                    <div class="fw-semibold">Medium: 5 days</div>
+                    <div class="fw-semibold">Low: 10 days</div>
+                </div>
+            </div>
+        </div>
+        <div class="chart-container chart-container-deadline mt-4">
+    <canvas id="deadlineChart"></canvas>
+</div>
+
+        <p class="text-secondary small mt-3 mb-0">
+            Deadline compliance is calculated from CreatedAt and ResolvedAt.
+            Resolved complaints without a resolution timestamp are excluded.
+            These are proposed application deadlines, not official service commitments.
+        </p>
+    </div>
+
+    <!-- High priority unresolved complaints -->
+    <div class="reports-panel">
+        <h2>⚠️ High-priority Unresolved Complaints</h2>
+
+        <p class="text-secondary">
+            These complaints are marked High priority and have not been
+            marked Resolved.
+        </p>
+
+        @if (highPriorityUnresolved.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Complaint</th>
+                            <th>Category</th>
+                            <th>Department</th>
+                            <th>Status</th>
+                            <th>Submitted</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var complaint in highPriorityUnresolved)
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-controller="Admin"
+                                       asp-action="Details"
+                                       asp-route-id="@complaint.Id">
+                                        #@complaint.Id — @complaint.Title
+                                    </a>
+                                </td>
+                                <td>@complaint.Category</td>
+                                <td>
+                                    @(string.IsNullOrWhiteSpace(complaint.Department)
+                                        ? "Unassigned"
+                                        : complaint.Department)
+                                </td>
+                                <td>
+                                    <span class="badge bg-warning text-dark">
+                                        @complaint.Status
+                                    </span>
+                                </td>
+                                <td>
+                                    @complaint.CreatedAt.ToString("dd MMM yyyy")
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="reports-empty">
+                There are no high-priority unresolved complaints
+                in the selected period.
+            </div>
+        }
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const chartText = "#263238";
+            const chartGrid = "rgba(190, 207, 235, 0.12)";
+            const chartColors = [
+                "#1685ef",
+                "#ffb323",
+                "#11c7bd",
+                "#826ff0",
+                "#f267a5",
+                "#60c78a",
+                "#f47745",
+                "#8caccf"
+            ];
+
+            function createChart(id, config) {
+                const canvas = document.getElementById(id);
+                if (!canvas) return;
+
+                return new Chart(canvas, {
+                    ...config,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        ...config.options
+                    }
+                });
+            }
+
+            // 1. Monthly complaints: registered versus resolved.
+            const monthlyLabels = @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                    monthlyCounts.Select(x => x.Month.ToString("MMM yyyy"))));
+
+            const monthlyRegistered = @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                    monthlyCounts.Select(x => x.Count)));
+
+            const monthlyResolved = @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                    monthlyResolvedSeries));
+
+            createChart("monthlyChart", {
+                type: "line",
+                data: {
+                    labels: monthlyLabels,
+                    datasets: [
+                        {
+                            label: "Registered",
+                            data: monthlyRegistered,
+                            borderColor: "#1685ef",
+                            backgroundColor: "rgba(22,133,239,0.16)",
+                            fill: true,
+                            tension: 0.35,
+                            borderWidth: 3,
+                            pointRadius: 4,
+                            pointHoverRadius: 7
+                        },
+                        {
+                            label: "Resolved",
+                            data: monthlyResolved,
+                            borderColor: "#11c7bd",
+                            backgroundColor: "rgba(17,199,189,0.10)",
+                            fill: false,
+                            tension: 0.35,
+                            borderWidth: 3,
+                            pointRadius: 4,
+                            pointHoverRadius: 7
+                        }
+                    ]
+                },
+                options: {
+                    interaction: {
+                        intersect: false,
+                        mode: "index"
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: chartText,
+                                usePointStyle: true,
+                                padding: 18
+                            }
+                        },
+                        tooltip: {
+                            enabled: true
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: chartText },
+                            grid: { color: chartGrid }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: chartText,
+                                precision: 0
+                            },
+                            grid: { color: chartGrid }
+                        }
+                    }
+                }
+            });
+
+            // 2. Resolved versus unresolved.
+            createChart("statusChart", {
+                type: "doughnut",
+                data: {
+                    labels: ["Resolved", "Unresolved"],
+                    datasets: [{
+                        data: [@resolved, @unresolved],
+                        backgroundColor: ["#11c7bd", "#ffb323"],
+                        borderWidth: 0,
+                        hoverOffset: 12
+                    }]
+                },
+                options: {
+                    cutout: "68%",
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: {
+                                color: chartText,
+                                padding: 18,
+                                usePointStyle: true
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 3. Category distribution.
+            const categoryLabels = @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                    categoryCounts.Select(x => x.Category)));
+
+            const categoryValues = @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                    categoryCounts.Select(x => x.Count)));
+
+            createChart("categoryChart", {
+                type: "doughnut",
+                data: {
+                    labels: categoryLabels,
+                    datasets: [{
+                        data: categoryValues,
+                        backgroundColor: chartColors,
+                        borderColor: "#252b3c",
+                        borderWidth: 3,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    cutout: "58%",
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: {
+                                color: chartText,
+                                padding: 14,
+                                usePointStyle: true
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 4. Areas with the most complaints.
+            const areaLabels = @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                    areaCounts.Select(x => x.Area)));
+
+            const areaValues = @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                    areaCounts.Select(x => x.Count)));
+
+            createChart("areaChart", {
+                type: "bar",
+                data: {
+                    labels: areaLabels,
+                    datasets: [{
+                        label: "Complaints",
+                        data: areaValues,
+                        backgroundColor: chartColors,
+                        borderRadius: 7,
+                        maxBarThickness: 42
+                    }]
+                },
+                options: {
+                    indexAxis: "y",
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: chartText,
+                                precision: 0
+                            },
+                            grid: { color: chartGrid }
+                        },
+                        y: {
+                            ticks: { color: chartText },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // 5. Department resolution rates.
+            const departmentLabels = @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                    departmentCounts.Select(x => x.Department)));
+
+            const departmentRates = @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                    departmentCounts.Select(x => x.Rate)));
+
+            createChart("departmentChart", {
+                type: "bar",
+                data: {
+                    labels: departmentLabels,
+                    datasets: [{
+                        label: "Resolution rate (%)",
+                        data: departmentRates,
+                        backgroundColor: chartColors,
+                        borderRadius: 7,
+                        maxBarThickness: 48
+                    }]
+                },
+                options: {
+                    indexAxis: "y",
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: chartText,
+                                usePointStyle: true
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                color: chartText,
+                                callback: value => value + "%"
+                            },
+                            grid: { color: chartGrid }
+                        },
+                        y: {
+                            ticks: { color: chartText },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // 6. Proposed deadline compliance.
+            createChart("deadlineChart", {
+                type: "doughnut",
+                data: {
+                    labels: [
+                        "Resolved within deadline",
+                        "Resolved late"
+                    ],
+                    datasets: [{
+                        data: [@resolvedOnTime, @beyondDeadline],
+                        backgroundColor: ["#11c7bd", "#f267a5"],
+                        borderColor: "#252b3c",
+                        borderWidth: 3,
+                        hoverOffset: 12
+                    }]
+                },
+                options: {
+                    cutout: "67%",
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: {
+                                color: chartText,
+                                padding: 18,
+                                usePointStyle: true
+                            }
+                        }
+                    }
+                }
+            });
+
+        });
+    </script>
+}
