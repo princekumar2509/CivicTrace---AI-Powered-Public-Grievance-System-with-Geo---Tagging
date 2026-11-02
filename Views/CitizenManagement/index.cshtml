@@ -1,0 +1,418 @@
+
+@model PublicGrievanceSystem.ViewModels.CitizenManagementViewModel
+
+@{
+    ViewData["Title"] = "Citizen Management";
+}
+
+<style>
+    .citizen-management {
+        padding: 28px 0 44px;
+        color: #263449;
+    }
+
+    .citizen-management-header {
+        background: linear-gradient(125deg, #153b6d, #2874c8);
+        color: white;
+        padding: 28px;
+        border-radius: 18px;
+        margin-bottom: 24px;
+        box-shadow: 0 8px 22px rgba(21, 59, 109, 0.14);
+    }
+
+    .citizen-management-header h1 {
+        font-size: clamp(1.5rem, 3vw, 2.1rem);
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .citizen-management-card {
+        background: white;
+        border: 1px solid #e2eaf5;
+        border-radius: 16px;
+        padding: 22px;
+        box-shadow: 0 5px 20px rgba(25, 55, 95, 0.06);
+    }
+
+    .citizen-table th {
+        background: #eff5ff;
+        color: #153b6d;
+        white-space: nowrap;
+        font-size: 0.9rem;
+    }
+
+    .citizen-table td {
+        vertical-align: middle;
+    }
+
+    .citizen-status {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .status-active {
+        background: #e5f7ed;
+        color: #187443;
+    }
+
+    .status-suspended {
+        background: #fde8e8;
+        color: #a51d2d;
+    }
+
+    .status-verified {
+        background: #e5f7ed;
+        color: #187443;
+    }
+
+    .status-unverified {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .citizen-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .citizen-search {
+        max-width: 520px;
+    }
+
+    @@media (max-width: 767.98px) {
+        .citizen-management-header {
+            padding: 22px;
+        }
+
+        .citizen-management-card {
+            padding: 14px;
+        }
+    }
+    
+/* Align all six Citizen Management table columns */
+.citizen-table {
+    width: 100%;
+    min-width: 1100px;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.citizen-table th,
+.citizen-table td {
+    box-sizing: border-box;
+    padding: 14px 10px;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+.citizen-table th {
+    white-space: normal;
+    line-height: 1.35;
+}
+
+.citizen-table th:nth-child(1),
+.citizen-table td:nth-child(1) {
+    width: 22%;
+}
+
+.citizen-table th:nth-child(2),
+.citizen-table td:nth-child(2) {
+    width: 22%;
+}
+
+.citizen-table th:nth-child(3),
+.citizen-table td:nth-child(3) {
+    width: 14%;
+}
+
+.citizen-table th:nth-child(4),
+.citizen-table td:nth-child(4) {
+    width: 14%;
+}
+
+.citizen-table th:nth-child(5),
+.citizen-table td:nth-child(5) {
+    width: 13%;
+}
+
+.citizen-table th:nth-child(6),
+.citizen-table td:nth-child(6) {
+    width: 15%;
+}
+
+.citizen-table .citizen-status {
+    white-space: normal;
+    text-align: center;
+    max-width: 100%;
+}
+
+.citizen-suspension-reason {
+    margin-top: 8px;
+    font-size: 0.88rem;
+    color: #6c757d;
+    overflow-wrap: anywhere;
+}
+
+.citizen-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.citizen-actions form {
+    margin: 0;
+}
+
+.citizen-actions button {
+    white-space: nowrap;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+</style>
+
+<div class="container citizen-management">
+
+    <div class="citizen-management-header">
+        <h1>👥 Citizen Management</h1>
+        <p class="mb-0">
+            View registered citizens, check email verification, and manage account access.
+        </p>
+    </div>
+
+    @if (TempData["CitizenManagementMessage"] is string successMessage)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @successMessage
+            <button type="button" class="btn-close"
+                    data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["CitizenManagementError"] is string errorMessage)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @errorMessage
+            <button type="button" class="btn-close"
+                    data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="citizen-management-card mb-4">
+
+        <div class="d-flex flex-column flex-lg-row
+                    justify-content-between align-items-lg-center gap-3 mb-4">
+
+            <div>
+                <h2 class="h5 fw-bold mb-1">Registered Citizens</h2>
+                <p class="text-secondary mb-0">
+                    Accounts displayed: <strong>@Model.Citizens.Count</strong>
+                </p>
+            </div>
+
+            <form asp-controller="CitizenManagement"
+                  asp-action="Index"
+                  method="get"
+                  class="citizen-search w-100">
+
+                <label for="citizenSearch" class="form-label fw-semibold">
+                    Search by name or email
+                </label>
+
+                <div class="input-group">
+                    <input id="citizenSearch"
+                           type="search"
+                           name="search"
+                           value="@Model.Search"
+                           class="form-control"
+                           placeholder="Enter citizen name or email..." />
+
+                    <button type="submit" class="btn btn-primary">
+                        Search
+                    </button>
+
+                    <a asp-controller="CitizenManagement"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Clear
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover citizen-table mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col">Citizen</th>
+                        <th scope="col">Email Address</th>
+                        <th scope="col">Phone Number</th>
+                        <th scope="col">Email Verification</th>
+                        <th scope="col">Account Status</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model.Citizens.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-5">
+                                <div class="fs-4 mb-2">🔎</div>
+                                <strong>No citizens found.</strong>
+                                <p class="text-secondary mb-0 mt-1">
+                                    Try another name or email address.
+                                </p>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var citizen in Model.Citizens)
+                        {
+                           <tr>
+    <!-- 1. Citizen -->
+    <td>
+        <div class="fw-semibold">@citizen.Name</div>
+        <small class="text-secondary">Citizen account</small>
+    </td>
+
+    <!-- 2. Email Address -->
+    <td class="citizen-email">
+        @citizen.Email
+    </td>
+
+    <!-- 3. Phone Number -->
+    <td class="citizen-phone">
+        @if (!string.IsNullOrWhiteSpace(citizen.PhoneNumber))
+        {
+            @citizen.PhoneNumber
+        }
+        else
+        {
+            <span class="text-secondary">Not provided</span>
+        }
+    </td>
+
+    <!-- 4. Email Verification -->
+    <td>
+        @if (citizen.EmailConfirmed)
+        {
+            <span class="citizen-status status-verified">Verified</span>
+        }
+        else
+        {
+            <span class="citizen-status status-unverified">Not verified</span>
+        }
+    </td>
+
+    <!-- 5. Account Status and suspension reason -->
+    <td>
+        @if (citizen.IsSuspended)
+        {
+            <span class="citizen-status status-suspended">Suspended</span>
+
+            @if (!string.IsNullOrWhiteSpace(citizen.SuspensionReason))
+            {
+                <div class="citizen-suspension-reason">
+                    <strong>Reason:</strong>
+                    @citizen.SuspensionReason
+                </div>
+            }
+        }
+        else
+        {
+            <span class="citizen-status status-active">Active</span>
+        }
+    </td>
+
+    <!-- 6. Actions -->
+    <td>
+        <div class="citizen-actions">
+            @if (citizen.IsSuspended)
+            {
+                <form asp-controller="CitizenManagement"
+                      asp-action="Reactivate"
+                      method="post"
+                      onsubmit="return confirm('Reactivate this citizen account?');">
+
+                    <input type="hidden" name="id" value="@citizen.Id" />
+
+                    <button type="submit" class="btn btn-sm btn-success">
+                        Reactivate
+                    </button>
+                </form>
+            }
+            else
+            {
+                <form asp-controller="CitizenManagement"
+                      asp-action="Suspend"
+                      method="post"
+                      onsubmit="return captureSuspensionReason(this);">
+
+                    <input type="hidden" name="id" value="@citizen.Id" />
+                    <input type="hidden" name="reason" />
+
+                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                        Suspend
+                    </button>
+                </form>
+            }
+        </div>
+    </td>
+</tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div class="text-secondary small">
+        <strong>Note:</strong> Suspended accounts are retained in the database.
+        The management actions do not delete the citizen's complaint history.
+    </div>
+
+</div>
+<script>
+    function captureSuspensionReason(form) {
+        const reason = window.prompt(
+            "Enter the reason for suspending this citizen account:"
+        );
+
+        if (reason === null) {
+            return false;
+        }
+
+        const cleanedReason = reason.trim();
+
+        if (!cleanedReason) {
+            window.alert("A suspension reason is required.");
+            return false;
+        }
+
+        if (cleanedReason.length > 500) {
+            window.alert("The reason cannot exceed 500 characters.");
+            return false;
+        }
+
+        form.querySelector('input[name="reason"]').value =
+            cleanedReason;
+
+        return window.confirm(
+            "Confirm suspension for this reason?\n\n" +
+            cleanedReason
+        );
+    }
+</script>
