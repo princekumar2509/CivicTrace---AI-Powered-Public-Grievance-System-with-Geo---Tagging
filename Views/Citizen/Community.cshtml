@@ -1,0 +1,297 @@
+
+@model IEnumerable<PublicGrievanceSystem.Models.CommunityComplaintViewModel>
+
+@{
+    ViewData["Title"] = "Community Issues";
+}
+
+<style>
+    .community-page {
+        min-height: 85vh;
+        padding: 35px 15px 55px;
+        background: #f4f7fc;
+    }
+
+    .community-header {
+        padding: 30px;
+        margin-bottom: 28px;
+        border-radius: 20px;
+        color: white;
+        background: linear-gradient(125deg, #153866, #2869b5);
+        box-shadow: 0 10px 25px rgba(21, 56, 102, .14);
+    }
+
+    .community-header h1 {
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .community-header p {
+        color: rgba(255,255,255,.85);
+        margin: 0;
+        line-height: 1.7;
+    }
+
+    .community-card {
+        height: 100%;
+        padding: 23px;
+        border: 1px solid #e2eaf5;
+        border-radius: 17px;
+        background: #fff;
+        box-shadow: 0 5px 18px rgba(30, 55, 90, .055);
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .community-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(30, 55, 90, .10);
+    }
+
+    .community-card h3 {
+        color: #193f70;
+        font-size: 1.15rem;
+        font-weight: 800;
+        margin: 15px 0 10px;
+    }
+
+    .community-description {
+        color: #64748b;
+        font-size: .92rem;
+        line-height: 1.7;
+        margin-bottom: 18px;
+    }
+
+    .community-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 15px;
+    }
+
+    .community-badge {
+        display: inline-block;
+        padding: 6px 11px;
+        border-radius: 30px;
+        background: #edf3fc;
+        color: #315781;
+        font-size: .76rem;
+        font-weight: 750;
+    }
+
+    .community-location {
+        color: #7b899c;
+        font-size: .84rem;
+        margin-bottom: 15px;
+        overflow-wrap: anywhere;
+    }
+
+    .community-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding-top: 17px;
+        border-top: 1px solid #edf1f7;
+    }
+
+    .upvote-count {
+        color: #315781;
+        font-weight: 800;
+        font-size: .95rem;
+    }
+
+    .upvote-button {
+        padding: 9px 16px;
+        border: 1px solid #2463ad;
+        border-radius: 10px;
+        background: #fff;
+        color: #2463ad;
+        font-weight: 750;
+        transition: .2s ease;
+    }
+
+    .upvote-button:hover,
+    .upvote-button.supported {
+        background: #2463ad;
+        color: #fff;
+    }
+
+    .community-empty {
+        padding: 55px 20px;
+        border: 1px dashed #cbd8e8;
+        border-radius: 18px;
+        background: #fff;
+        text-align: center;
+    }
+
+    .community-empty-icon {
+        font-size: 45px;
+        margin-bottom: 12px;
+    }
+
+    @@media (max-width: 576px) {
+        .community-header {
+            padding: 24px 20px;
+        }
+
+        .community-card {
+            padding: 19px;
+        }
+
+        .community-footer {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .upvote-button {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="container-fluid community-page">
+
+    <!-- Community Header -->
+    <div class="container">
+
+        <div class="community-header">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                <div>
+                    <h1>🌍 Community Issues</h1>
+                    <p>
+                        Support reported public issues and help your
+                        community bring important problems to attention.
+                    </p>
+                </div>
+
+                <a asp-controller="Citizen"
+                   asp-action="Index"
+                   class="btn btn-outline-light">
+                    ← My Dashboard
+                </a>
+
+            </div>
+        </div>
+
+        <!-- Page Heading -->
+        <div class="mb-4">
+            <h2 class="fw-bold text-dark">Reported Issues</h2>
+            <p class="text-secondary">
+                Explore complaints reported by citizens and show your support.
+            </p>
+        </div>
+        @if (TempData["CommunityMessage"] != null)
+{
+    <div class="alert alert-info alert-dismissible fade show mt-3"
+         role="alert">
+        👍 @TempData["CommunityMessage"]
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"></button>
+    </div>
+}
+
+        <!-- Community Complaints -->
+        @if (Model != null && Model.Any())
+        {
+            <div class="row g-4">
+
+                @foreach (var complaint in Model)
+                {
+                    <div class="col-12 col-md-6 col-xl-4">
+
+                        <div class="community-card">
+
+                            <div class="d-flex justify-content-between align-items-center gap-2">
+
+                                <span class="community-badge">
+                                    @complaint.Category
+                                </span>
+
+                                <span class="community-badge">
+                                    @complaint.Status
+                                </span>
+
+                            </div>
+
+                            <h3>@complaint.Title</h3>
+
+                            <p class="community-description">
+                                @complaint.Description
+                            </p>
+
+                            <div class="community-meta">
+                                <span class="community-badge">
+                                    Priority: @complaint.Priority
+                                </span>
+                            </div>
+
+                            <div class="community-location">
+                                📍 @(string.IsNullOrWhiteSpace(complaint.Address)
+                                    ? "Location not provided"
+                                    : complaint.Address)
+                            </div>
+
+                            <div class="community-location">
+                                📅 @complaint.CreatedAt.ToString("dd MMM yyyy")
+                            </div>
+
+                            <div class="community-footer">
+
+                                <div class="upvote-count">
+                                    👍 @complaint.UpvoteCount Supports
+                                </div>
+
+                                <form asp-controller="Citizen"
+                                      asp-action="Upvote"
+                                      method="post">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@complaint.ComplaintId" />
+
+                                    <button type="submit"
+                                            class="upvote-button @(complaint.HasUpvoted ? "supported" : "")">
+
+                                        @(complaint.HasUpvoted
+                                            ? "✓ Supported"
+                                            : "👍 Support")
+
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+        else
+        {
+            <div class="community-empty">
+
+                <div class="community-empty-icon">📋</div>
+
+                <h3 class="fw-bold text-dark">
+                    No Community Issues Yet
+                </h3>
+
+                <p class="text-secondary mb-0">
+                    There are currently no complaints to display.
+                    Check back when citizens report new issues.
+                </p>
+
+            </div>
+        }
+
+    </div>
+</div>
