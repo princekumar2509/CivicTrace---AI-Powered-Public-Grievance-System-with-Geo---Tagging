@@ -1,0 +1,305 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PublicGrievanceSystem</title>
+
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/PublicGrievanceSystem.styles.css" asp-append-version="true" />
+
+
+</head>
+
+<body class="@(ViewContext.RouteData.Values["page"]?.ToString() == "/Account/ConfirmEmailChange" ? "civictrace-confirm-email-change" : "")">
+    <header>
+
+<nav class="navbar navbar-light bg-white border-bottom box-shadow mb-3 civictrace-navbar">
+    <div class="container-fluid px-3 px-lg-4">
+
+        <!-- CivicTrace Logo: always visible -->
+        <a class="navbar-brand d-flex align-items-center"
+        asp-area=""
+        asp-controller="Home"
+        asp-action="Index">
+            <img src="~/images/civictrace-logo.png"
+                alt="CivicTrace Logo"
+                style="height:48px; width:auto; max-width:240px; object-fit:contain;" />
+        </a>
+
+        <!-- Public links: remain visible outside the hamburger menu -->
+        <div class="d-flex align-items-center flex-wrap gap-1 me-auto civictrace-public-links">
+
+            <a class="nav-link text-dark px-1 nav-button"
+            asp-area=""
+            asp-controller="Home"
+            asp-action="Index">
+              Home
+            </a>
+
+            <a class="nav-link text-dark px-1 nav-button"
+            asp-area=""
+            asp-controller="Home"
+            asp-action="Help">
+                Help
+            </a>
+
+            <a class="nav-link text-dark px-1 nav-button"
+            asp-area=""
+            asp-controller="Home"
+            asp-action="Privacy">
+                Privacy
+            </a>
+
+        </div>
+
+
+
+        
+<!-- Admin Hamburger Menu and Profile Dropdown -->
+<div class="d-flex align-items-center ms-auto gap-2">
+
+
+
+    <!-- PROFILE DROPDOWN -->
+    <div class="dropdown">
+
+        <button class="btn btn-light border rounded-circle d-flex align-items-center justify-content-center"
+                type="button"
+                id="civicTraceProfileMenu"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                aria-label="Open profile menu"
+                style="width:48px;height:48px;">
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 width="27"
+                 height="27"
+                 fill="#245CA8"
+                 viewBox="0 0 16 16"
+                 aria-hidden="true">
+                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                <path d="M8 9c-2.3 0-4.5 1.2-4.5 3v1h9v-1c0-1.8-2.2-3-4.5-3z"/>
+            </svg>
+
+        </button>
+
+        <div class="dropdown-menu dropdown-menu-end mt-2 p-0 shadow border-0"
+             aria-labelledby="civicTraceProfileMenu"
+             style="min-width:280px;overflow:hidden;">
+
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <div class="p-3 text-white"
+                     style="background:linear-gradient(120deg,#142d4e,#245ca8);">
+
+                    <div class="fs-5 fw-bold mb-1">Welcome,</div>
+
+                    <div class="small" style="overflow-wrap:anywhere;">
+                        @User.Identity.Name
+                    </div>
+
+                </div>
+
+                <div class="p-2">
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a class="dropdown-item py-2"
+                           asp-controller="Admin"
+                           asp-action="Index">
+                            🏢 Admin Dashboard
+                        </a>
+
+                        <a class="dropdown-item py-2"
+                           asp-controller="Reports"
+                           asp-action="Index">
+                            📊 Reports &amp; Analytics
+                        </a>
+
+                        <a class="dropdown-item py-2"
+                           asp-controller="CitizenManagement"
+                           asp-action="Index">
+                            👥 Citizen Management
+                        </a>
+
+                        <a class="dropdown-item py-2"
+                           asp-controller="SystemSettings"
+                           asp-action="Index">
+                            ⚙️ System Settings
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="dropdown-item py-2"
+                           asp-controller="Citizen"
+                           asp-action="Index">
+                            👤 My Dashboard
+                        </a>
+
+                        <a class="dropdown-item py-2"
+                           asp-controller="Complaints"
+                           asp-action="Create">
+                            📝 Submit Complaint
+                        </a>
+
+                        <a class="dropdown-item py-2"
+                           asp-controller="Complaints"
+                           asp-action="Track">
+                            🔎 Track Complaint
+                        </a>
+
+                        <a class="dropdown-item py-2"
+                           asp-area="Identity"
+                           asp-page="/Account/Manage/Index">
+                            ⚙️ Settings
+                        </a>
+                    }
+
+                    <div class="dropdown-divider"></div>
+
+                    <form asp-area="Identity"
+                          asp-page="/Account/Logout"
+                          method="post">
+
+                        <button type="submit"
+                                class="dropdown-item text-danger fw-semibold py-2">
+                            Logout
+                        </button>
+
+                    </form>
+
+                </div>
+            }
+            else
+            {
+                <div class="p-3 text-white"
+                     style="background:linear-gradient(120deg,#142d4e,#245ca8);">
+
+                    <div class="fs-5 fw-bold">Welcome to CivicTrace</div>
+                    <div class="small">Access your account</div>
+
+                </div>
+
+                <div class="p-2">
+
+                    <a class="dropdown-item py-2"
+                       asp-area="Identity"
+                       asp-page="/Account/LoginChoice">
+                        Login
+                    </a>
+
+                    <a class="dropdown-item py-2"
+                       asp-area="Identity"
+                       asp-page="/Account/Register">
+                        Register
+                    </a>
+
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>
+
+</nav>
+
+</header>
+
+<!-- Main Content -->
+<div class="container">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+
+<!-- Footer -->
+<footer class="border-top position-relative civictrace-footer">
+    <div class="container py-4">
+
+        <div class="row g-4">
+
+            <!-- Project Information -->
+            <div class="col-md-5">
+                <h5 class="fw-bold text-dark">
+                    CivicTrace
+                </h5>
+                <p class="small mb-0">
+                    A digital platform for reporting public problems,
+                    sharing location details, and tracking complaint
+                    progress.
+                </p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-md-4">
+                <h6 class="fw-bold text-dark">Quick Links</h6>
+                <ul class="list-unstyled small mb-0 footer-quick-links">
+                    <li class="mb-2">
+                        <a asp-controller="Home" asp-action="Index">
+                        Home
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a asp-controller="Home" asp-action="Help">
+                            Help & How It Works
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Home" asp-action="Privacy">
+                            Privacy Policy
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Back to Top -->
+            <div class="col-md-3">
+                <h6 class="fw-bold text-dark">
+    Need Help?
+</h6>
+                <p class="small">
+        Visit our Help page to learn how to submit and track a complaint.
+</p>
+                <a asp-controller="Home"
+                asp-action="Help"
+                class="btn btn-sm footer-help-link">
+                    Visit Help Page
+                </a>
+            </div>
+
+        </div>
+
+        <hr class="my-4" />
+
+        <div class="d-flex flex-column flex-sm-row
+                    justify-content-between align-items-center gap-2">
+            <span class="small">
+                &copy; @DateTime.Now.Year - CivicTrace.
+            </span>
+
+            <a href="#"
+            class="small text-decoration-none"
+            onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;">
+                ↑ Back to Top
+            </a>
+        </div>
+
+    </div>
+</footer>
+
+
+<!-- Scripts -->
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+@await RenderSectionAsync("Scripts", required: false)
+
+
+</body>
+</html>
