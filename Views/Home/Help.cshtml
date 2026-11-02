@@ -1,0 +1,439 @@
+
+@{
+    ViewData["Title"] = "Help & How It Works";
+}
+
+<style>
+    .help-page {
+        background: #f5f8ff;
+        color: #263449;
+        padding-bottom: 45px;
+    }
+
+    .help-hero {
+        background: linear-gradient(135deg, #12376b, #2874c8);
+        color: white;
+        padding: 48px 20px;
+        text-align: center;
+        border-radius: 0 0 25px 25px;
+    }
+
+    .help-hero h1 {
+        font-size: clamp(2rem, 5vw, 2.8rem);
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+
+    .help-hero p {
+        max-width: 760px;
+        margin: auto;
+        color: #edf5ff;
+        line-height: 1.8;
+    }
+
+    .help-container {
+        max-width: 1050px;
+        margin: auto;
+        padding: 32px 18px 0;
+    }
+
+    .help-card {
+        height: 100%;
+        padding: 24px;
+        background: white;
+        border: 1px solid #e2eaf5;
+        border-radius: 15px;
+        box-shadow: 0 5px 18px rgba(25, 55, 95, 0.05);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .help-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(25, 55, 95, 0.09);
+    }
+
+    .help-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        background: #eaf2ff;
+        border-radius: 13px;
+        font-size: 25px;
+        margin-bottom: 16px;
+    }
+
+    .help-card h2 {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: #193f70;
+        margin-bottom: 12px;
+    }
+
+    .help-card p,
+    .help-card li {
+        color: #596a80;
+        line-height: 1.8;
+    }
+
+    .help-card ul {
+        padding-left: 20px;
+        margin-bottom: 0;
+    }
+
+    .help-heading {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .help-heading h2 {
+        color: #193f70;
+        font-weight: 800;
+    }
+
+    .help-heading p {
+        color: #64748b;
+        line-height: 1.7;
+    }
+
+    .help-faq {
+        padding: 20px;
+        border-bottom: 1px solid #e5edf7;
+    }
+
+    .help-faq:last-child {
+        border-bottom: none;
+    }
+
+    .help-faq h3 {
+        font-size: 1rem;
+        color: #193f70;
+        font-weight: 800;
+        margin-bottom: 9px;
+    }
+
+    .help-faq p {
+        color: #596a80;
+        line-height: 1.8;
+        margin-bottom: 0;
+    }
+
+
+.help-cta {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    clear: both;
+    background: linear-gradient(135deg, #153b6d, #2874c8);
+    color: white;
+    text-align: center;
+    padding: 32px 20px;
+    margin: 0 0 20px;
+    border-radius: 18px;
+    overflow-wrap: anywhere;
+}
+
+.help-cta h2,
+.help-cta p {
+    position: static;
+    max-width: 100%;
+}
+
+.help-container {
+    position: relative;
+    display: flow-root;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.help-page {
+    position: relative;
+    display: flow-root;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+    .help-cta h2 {
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+
+    .help-cta p {
+        color: #edf5ff;
+        line-height: 1.8;
+    }
+
+    .help-btn {
+        display: inline-block;
+        padding: 11px 20px;
+        margin: 5px;
+        border-radius: 9px;
+        font-weight: 700;
+        text-decoration: none;
+        background: white;
+        color: #17477f;
+    }
+
+    .help-btn:hover {
+        background: #eaf2ff;
+        color: #12376b;
+    }
+
+    @@media (max-width: 767.98px) {
+        .help-hero {
+            padding: 38px 16px;
+        }
+
+        .help-container {
+            padding: 22px 13px 0;
+        }
+
+        .help-card {
+            padding: 19px;
+        }
+    }
+</style>
+
+<div class="help-page">
+
+    <section class="help-hero">
+        <div class="container">
+            <div style="font-size: 2.7rem;" class="mb-2">💡</div>
+            <h1>Help & How It Works</h1>
+            <p>
+                Learn how to register, report a public problem, provide
+                location details, and follow the progress of your complaint.
+            </p>
+        </div>
+    </section>
+
+    <div class="help-container">
+
+        <section class="mb-5">
+            <div class="help-heading">
+                <h2>Getting Started</h2>
+                <p>Follow these steps to use the website.</p>
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="help-card">
+                        <div class="help-icon">👤</div>
+                        <h2>1. Register or Login</h2>
+                        <p class="mb-0">
+                            Create an account using the registration page.
+                            If you already have an account, log in to open
+                            your Citizen Dashboard.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="help-card">
+                        <div class="help-icon">📝</div>
+                        <h2>2. Submit a Complaint</h2>
+                        <p class="mb-0">
+                            Open Submit Complaint and enter a clear title
+                            and description of the public problem you want
+                            to report.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="help-card">
+                        <div class="help-icon">📍</div>
+                        <h2>3. Add Location</h2>
+                        <p class="mb-0">
+                            Provide the available location details so the
+                            issue can be identified more easily. Check that
+                            the selected location is correct.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="help-card">
+                        <div class="help-icon">📷</div>
+                        <h2>4. Upload Evidence</h2>
+                        <p class="mb-0">
+                            If available, upload a clear photograph that
+                            shows the problem. Avoid including unnecessary
+                            personal information in the image.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="help-card">
+                        <div class="help-icon">🔎</div>
+                        <h2>5. Track Your Complaint</h2>
+                        <p class="mb-0">
+                            Use your dashboard or the complaint tracking
+                            facility to check the current status and
+                            available update history.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="help-card">
+                        <div class="help-icon">✅</div>
+                        <h2>6. Check Resolution</h2>
+                        <p class="mb-0">
+                            Review the latest status to see whether the
+                            complaint is submitted, in progress, or
+                            marked as resolved.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <div class="help-heading">
+                <h2>Understanding Complaint Status</h2>
+                <p>
+                    Status labels help you understand the recorded progress
+                    of a complaint.
+                </p>
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-md-4">
+                    <div class="help-card">
+                        <div class="help-icon">📤</div>
+                        <h2>Submitted</h2>
+                        <p class="mb-0">
+                            The complaint has been submitted and recorded
+                            in the system.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="help-card">
+                        <div class="help-icon">⚙️</div>
+                        <h2>In Progress</h2>
+                        <p class="mb-0">
+                            The complaint has been marked as being
+                            processed by the responsible officials.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="help-card">
+                        <div class="help-icon">✅</div>
+                        <h2>Resolved</h2>
+                        <p class="mb-0">
+                            An authorized official has marked the complaint
+                            as resolved in the system.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <div class="help-heading">
+                <h2>Frequently Asked Questions</h2>
+                <p>Quick answers to common questions.</p>
+            </div>
+
+            <div class="help-card p-0">
+
+                <div class="help-faq">
+                    <h3>Can I track a complaint after submitting it?</h3>
+                    <p>
+                        Yes. Open your Citizen Dashboard or use the
+                        available complaint tracking page to check
+                        the complaint's status.
+                    </p>
+                </div>
+
+                <div class="help-faq">
+                    <h3>Why should I provide a location?</h3>
+                    <p>
+                        Location details help identify where the problem
+                        occurred and can help officials understand
+                        where attention is needed.
+                    </p>
+                </div>
+
+                <div class="help-faq">
+                    <h3>What if I do not have a photograph?</h3>
+                    <p>
+                        You can leave the photograph out if the form
+                        permits it. Provide a clear description and
+                        the available location information.
+                    </p>
+                </div>
+
+                <div class="help-faq">
+                    <h3>What does a possible duplicate warning mean?</h3>
+                    <p>
+                        It means the system has identified a complaint
+                        that may be similar to an existing one. Review
+                        the warning and follow the options shown on
+                        the submission page.
+                    </p>
+                </div>
+
+                <div class="help-faq">
+                    <h3>Can I view another citizen's complaint details?</h3>
+                    <p>
+                        Citizen complaint pages are intended to restrict
+                        access according to complaint ownership.
+                        Authorized officials may have different access
+                        based on their permissions.
+                    </p>
+                </div>
+
+                <div class="help-faq">
+                    <h3>What should I do if a page does not work?</h3>
+                    <p>
+                        Refresh the page and check your internet connection.
+                        If the issue continues, contact the website
+                        administrator with a description of the problem.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="help-cta">
+            <h2>Ready to Report a Public Problem?</h2>
+            <p>
+                Log in to your account to submit a complaint and follow
+                its progress through your dashboard.
+            </p>
+
+
+@if (User.Identity?.IsAuthenticated != true)
+{
+    <a asp-area="Identity"
+asp-page="/Account/Login"
+    class="help-btn">
+        🔐 Login
+    </a>
+
+    <a asp-area="Identity"
+    asp-page="/Account/Register"
+    class="help-btn">
+        📝 Register
+    </a>
+}
+
+        </section>
+
+    </div>
+</div>
