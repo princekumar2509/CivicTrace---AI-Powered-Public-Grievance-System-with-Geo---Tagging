@@ -1,0 +1,1765 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/* Force CivicTrace hero background to light blue */
+section.overview-hero.civictrace-hero {
+    background: #245ca8 !important;
+    background-image: none !important;
+}
+
+/* CivicTrace logo on a white rounded background */
+.civictrace-hero-logo {
+    width: min(560px, 100%);
+    margin: 0 auto 28px;
+    padding: 18px 22px;
+    background: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(10, 30, 60, 0.14);
+}
+
+.civictrace-hero-logo img {
+    display: block;
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    margin: 0 auto;
+    object-fit: contain;
+}
+
+@media (max-width: 767.98px) {
+    .civictrace-hero-logo {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        margin-bottom: 22px;
+    }
+}
+/* CivicTrace navbar buttons */
+.navbar .nav-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 1px;
+    padding: 5px 13px !important;
+    border: 1px solid #245ca8;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #17477f !important;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-decoration: none;
+    transition: all 0.20s ease;
+}
+
+.navbar .nav-button:hover {
+    background: linear-gradient(120deg, #142d4e, #245ca8);
+    color: #ffffff !important;
+    border-color: #245ca8;
+    box-shadow: 0 4px 10px rgba(20, 45, 78, 0.18);
+    transform: translateY(-1px);
+}
+
+/* =====================================
+   CIVICTRACE FOOTER
+===================================== */
+
+footer.civictrace-footer {
+    background: linear-gradient(180deg, #ffffff, #f0f6ff);
+    color: #52647a;
+    border-top: 1px solid #d8e5f5 !important;
+    line-height: 1.6;
+}
+
+.civictrace-footer h5,
+.civictrace-footer h6 {
+    color: #153b6d !important;
+    font-weight: 750;
+    margin-bottom: 14px;
+}
+
+.civictrace-footer p {
+    color: #64748b;
+    line-height: 1.75;
+}
+
+/* Quick Links */
+.civictrace-footer .footer-quick-links li {
+    margin-bottom: 8px;
+}
+
+.civictrace-footer .footer-quick-links a {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border: 1px solid #d7e5f8;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #245ca8 !important;
+    text-decoration: none !important;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.civictrace-footer .footer-quick-links a:hover {
+    background: linear-gradient(120deg, #142d4e, #245ca8);
+    color: #ffffff !important;
+    border-color: #245ca8;
+    box-shadow: 0 4px 10px rgba(20, 45, 78, 0.15);
+    transform: translateX(3px);
+}
+
+/* Visit Help Page */
+.civictrace-footer .footer-help-link {
+    background: #ffffff;
+    color: #245ca8 !important;
+    border: 1px solid #245ca8;
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 7px 14px;
+    transition: all 0.2s ease;
+}
+
+.civictrace-footer .footer-help-link:hover {
+    background: linear-gradient(120deg, #142d4e, #245ca8);
+    color: #ffffff !important;
+    border-color: #245ca8;
+    box-shadow: 0 4px 10px rgba(20, 45, 78, 0.15);
+}
+
+/* Footer separator */
+.civictrace-footer hr {
+    border-color: #cfdbeb;
+    opacity: 1;
+}
+
+/* Back to Top */
+.civictrace-footer a[href="#"] {
+    color: #245ca8;
+    text-decoration: none;
+}
+
+.civictrace-footer a[href="#"]:hover {
+    color: #142d4e;
+    text-decoration: underline;
+}
+
+/* Mobile */
+@media (max-width: 767.98px) {
+    .civictrace-footer .footer-quick-links a {
+        padding: 6px 10px;
+    }
+}
+
+/* ==========================================
+   CIVICTRACE ADMIN COMPLAINT DETAILS
+========================================== */
+
+.admin-complaint-details {
+    max-width: 1440px;
+    color: #23364d;
+    padding-top: 16px;
+    padding-bottom: 35px;
+}
+
+/* Page heading */
+.admin-complaint-details h2 {
+    color: #153b6d;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+}
+
+.admin-complaint-details .text-muted {
+    color: #64748b !important;
+}
+
+/* Buttons */
+.admin-complaint-details .btn {
+    border-radius: 8px;
+    padding: 9px 15px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.admin-complaint-details > .d-flex > a.btn-outline-primary {
+    color: #245ca8;
+    border-color: #245ca8;
+    background: #ffffff;
+}
+
+.admin-complaint-details > .d-flex > a.btn-outline-primary:hover {
+    color: #ffffff;
+    background: #245ca8;
+}
+
+/* Main cards */
+.admin-complaint-details .card {
+    border: 1px solid #e1eaf5;
+    border-radius: 13px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 5px 18px rgba(25, 55, 95, 0.08);
+}
+
+.admin-complaint-details .card-header {
+    padding: 15px 19px;
+    border-bottom: 1px solid #e1eaf5;
+}
+
+.admin-complaint-details .card-header h5 {
+    font-size: 1.2rem;
+    font-weight: 750;
+}
+
+/* Consistent navy-blue section headers */
+.admin-complaint-details .card-header.bg-primary,
+.admin-complaint-details .card-header.bg-dark,
+.admin-complaint-details .card-header.bg-success {
+    background: linear-gradient(120deg, #142d4e, #245ca8) !important;
+    color: #ffffff !important;
+    border-bottom: 0;
+}
+
+.admin-complaint-details .card-header.bg-primary h5,
+.admin-complaint-details .card-header.bg-dark h5,
+.admin-complaint-details .card-header.bg-success h5 {
+    color: #ffffff !important;
+}
+
+/* Complaint information */
+.admin-complaint-details > .row > div:first-child > .card > .card-body {
+    padding: 22px;
+}
+
+.admin-complaint-details strong {
+    color: #233b58;
+}
+
+.admin-complaint-details hr {
+    border-color: #dce6f2;
+    opacity: 1;
+}
+
+.admin-complaint-details .card-body .bg-light {
+    background: #f4f7fb !important;
+    border-color: #e1eaf5 !important;
+    border-radius: 9px !important;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+/* Category, priority, status and AI severity badges */
+.admin-complaint-details .badge {
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-weight: 650;
+}
+
+/* Update Complaint panel */
+.admin-complaint-details .card.border-warning {
+    border: 1px solid #c8d9ee !important;
+    border-radius: 12px;
+    box-shadow: 0 5px 16px rgba(25, 55, 95, 0.06);
+}
+
+.admin-complaint-details .card.border-warning > .card-header.bg-warning {
+    background: linear-gradient(120deg, #142d4e, #245ca8) !important;
+    color: #ffffff !important;
+    border-bottom: 0;
+}
+
+.admin-complaint-details .card.border-warning > .card-header h5 {
+    color: #ffffff !important;
+}
+
+.admin-complaint-details .card.border-warning > .card-body {
+    padding: 20px;
+}
+
+/* Status, priority and department dropdowns */
+.admin-complaint-details .form-select {
+    min-height: 46px;
+    border: 1px solid #d2deec;
+    border-radius: 8px;
+    color: #23364d;
+    background-color: #ffffff;
+    box-shadow: none;
+}
+
+.admin-complaint-details .form-select:focus {
+    border-color: #4381c9;
+    box-shadow: 0 0 0 3px rgba(36, 92, 168, 0.13);
+}
+
+/* Update Complaint button */
+.admin-complaint-details .btn-warning {
+    background: linear-gradient(120deg, #142d4e, #245ca8) !important;
+    border: 1px solid #245ca8 !important;
+    color: #ffffff !important;
+    font-weight: 650;
+}
+
+.admin-complaint-details .btn-warning:hover {
+    background: linear-gradient(120deg, #0e213a, #1b4b8c) !important;
+    border-color: #1b4b8c !important;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(20, 45, 78, 0.18);
+}
+
+/* Complaint evidence image */
+.admin-complaint-details img.img-fluid {
+    max-width: 100%;
+    border: 1px solid #e1eaf5;
+    border-radius: 9px;
+    background: #f7faff;
+}
+
+/* Leaflet map */
+.admin-complaint-details #complaintMap {
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+    background: #f1f5f9;
+}
+
+/* Responsive layout */
+@media (max-width: 767.98px) {
+    .admin-complaint-details {
+        padding-top: 10px;
+    }
+
+    .admin-complaint-details > .d-flex {
+        align-items: flex-start !important;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .admin-complaint-details .card-header {
+        padding: 13px 15px;
+    }
+
+    .admin-complaint-details .card-body {
+        padding: 16px;
+    }
+
+    .admin-complaint-details .form-select {
+        min-height: 44px;
+    }
+}
+
+
+/* ==========================================
+   CIVICTRACE LOGIN - ADMIN AND CITIZEN
+========================================== */
+
+/* Page background */
+body:has(.civictrace-login-page) {
+    background-color: #f3f7fd;
+}
+
+.civictrace-login-page {
+    padding-top: 48px !important;
+    padding-bottom: 48px !important;
+}
+
+/* Login card */
+.civictrace-login-card {
+    background: #ffffff;
+    border: 1px solid #dce7f5 !important;
+    border-radius: 22px !important;
+    overflow: hidden;
+    box-shadow: 0 16px 45px rgba(20, 45, 78, 0.12) !important;
+}
+
+.civictrace-login-card .card-body {
+    padding: 36px !important;
+}
+
+/* Admin or Citizen icon */
+.civictrace-login-icon {
+    width: 78px;
+    height: 78px;
+    margin: 0 auto 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #eaf2ff, #d6e7ff);
+    border: 1px solid #d4e4fa;
+    font-size: 42px;
+    box-shadow: 0 5px 14px rgba(36, 92, 168, 0.08);
+}
+
+/* Heading and subtitle */
+.civictrace-login-card h2 {
+    color: #153b6d;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.civictrace-login-card .text-muted {
+    color: #64748b !important;
+}
+
+/* Labels */
+.civictrace-login-card .form-label {
+    color: #243b58;
+    font-size: 0.98rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* Email and password inputs */
+.civictrace-login-card .form-control {
+    min-height: 52px;
+    padding: 12px 15px;
+    border: 1px solid #d2deec;
+    border-radius: 9px;
+    background-color: #ffffff;
+    color: #23364d;
+    box-shadow: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.civictrace-login-card .form-control::placeholder {
+    color: #94a3b8;
+}
+
+.civictrace-login-card .form-control:focus {
+    border-color: #4381c9;
+    box-shadow: 0 0 0 4px rgba(36, 92, 168, 0.12);
+}
+
+/* Remember me checkbox */
+.civictrace-login-card .form-check-input:checked {
+    background-color: #245ca8;
+    border-color: #245ca8;
+}
+
+.civictrace-login-card .form-check-input:focus {
+    border-color: #4381c9;
+    box-shadow: 0 0 0 3px rgba(36, 92, 168, 0.12);
+}
+
+/* Main login button */
+.civictrace-login-submit {
+    min-height: 52px;
+    margin-top: 2px;
+    border: 1px solid #245ca8 !important;
+    border-radius: 9px !important;
+    background: linear-gradient(120deg, #142d4e, #245ca8) !important;
+    color: #ffffff !important;
+    font-size: 1.05rem;
+    font-weight: 700;
+    transition: all 0.25s ease;
+}
+
+.civictrace-login-submit:hover {
+    background: linear-gradient(120deg, #0e213a, #1b4b8c) !important;
+    border-color: #1b4b8c !important;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 14px rgba(20, 45, 78, 0.2);
+}
+
+/* Google sign-in button */
+.civictrace-google-button {
+    min-height: 52px;
+    border: 1px solid #cbd8e8 !important;
+    border-radius: 9px !important;
+    background: #ffffff !important;
+    color: #34445a !important;
+    font-weight: 600;
+    transition: all 0.25s ease;
+}
+
+.civictrace-google-button:hover {
+    background: #f3f7fd !important;
+    border-color: #245ca8 !important;
+    color: #153b6d !important;
+    box-shadow: 0 4px 12px rgba(20, 45, 78, 0.08);
+}
+
+.civictrace-google-button img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+/* Links beneath the forms */
+.civictrace-login-card a:not(.btn) {
+    color: #245ca8;
+    text-decoration: none;
+}
+
+.civictrace-login-card a:not(.btn):hover {
+    color: #142d4e;
+    text-decoration: underline;
+}
+
+/* Mobile */
+@media (max-width: 575.98px) {
+    .civictrace-login-page {
+        padding: 28px 15px !important;
+    }
+
+    .civictrace-login-card .card-body {
+        padding: 24px 20px !important;
+    }
+
+    .civictrace-login-card h2 {
+        font-size: 1.7rem;
+    }
+}
+
+/* ==========================================
+   CIVICTRACE CHOOSE LOGIN PAGE
+========================================== */
+
+body:has(.civictrace-login-choice) {
+    background: #f3f7fd;
+}
+
+.civictrace-login-choice {
+    max-width: 1120px;
+    padding-top: 48px !important;
+    padding-bottom: 60px !important;
+}
+
+/* Page heading */
+.civictrace-login-choice .login-choice-title {
+    color: #153b6d;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.7px;
+    margin-bottom: 12px;
+}
+
+.civictrace-login-choice .text-center > p {
+    color: #64748b !important;
+    line-height: 1.7;
+}
+
+/* Admin and Citizen cards */
+.civictrace-login-choice .civictrace-role-card {
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #dce7f5 !important;
+    border-radius: 20px !important;
+    padding: 32px 28px !important;
+    box-shadow: 0 8px 25px rgba(20, 45, 78, 0.07) !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Accent strip at the top of each card */
+.civictrace-login-choice .civictrace-role-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #142d4e, #2874c8);
+}
+
+.civictrace-login-choice .civictrace-role-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 34px rgba(20, 45, 78, 0.13) !important;
+    border-color: #c4d8f1 !important;
+}
+
+/* Icon background */
+.civictrace-login-choice .login-choice-icon {
+    width: 92px;
+    height: 92px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #eaf2ff, #d7e8ff);
+    border: 1px solid #d4e4fa;
+    font-size: 48px;
+}
+
+/* Card headings */
+.civictrace-login-choice .civictrace-role-card h3 {
+    color: #153b6d;
+    font-size: 1.65rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+/* Card description */
+.civictrace-login-choice .civictrace-role-card p {
+    color: #64748b !important;
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-top: 14px !important;
+    margin-bottom: 22px !important;
+}
+
+/* Login buttons */
+.civictrace-login-choice .civictrace-role-button {
+    min-height: 50px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #245ca8 !important;
+    border-radius: 10px;
+    background: linear-gradient(120deg, #142d4e, #245ca8) !important;
+    color: #ffffff !important;
+    font-size: 1.05rem;
+    font-weight: 650;
+    transition: all 0.25s ease;
+}
+
+.civictrace-login-choice .civictrace-role-button:hover {
+    background: linear-gradient(120deg, #0e213a, #1b4b8c) !important;
+    border-color: #1b4b8c !important;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 14px rgba(20, 45, 78, 0.2);
+}
+
+.civictrace-login-choice .civictrace-role-button:focus-visible {
+    outline: 3px solid #8bb8f0;
+    outline-offset: 3px;
+}
+
+/* Responsive layout */
+@media (max-width: 767.98px) {
+    .civictrace-login-choice {
+        padding: 30px 18px !important;
+    }
+
+    .civictrace-login-choice .civictrace-role-card {
+        padding: 28px 22px !important;
+    }
+
+    .civictrace-login-choice .login-choice-icon {
+        width: 78px;
+        height: 78px;
+        border-radius: 20px;
+        font-size: 42px;
+    }
+}
+
+/* =========================================
+   CIVICTRACE - ACCOUNT SETTINGS PAGE
+   ========================================= */
+
+body:has(#profile-form) {
+    background: #f3f7fd;
+}
+
+body:has(#profile-form) main {
+    padding-top: 28px;
+    padding-bottom: 44px !important;
+}
+
+/* Main account heading */
+body:has(#profile-form) main h1 {
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    color: #ffffff;
+    padding: 25px 30px;
+    border-radius: 18px;
+    font-size: clamp(1.7rem, 3vw, 2.35rem);
+    font-weight: 800;
+    margin-bottom: 22px;
+    box-shadow: 0 8px 22px rgba(21, 59, 109, 0.15);
+}
+
+/* Settings subtitle */
+body:has(#profile-form) main h2 {
+    color: #153b6d;
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    font-weight: 750;
+    margin-bottom: 18px;
+}
+
+body:has(#profile-form) main hr {
+    border-color: #dce7f5;
+    opacity: 1;
+    margin: 18px 0 24px;
+}
+
+/* Settings navigation and content layout */
+body:has(#profile-form) main .row {
+    align-items: stretch;
+}
+
+body:has(#profile-form) main .row > .col-md-3 {
+    background: #ffffff;
+    border: 1px solid #e1eafa;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 20px rgba(25, 55, 95, 0.06);
+}
+
+body:has(#profile-form) main .row > .col-md-9 {
+    background: #ffffff;
+    border: 1px solid #e1eafa;
+    border-radius: 18px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 24px rgba(25, 55, 95, 0.07);
+}
+
+/* Left navigation links */
+body:has(#profile-form) .nav-pills .nav-link {
+    color: #34516f;
+    font-weight: 600;
+    padding: 12px 15px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+body:has(#profile-form) .nav-pills .nav-link:hover {
+    background: #edf4ff;
+    color: #153b6d;
+}
+
+body:has(#profile-form) .nav-pills .nav-link.active,
+body:has(#profile-form) .nav-pills .show > .nav-link {
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(21, 59, 109, 0.18);
+}
+
+/* Profile form headings and labels */
+body:has(#profile-form) #profile-form label,
+body:has(#profile-form) #profile-form .form-label {
+    color: #344a63;
+    font-weight: 600;
+}
+
+body:has(#profile-form) #profile-form .form-control {
+    border: 1px solid #d6e1ef;
+    border-radius: 10px;
+    min-height: 50px;
+    padding: 12px 15px;
+    color: #243b53;
+    background-color: #ffffff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+body:has(#profile-form) #profile-form .form-control:focus {
+    border-color: #2874c8;
+    box-shadow: 0 0 0 4px rgba(40, 116, 200, 0.12);
+}
+
+/* Read-only / disabled fields */
+body:has(#profile-form) #profile-form .form-control:disabled,
+body:has(#profile-form) #profile-form .form-control[readonly] {
+    background: #edf3fa;
+    color: #52667e;
+    opacity: 1;
+}
+
+/* Save and other primary buttons */
+body:has(#profile-form) #profile-form button[type="submit"] {
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    border: none;
+    border-radius: 11px;
+    min-height: 50px;
+    font-weight: 700;
+    box-shadow: 0 5px 14px rgba(21, 59, 109, 0.16);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+body:has(#profile-form) #profile-form button[type="submit"]:hover {
+    box-shadow: 0 8px 18px rgba(21, 59, 109, 0.22);
+    transform: translateY(-1px);
+}
+
+/* Status and validation messages */
+body:has(#profile-form) .alert {
+    border-radius: 12px;
+}
+
+/* Responsive layout */
+@media (max-width: 767.98px) {
+    body:has(#profile-form) main {
+        padding-top: 18px;
+    }
+
+    body:has(#profile-form) main h1 {
+        padding: 21px 18px;
+        border-radius: 14px;
+    }
+
+    body:has(#profile-form) main .row > .col-md-3 {
+        padding: 12px;
+    }
+
+    body:has(#profile-form) main .row > .col-md-9 {
+        padding: 20px 16px;
+    }
+}
+
+/* =========================================
+   CIVICTRACE - MANAGE EMAIL SETTINGS
+   ========================================= */
+
+body:has(#email-form) {
+    background: #f3f7fd;
+}
+
+body:has(#email-form) main {
+    padding-top: 28px;
+    padding-bottom: 44px !important;
+}
+
+/* Main page heading */
+body:has(#email-form) main h1 {
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    color: #fff;
+    padding: 25px 30px;
+    border-radius: 18px;
+    font-size: clamp(1.7rem, 3vw, 2.35rem);
+    font-weight: 800;
+    margin-bottom: 22px;
+    box-shadow: 0 8px 22px rgba(21, 59, 109, 0.15);
+}
+
+/* Page subtitle and form heading */
+body:has(#email-form) main h2 {
+    color: #153b6d;
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    font-weight: 750;
+    margin-bottom: 22px;
+}
+
+body:has(#email-form) main hr {
+    border-color: #dce7f5;
+    opacity: 1;
+    margin: 18px 0 24px;
+}
+
+/* Settings navigation card */
+body:has(#email-form) main .row > .col-md-3 {
+    background: #fff;
+    border: 1px solid #e1eafa;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 20px rgba(25, 55, 95, 0.06);
+}
+
+/* Email form card */
+body:has(#email-form) main .row > .col-md-9 {
+    background: #fff;
+    border: 1px solid #e1eafa;
+    border-radius: 18px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 24px rgba(25, 55, 95, 0.07);
+}
+
+/* Left-side settings links */
+body:has(#email-form) .nav-pills .nav-link {
+    color: #34516f;
+    font-weight: 600;
+    padding: 12px 15px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+body:has(#email-form) .nav-pills .nav-link:hover {
+    background: #edf4ff;
+    color: #153b6d;
+}
+
+body:has(#email-form) .nav-pills .nav-link.active {
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(21, 59, 109, 0.18);
+}
+
+/* Email inputs */
+body:has(#email-form) #email-form .form-control {
+    border: 1px solid #d6e1ef;
+    border-radius: 10px;
+    min-height: 54px;
+    padding: 12px 15px;
+    color: #243b53;
+    background-color: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+body:has(#email-form) #email-form .form-control:focus {
+    border-color: #2874c8;
+    box-shadow: 0 0 0 4px rgba(40, 116, 200, 0.12);
+}
+
+body:has(#email-form) #email-form .form-control:disabled,
+body:has(#email-form) #email-form .form-control[readonly] {
+    background: #edf3fa;
+    color: #52667e;
+    opacity: 1;
+}
+
+/* Change Email button */
+body:has(#email-form) #email-form button[type="submit"] {
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    color: #fff;
+    border: none;
+    border-radius: 11px;
+    min-height: 52px;
+    font-weight: 700;
+    box-shadow: 0 5px 14px rgba(21, 59, 109, 0.16);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+body:has(#email-form) #email-form button[type="submit"]:hover {
+    box-shadow: 0 8px 18px rgba(21, 59, 109, 0.22);
+    transform: translateY(-1px);
+}
+
+body:has(#email-form) .alert {
+    border-radius: 12px;
+}
+
+/* Responsive styling */
+@media (max-width: 767.98px) {
+    body:has(#email-form) main {
+        padding-top: 18px;
+    }
+
+    body:has(#email-form) main h1 {
+        padding: 21px 18px;
+        border-radius: 14px;
+    }
+
+    body:has(#email-form) main .row > .col-md-3 {
+        padding: 12px;
+    }
+
+    body:has(#email-form) main .row > .col-md-9 {
+        padding: 20px 16px;
+    }
+}
+
+/* =========================================
+   CIVICTRACE - CHANGE PASSWORD SETTINGS
+   ========================================= */
+
+body:has(#change-password-form) {
+    background: #f3f7fd;
+}
+
+body:has(#change-password-form) main {
+    padding-top: 28px;
+    padding-bottom: 44px !important;
+}
+
+body:has(#change-password-form) main h1 {
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    color: #fff;
+    padding: 25px 30px;
+    border-radius: 18px;
+    font-size: clamp(1.7rem, 3vw, 2.35rem);
+    font-weight: 800;
+    margin-bottom: 22px;
+    box-shadow: 0 8px 22px rgba(21, 59, 109, 0.15);
+}
+
+body:has(#change-password-form) main h2 {
+    color: #153b6d;
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    font-weight: 750;
+    margin-bottom: 22px;
+}
+
+body:has(#change-password-form) main hr {
+    border-color: #dce7f5;
+    opacity: 1;
+    margin: 18px 0 24px;
+}
+
+body:has(#change-password-form) main .row > .col-md-3 {
+    background: #fff;
+    border: 1px solid #e1eafa;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 20px rgba(25, 55, 95, 0.06);
+}
+
+body:has(#change-password-form) main .row > .col-md-9 {
+    background: #fff;
+    border: 1px solid #e1eafa;
+    border-radius: 18px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 24px rgba(25, 55, 95, 0.07);
+}
+
+/* Settings navigation */
+body:has(#change-password-form) .nav-pills .nav-link {
+    color: #34516f;
+    font-weight: 600;
+    padding: 12px 15px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+body:has(#change-password-form) .nav-pills .nav-link:hover {
+    background: #edf4ff;
+    color: #153b6d;
+}
+
+body:has(#change-password-form) .nav-pills .nav-link.active {
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(21, 59, 109, 0.18);
+}
+
+/* Password inputs */
+body:has(#change-password-form) #change-password-form .form-control {
+    min-height: 54px;
+    padding: 12px 15px;
+    border: 1px solid #d6e1ef;
+    border-radius: 10px;
+    color: #243b53;
+    background: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+body:has(#change-password-form) #change-password-form .form-control:focus {
+    border-color: #2874c8;
+    box-shadow: 0 0 0 4px rgba(40, 116, 200, 0.12);
+}
+
+body:has(#change-password-form) #change-password-form button[type="submit"] {
+    min-height: 52px;
+    border: none;
+    border-radius: 11px;
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 5px 14px rgba(21, 59, 109, 0.16);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+body:has(#change-password-form) #change-password-form button[type="submit"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(21, 59, 109, 0.22);
+}
+
+body:has(#change-password-form) .alert {
+    border-radius: 12px;
+}
+
+/* Mobile layout */
+@media (max-width: 767.98px) {
+    body:has(#change-password-form) main {
+        padding-top: 18px;
+    }
+
+    body:has(#change-password-form) main h1 {
+        padding: 21px 18px;
+        border-radius: 14px;
+    }
+
+    body:has(#change-password-form) main .row > .col-md-3 {
+        padding: 12px;
+    }
+
+    body:has(#change-password-form) main .row > .col-md-9 {
+        padding: 20px 16px;
+    }
+}
+
+/* =========================================
+   CIVICTRACE - EXTERNAL LOGIN SETTINGS
+   ========================================= */
+
+body:has(#link-login-form) {
+    background: #f3f7fd;
+}
+
+body:has(#link-login-form) main {
+    padding-top: 28px;
+    padding-bottom: 44px !important;
+}
+
+/* Main account heading */
+body:has(#link-login-form) main h1 {
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    color: #fff;
+    padding: 25px 30px;
+    border-radius: 18px;
+    font-size: clamp(1.7rem, 3vw, 2.35rem);
+    font-weight: 800;
+    margin-bottom: 22px;
+    box-shadow: 0 8px 22px rgba(21, 59, 109, 0.15);
+}
+
+/* Settings subtitle */
+body:has(#link-login-form) main h2 {
+    color: #153b6d;
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    font-weight: 750;
+    margin-bottom: 22px;
+}
+
+body:has(#link-login-form) main h3 {
+    color: #153b6d;
+    font-size: 1.45rem;
+    font-weight: 750;
+    margin-bottom: 20px;
+}
+
+body:has(#link-login-form) main hr {
+    border-color: #dce7f5;
+    opacity: 1;
+    margin: 18px 0 24px;
+}
+
+/* Settings navigation card */
+body:has(#link-login-form) main .row > .col-md-3 {
+    background: #fff;
+    border: 1px solid #e1eafa;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 20px rgba(25, 55, 95, 0.06);
+}
+
+/* External login content card */
+body:has(#link-login-form) main .row > .col-md-9 {
+    background: #fff;
+    border: 1px solid #e1eafa;
+    border-radius: 18px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 24px rgba(25, 55, 95, 0.07);
+}
+
+/* Settings navigation links */
+body:has(#link-login-form) .nav-pills .nav-link {
+    color: #34516f;
+    font-weight: 600;
+    padding: 12px 15px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+body:has(#link-login-form) .nav-pills .nav-link:hover {
+    background: #edf4ff;
+    color: #153b6d;
+}
+
+body:has(#link-login-form) .nav-pills .nav-link.active {
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(21, 59, 109, 0.18);
+}
+
+/* Google sign-in button */
+body:has(#link-login-form) #link-login-form button[type="submit"] {
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 11px 20px;
+    min-height: 48px;
+    font-weight: 700;
+    box-shadow: 0 5px 14px rgba(21, 59, 109, 0.16);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+body:has(#link-login-form) #link-login-form button[type="submit"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(21, 59, 109, 0.22);
+}
+
+body:has(#link-login-form) .alert {
+    border-radius: 12px;
+}
+
+/* Mobile layout */
+@media (max-width: 767.98px) {
+    body:has(#link-login-form) main {
+        padding-top: 18px;
+    }
+
+    body:has(#link-login-form) main h1 {
+        padding: 21px 18px;
+        border-radius: 14px;
+    }
+
+    body:has(#link-login-form) main .row > .col-md-3 {
+        padding: 12px;
+    }
+
+    body:has(#link-login-form) main .row > .col-md-9 {
+        padding: 20px 16px;
+    }
+}
+
+/* =========================================
+   CIVICTRACE - TWO-FACTOR AUTHENTICATION
+   ========================================= */
+
+body:has(.nav-pills .nav-link.active[href*="TwoFactorAuthentication"]) {
+    background: #f3f7fd;
+}
+
+body:has(.nav-pills .nav-link.active[href*="TwoFactorAuthentication"]) main {
+    padding-top: 28px;
+    padding-bottom: 44px !important;
+}
+
+/* Main account heading */
+body:has(.nav-pills .nav-link.active[href*="TwoFactorAuthentication"]) main h1 {
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    color: #fff;
+    padding: 25px 30px;
+    border-radius: 18px;
+    font-size: clamp(1.7rem, 3vw, 2.35rem);
+    font-weight: 800;
+    margin-bottom: 22px;
+    box-shadow: 0 8px 22px rgba(21, 59, 109, 0.15);
+}
+
+/* Account settings subtitle */
+body:has(.nav-pills .nav-link.active[href*="TwoFactorAuthentication"]) main h2 {
+    color: #153b6d;
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    font-weight: 750;
+    margin-bottom: 22px;
+}
+
+/* Two-factor page heading */
+body:has(.nav-pills .nav-link.active[href*="TwoFactorAuthentication"]) main h3 {
+    color: #153b6d;
+    font-weight: 750;
+    margin-bottom: 22px;
+}
+
+body:has(.nav-pills .nav-link.active[href*="TwoFactorAuthentication"]) main hr {
+    border-color: #dce7f5;
+    opacity: 1;
+    margin: 18px 0 24px;
+}
+
+/* Settings navigation card */
+body:has(.nav-pills .nav-link.active[href*="TwoFactorAuthentication"]) main .row > .col-md-3 {
+    background: #fff;
+    border: 1px solid #e1eafa;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 20px rgba(25, 55, 95, 0.06);
+}
+
+/* Main settings content card */
+body:has(.nav-pills .nav-link.active[href*="TwoFactorAuthentication"]) main .row > .col-md-9 {
+    background: #fff;
+    border: 1px solid #e1eafa;
+    border-radius: 18px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 24px rgba(25, 55, 95, 0.07);
+}
+
+/* Settings navigation */
+body:has(.nav-pills .nav-link.active[href*="TwoFactorAuthentication"]) .nav-pills .nav-link {
+    color: #34516f;
+    font-weight: 600;
+    padding: 12px 15px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+body:has(.nav-pills .nav-link.active[href*="TwoFactorAuthentication"]) .nav-pills .nav-link:hover {
+    background: #edf4ff;
+    color: #153b6d;
+}
+
+body:has(.nav-pills .nav-link.active[href*="TwoFactorAuthentication"]) .nav-pills .nav-link.active {
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(21, 59, 109, 0.18);
+}
+
+/* Authenticator and 2FA action buttons */
+body:has(.nav-pills .nav-link.active[href*="TwoFactorAuthentication"]) main .col-md-9 .btn-primary,
+body:has(.nav-pills .nav-link.active[href*="TwoFactorAuthentication"]) main .col-md-9 button[type="submit"] {
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 11px 20px;
+    min-height: 46px;
+    font-weight: 700;
+    box-shadow: 0 5px 14px rgba(21, 59, 109, 0.16);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+body:has(.nav-pills .nav-link.active[href*="TwoFactorAuthentication"]) main .col-md-9 .btn-primary:hover,
+body:has(.nav-pills .nav-link.active[href*="TwoFactorAuthentication"]) main .col-md-9 button[type="submit"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(21, 59, 109, 0.22);
+}
+
+/* Status messages */
+body:has(.nav-pills .nav-link.active[href*="TwoFactorAuthentication"]) .alert {
+    border-radius: 12px;
+}
+
+/* Mobile layout */
+@media (max-width: 767.98px) {
+    body:has(.nav-pills .nav-link.active[href*="TwoFactorAuthentication"]) main {
+        padding-top: 18px;
+    }
+
+    body:has(.nav-pills .nav-link.active[href*="TwoFactorAuthentication"]) main h1 {
+        padding: 21px 18px;
+        border-radius: 14px;
+    }
+
+    body:has(.nav-pills .nav-link.active[href*="TwoFactorAuthentication"]) main .row > .col-md-3 {
+        padding: 12px;
+    }
+
+    body:has(.nav-pills .nav-link.active[href*="TwoFactorAuthentication"]) main .row > .col-md-9 {
+        padding: 20px 16px;
+    }
+}
+
+/* =========================================
+   CIVICTRACE - PERSONAL DATA SETTINGS
+   ========================================= */
+
+body:has(.nav-pills .nav-link.active[href*="PersonalData"]) {
+    background: #f3f7fd;
+}
+
+body:has(.nav-pills .nav-link.active[href*="PersonalData"]) main {
+    padding-top: 28px;
+    padding-bottom: 44px !important;
+}
+
+/* Main account heading */
+body:has(.nav-pills .nav-link.active[href*="PersonalData"]) main h1 {
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    color: #fff;
+    padding: 25px 30px;
+    border-radius: 18px;
+    font-size: clamp(1.7rem, 3vw, 2.35rem);
+    font-weight: 800;
+    margin-bottom: 22px;
+    box-shadow: 0 8px 22px rgba(21, 59, 109, 0.15);
+}
+
+/* Settings subtitle */
+body:has(.nav-pills .nav-link.active[href*="PersonalData"]) main h2 {
+    color: #153b6d;
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    font-weight: 750;
+    margin-bottom: 18px;
+}
+
+body:has(.nav-pills .nav-link.active[href*="PersonalData"]) main hr {
+    border-color: #dce7f5;
+    opacity: 1;
+    margin: 18px 0 24px;
+}
+
+/* Settings navigation card */
+body:has(.nav-pills .nav-link.active[href*="PersonalData"]) main .row > .col-md-3 {
+    background: #fff;
+    border: 1px solid #e1eafa;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 20px rgba(25, 55, 95, 0.06);
+}
+
+/* Personal Data content card */
+body:has(.nav-pills .nav-link.active[href*="PersonalData"]) main .row > .col-md-9 {
+    background: #fff;
+    border: 1px solid #e1eafa;
+    border-radius: 18px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 24px rgba(25, 55, 95, 0.07);
+}
+
+/* Settings navigation links */
+body:has(.nav-pills .nav-link.active[href*="PersonalData"]) .nav-pills .nav-link {
+    color: #34516f;
+    font-weight: 600;
+    padding: 12px 15px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+body:has(.nav-pills .nav-link.active[href*="PersonalData"]) .nav-pills .nav-link:hover {
+    background: #edf4ff;
+    color: #153b6d;
+}
+
+body:has(.nav-pills .nav-link.active[href*="PersonalData"]) .nav-pills .nav-link.active {
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(21, 59, 109, 0.18);
+}
+
+/* Download personal data button */
+body:has(.nav-pills .nav-link.active[href*="PersonalData"]) #download-data button {
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    border: none;
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px 20px;
+    min-height: 46px;
+    font-weight: 700;
+    box-shadow: 0 5px 14px rgba(21, 59, 109, 0.16);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+body:has(.nav-pills .nav-link.active[href*="PersonalData"]) #download-data button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(21, 59, 109, 0.22);
+}
+
+/* Delete personal data button - retain danger styling */
+body:has(.nav-pills .nav-link.active[href*="PersonalData"]) #delete-user button {
+    background: #c92f40;
+    border: none;
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px 20px;
+    min-height: 46px;
+    font-weight: 700;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+body:has(.nav-pills .nav-link.active[href*="PersonalData"]) #delete-user button:hover {
+    background: #a91f30;
+    transform: translateY(-1px);
+}
+
+body:has(.nav-pills .nav-link.active[href*="PersonalData"]) .alert {
+    border-radius: 12px;
+}
+
+/* Mobile layout */
+@media (max-width: 767.98px) {
+    body:has(.nav-pills .nav-link.active[href*="PersonalData"]) main {
+        padding-top: 18px;
+    }
+
+    body:has(.nav-pills .nav-link.active[href*="PersonalData"]) main h1 {
+        padding: 21px 18px;
+        border-radius: 14px;
+    }
+
+    body:has(.nav-pills .nav-link.active[href*="PersonalData"]) main .row > .col-md-3 {
+        padding: 12px;
+    }
+
+    body:has(.nav-pills .nav-link.active[href*="PersonalData"]) main .row > .col-md-9 {
+        padding: 20px 16px;
+    }
+}
+
+/* =========================================
+   CIVICTRACE - REGISTERED EXTERNAL LOGINS
+   ========================================= */
+
+body:has(.nav-pills .nav-link.active[href*="ExternalLogins"]) {
+    background: #f3f7fd;
+}
+
+body:has(.nav-pills .nav-link.active[href*="ExternalLogins"]) main {
+    padding-top: 28px;
+    padding-bottom: 44px !important;
+}
+
+/* Account heading */
+body:has(.nav-pills .nav-link.active[href*="ExternalLogins"]) main h1 {
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    color: #fff;
+    padding: 25px 30px;
+    border-radius: 18px;
+    font-size: clamp(1.7rem, 3vw, 2.35rem);
+    font-weight: 800;
+    margin-bottom: 22px;
+    box-shadow: 0 8px 22px rgba(21, 59, 109, 0.15);
+}
+
+/* Settings headings */
+body:has(.nav-pills .nav-link.active[href*="ExternalLogins"]) main h2,
+body:has(.nav-pills .nav-link.active[href*="ExternalLogins"]) main h3 {
+    color: #153b6d;
+    font-weight: 750;
+    margin-bottom: 22px;
+}
+
+body:has(.nav-pills .nav-link.active[href*="ExternalLogins"]) main hr {
+    border-color: #dce7f5;
+    opacity: 1;
+    margin: 18px 0 24px;
+}
+
+/* Settings navigation panel */
+body:has(.nav-pills .nav-link.active[href*="ExternalLogins"]) main .row > .col-md-3 {
+    background: #fff;
+    border: 1px solid #e1eafa;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 20px rgba(25, 55, 95, 0.06);
+}
+
+/* Main external-login content panel */
+body:has(.nav-pills .nav-link.active[href*="ExternalLogins"]) main .row > .col-md-9 {
+    background: #fff;
+    border: 1px solid #e1eafa;
+    border-radius: 18px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 24px rgba(25, 55, 95, 0.07);
+}
+
+/* Settings navigation links */
+body:has(.nav-pills .nav-link.active[href*="ExternalLogins"]) .nav-pills .nav-link {
+    color: #34516f;
+    font-weight: 600;
+    padding: 12px 15px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+body:has(.nav-pills .nav-link.active[href*="ExternalLogins"]) .nav-pills .nav-link:hover {
+    background: #edf4ff;
+    color: #153b6d;
+}
+
+body:has(.nav-pills .nav-link.active[href*="ExternalLogins"]) .nav-pills .nav-link.active {
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(21, 59, 109, 0.18);
+}
+
+/* Registered logins table */
+body:has(.nav-pills .nav-link.active[href*="ExternalLogins"]) main .table {
+    margin-top: 12px;
+    border-color: #e1eafa;
+}
+
+body:has(.nav-pills .nav-link.active[href*="ExternalLogins"]) main .table td {
+    padding: 16px 12px;
+    vertical-align: middle;
+    color: #344a63;
+}
+
+/* Google and Remove buttons */
+body:has(.nav-pills .nav-link.active[href*="ExternalLogins"]) main .col-md-9 .btn-primary {
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    min-height: 46px;
+    font-weight: 700;
+    box-shadow: 0 5px 14px rgba(21, 59, 109, 0.16);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+body:has(.nav-pills .nav-link.active[href*="ExternalLogins"]) main .col-md-9 .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(21, 59, 109, 0.22);
+}
+
+/* Status messages */
+body:has(.nav-pills .nav-link.active[href*="ExternalLogins"]) .alert {
+    border-radius: 12px;
+}
+
+/* Mobile layout */
+@media (max-width: 767.98px) {
+    body:has(.nav-pills .nav-link.active[href*="ExternalLogins"]) main {
+        padding-top: 18px;
+    }
+
+    body:has(.nav-pills .nav-link.active[href*="ExternalLogins"]) main h1 {
+        padding: 21px 18px;
+        border-radius: 14px;
+    }
+
+    body:has(.nav-pills .nav-link.active[href*="ExternalLogins"]) main .row > .col-md-3 {
+        padding: 12px;
+    }
+
+    body:has(.nav-pills .nav-link.active[href*="ExternalLogins"]) main .row > .col-md-9 {
+        padding: 20px 16px;
+    }
+}
+
+
+body:has(#email-form) #email-verification {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 10px 0 22px;
+    padding: 14px 18px;
+    text-align: center;
+    text-decoration: none !important;
+    white-space: normal;
+    border-radius: 12px;
+}
+/* Align current and new email fields */
+body:has(#email-form) #email-form .input-group,
+body:has(#email-form) #email-form .form-floating {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    box-sizing: border-box;
+}
+
+/* Keep the current email input and checkmark on one line */
+body:has(#email-form) #email-form .input-group {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+body:has(#email-form) #email-form .input-group > .form-control {
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+}
+
+body:has(#email-form) #email-form .input-group-append {
+    display: flex;
+    flex: 0 0 auto;
+    width: auto;
+}
+/* Align floating labels with email input text */
+body:has(#email-form) #email-form .form-floating > label {
+    padding-left: 18px !important;
+}
+
+/* Remove the horizontal shift from floating labels */
+body:has(#email-form) #email-form .form-floating > .form-control:focus ~ label,
+body:has(#email-form) #email-form .form-floating > .form-control:not(:placeholder-shown) ~ label {
+    transform: scale(0.85) translateY(-0.5rem) !important;
+}
+/* Add vertical spacing between email labels and values */
+body:has(#email-form) #email-form .form-floating > .form-control {
+    padding-top: 1.9rem !important;
+    padding-bottom: 0.45rem !important;
+}
+
+body:has(#email-form) #email-form .form-floating > label {
+    line-height: 1.2;
+}
+/* Add space between Username label and value */
+body:has(#profile-form) #profile-form .form-floating > .form-control {
+    padding-top: 1.9rem !important;
+    padding-bottom: 0.45rem !important;
+}
+
+body:has(#profile-form) #profile-form .form-floating > label {
+    line-height: 1.2;
+}
+
+/* =========================================
+   CIVICTRACE - CONFIRM EMAIL CHANGE PAGE
+   ========================================= */
+
+body.civictrace-confirm-email-change {
+    background: #f3f7fd;
+}
+
+body.civictrace-confirm-email-change main {
+    padding-top: 40px;
+    padding-bottom: 50px !important;
+}
+
+/* Confirmation heading */
+body.civictrace-confirm-email-change main h1 {
+    max-width: 1000px;
+    margin: 0 auto 22px;
+    padding: 25px 30px;
+    color: #fff;
+    background: linear-gradient(120deg, #153b6d, #2874c8);
+    border-radius: 16px;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 800;
+    box-shadow: 0 8px 22px rgba(21, 59, 109, 0.15);
+}
+
+/* Confirmation message */
+body.civictrace-confirm-email-change main .alert-success {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 22px 24px;
+    color: #176344;
+    background: #eaf8f0;
+    border: 1px solid #b8e5cc;
+    border-left: 5px solid #299764;
+    border-radius: 12px;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    box-shadow: 0 5px 18px rgba(21, 59, 109, 0.06);
+}
+
+/* Mobile layout */
+@media (max-width: 767.98px) {
+    body.civictrace-confirm-email-change main {
+        padding-top: 22px;
+        padding-bottom: 32px !important;
+    }
+
+    body.civictrace-confirm-email-change main h1 {
+        padding: 20px;
+        border-radius: 12px;
+        font-size: 1.7rem;
+    }
+
+    body.civictrace-confirm-email-change main .alert-success {
+        padding: 17px;
+        font-size: 0.98rem;
+    }
+}
