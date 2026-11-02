@@ -1,0 +1,1186 @@
+
+@model IEnumerable<PublicGrievanceSystem.Models.Complaint>
+
+@{
+    ViewData["Title"] = "Citizen Dashboard";
+
+    var complaints = Model?.ToList()
+        ?? new List<PublicGrievanceSystem.Models.Complaint>();
+
+    var total = complaints.Count;
+    var submitted = complaints.Count(c => c.Status == "Submitted");
+    var inProgress = complaints.Count(c => c.Status == "In Progress");
+    var resolved = complaints.Count(c => c.Status == "Resolved");
+
+    var recentUpdates =
+        ViewBag.RecentUpdates as List<PublicGrievanceSystem.Models.ComplaintStatusHistory>
+        ?? new List<PublicGrievanceSystem.Models.ComplaintStatusHistory>();
+            var resolutionReviewUpdates =
+    ViewBag.ResolutionReviewUpdates
+    as List<PublicGrievanceSystem.Models.ComplaintResolutionResponse>
+    ?? new List<PublicGrievanceSystem.Models.ComplaintResolutionResponse>();
+            var feedbackSubmittedIds =
+    ViewBag.FeedbackSubmittedIds as HashSet<int>
+    ?? new HashSet<int>();
+}
+
+<style>
+    .citizen-dashboard {
+        --civic-blue: #2563eb;
+        --civic-navy: #142d4e;
+        --civic-muted: #64748b;
+        color: #1e293b;
+        padding-bottom: 2rem;
+    }
+
+    .citizen-dashboard .dashboard-hero {
+        background: linear-gradient(120deg, #142d4e, #245ca8);
+        color: #fff;
+        border-radius: 20px;
+        padding: 30px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(20, 45, 78, .13);
+    }
+
+    .citizen-dashboard .hero-label {
+        font-size: .78rem;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #bfdbfe;
+        font-weight: 700;
+    }
+
+    .citizen-dashboard .hero-description {
+        color: #dbeafe;
+        max-width: 550px;
+    }
+
+    .citizen-dashboard .hero-icon {
+        font-size: 5rem;
+        opacity: .16;
+    }
+
+    .citizen-dashboard .btn-new-complaint {
+        background: #fff;
+        color: #174a91;
+        border: 0;
+        border-radius: 10px;
+        padding: 11px 17px;
+        font-weight: 700;
+        text-decoration: none;
+        display: inline-block;
+        transition: .2s ease;
+    }
+
+    .citizen-dashboard .btn-new-complaint:hover {
+        background: #eaf2ff;
+        transform: translateY(-2px);
+    }
+    .citizen-dashboard .btn-community-outline {
+    width: 275px;
+    height: 45px;
+    max-width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    border-radius: 10px;
+    padding: 11px 17px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.citizen-dashboard .btn-community-outline:hover {
+    background: rgba(255, 255, 255, .12);
+    color: #ffffff;
+}
+
+    .citizen-dashboard .stat-card {
+        background: #fff;
+        border: 1px solid #e8eef5;
+        border-radius: 16px;
+        padding: 21px;
+        height: 100%;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, .035);
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .citizen-dashboard .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 25px rgba(15, 23, 42, .08);
+    }
+
+    .citizen-dashboard .stat-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .citizen-dashboard .stat-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 13px;
+        font-size: 1.5rem;
+    }
+
+    .citizen-dashboard .stat-number {
+        font-size: 2rem;
+        line-height: 1.2;
+        font-weight: 800;
+        color: #142d4e;
+        margin: 13px 0 5px;
+    }
+
+    .citizen-dashboard .stat-label {
+        color: #64748b;
+        font-size: .9rem;
+        font-weight: 600;
+    }
+
+    .citizen-dashboard .stat-total .stat-icon {
+        background: #e8f0ff;
+    }
+
+    .citizen-dashboard .stat-submitted .stat-icon {
+        background: #fff4d6;
+    }
+
+    .citizen-dashboard .stat-progress .stat-icon {
+        background: #e3f2ff;
+    }
+
+    .citizen-dashboard .stat-resolved .stat-icon {
+        background: #dcfce7;
+    }
+
+    .citizen-dashboard .section-card {
+        border: 1px solid #e8eef5;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, .035);
+    }
+
+    .citizen-dashboard .section-heading {
+        padding: 20px 22px;
+        border-bottom: 1px solid #edf1f6;
+    }
+
+    .citizen-dashboard .section-heading h5,
+    .citizen-dashboard .section-heading h4 {
+        color: #142d4e;
+        font-weight: 750;
+    }
+
+    .citizen-dashboard .section-subtitle {
+        color: #64748b;
+        font-size: .87rem;
+    }
+
+    .citizen-dashboard .form-control,
+    .citizen-dashboard .form-select {
+        min-height: 44px;
+        border-radius: 9px;
+        border-color: #dbe3ed;
+        font-size: .9rem;
+    }
+
+    .citizen-dashboard .form-control:focus,
+    .citizen-dashboard .form-select:focus {
+        border-color: #7aa7f7;
+        box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .10);
+    }
+
+    .citizen-dashboard .form-label {
+        font-size: .85rem;
+        color: #334155;
+    }
+
+    .citizen-dashboard .complaint-table {
+        margin: 0;
+        white-space: nowrap;
+    }
+
+    .citizen-dashboard .complaint-table thead th {
+        background: #f5f8fc;
+        color: #52647a;
+        text-transform: uppercase;
+        font-size: .73rem;
+        letter-spacing: .5px;
+        font-weight: 750;
+        padding: 15px 16px;
+        border-bottom: 1px solid #e5ebf3;
+    }
+
+    .citizen-dashboard .complaint-table tbody td {
+        padding: 16px;
+        border-color: #edf1f6;
+        vertical-align: middle;
+        font-size: .88rem;
+    }
+
+    .citizen-dashboard .complaint-table tbody tr:hover {
+        background: #f8fbff;
+    }
+
+    .citizen-dashboard .complaint-id {
+        color: #245ca8;
+        font-weight: 800;
+    }
+
+    .citizen-dashboard .complaint-title {
+        font-weight: 650;
+        color: #1e293b;
+        white-space: normal;
+        min-width: 140px;
+        max-width: 240px;
+    }
+
+    .citizen-dashboard .status-badge,
+    .citizen-dashboard .priority-badge,
+    .citizen-dashboard .category-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        border-radius: 30px;
+        padding: 6px 10px;
+        font-size: .75rem;
+        font-weight: 750;
+    }
+
+    .citizen-dashboard .status-submitted {
+        background: #f1f5f9;
+        color: #475569;
+    }
+
+    .citizen-dashboard .status-progress {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .citizen-dashboard .status-resolved {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .citizen-dashboard .priority-high {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
+    .citizen-dashboard .priority-medium {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .citizen-dashboard .priority-low {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .citizen-dashboard .category-badge {
+        background: #eef2ff;
+        color: #4338ca;
+    }
+
+    .citizen-dashboard .action-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        border-radius: 8px;
+        padding: 7px 10px;
+        text-decoration: none;
+        font-size: .8rem;
+        font-weight: 700;
+        margin: 2px;
+    }
+
+    .citizen-dashboard .action-details {
+        color: #245ca8;
+        background: #eaf2ff;
+    }
+
+    .citizen-dashboard .action-track {
+        color: #087b64;
+        background: #dcfce7;
+    }
+
+    .citizen-dashboard .action-link:hover {
+        filter: brightness(.96);
+    }
+
+    .citizen-dashboard .update-item {
+        padding: 17px;
+        border: 1px solid #e5ebf3;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        background: #fff;
+    }
+
+    .citizen-dashboard .update-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .citizen-dashboard .update-indicator {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-size: 1.2rem;
+    }
+
+    .citizen-dashboard .update-submitted {
+        background: #f1f5f9;
+    }
+
+    .citizen-dashboard .update-progress {
+        background: #dbeafe;
+    }
+
+    .citizen-dashboard .update-resolved {
+        background: #dcfce7;
+    }
+
+    .citizen-dashboard .empty-state {
+        padding: 48px 20px;
+        text-align: center;
+    }
+
+    .citizen-dashboard .empty-icon {
+        font-size: 3.5rem;
+        margin-bottom: 12px;
+    }
+
+    .citizen-dashboard .primary-button {
+        background: #245ca8;
+        color: #fff;
+        border: 1px solid #245ca8;
+        border-radius: 9px;
+        font-weight: 700;
+        padding: 9px 15px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .citizen-dashboard .primary-button:hover {
+        background: #174a91;
+        color: #fff;
+    }
+
+    .citizen-dashboard .secondary-button {
+        border: 1px solid #dbe3ed;
+        border-radius: 9px;
+        color: #334155;
+        background: #fff;
+        padding: 9px 13px;
+        font-weight: 600;
+    }
+
+    .citizen-dashboard .secondary-button:hover {
+        background: #f5f8fc;
+    }
+
+    @@media (max-width: 767.98px) {
+        .citizen-dashboard .dashboard-hero {
+            padding: 23px 20px;
+            border-radius: 15px;
+        }
+
+        .citizen-dashboard .hero-icon {
+            display: none;
+        }
+
+        .citizen-dashboard .hero-title {
+            font-size: 1.65rem;
+        }
+
+        .citizen-dashboard .stat-card {
+            padding: 16px;
+        }
+
+        .citizen-dashboard .stat-number {
+            font-size: 1.7rem;
+        }
+
+        .citizen-dashboard .section-heading {
+            padding: 17px;
+        }
+
+        .citizen-dashboard .update-time {
+            white-space: normal !important;
+        }
+    }
+
+    /* Recent Complaint Updates - enhanced design */
+
+    .citizen-dashboard .update-item {
+        position: relative;
+        padding: 20px;
+        border: 1px solid #e2eaf4;
+        border-radius: 15px;
+        margin-bottom: 15px;
+        background: linear-gradient(135deg, #ffffff, #f9fbff);
+        box-shadow: 0 4px 14px rgba(20, 45, 78, 0.04);
+        transition: transform 0.2s ease, box-shadow 0.2s ease,
+                    border-color 0.2s ease;
+    }
+
+    .citizen-dashboard .update-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 9px 22px rgba(20, 45, 78, 0.09);
+        border-color: #c6d8f2;
+    }
+
+    .citizen-dashboard .update-indicator {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        font-size: 1.35rem;
+        border: 1px solid rgba(20, 45, 78, 0.06);
+    }
+
+    .citizen-dashboard .update-submitted {
+        background: #eef2f7;
+        color: #475569;
+    }
+
+    .citizen-dashboard .update-progress {
+        background: #e0edff;
+        color: #1d4ed8;
+    }
+
+    .citizen-dashboard .update-resolved {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .citizen-dashboard .update-item .fw-bold {
+        color: #142d4e;
+        overflow-wrap: anywhere;
+    }
+
+    .citizen-dashboard .update-item .text-muted {
+        line-height: 1.65;
+        overflow-wrap: anywhere;
+    }
+
+    .citizen-dashboard .update-time {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #64748b;
+    }
+
+    .citizen-dashboard .update-item .action-details {
+        border: 1px solid #cfe0ff;
+        padding: 8px 13px;
+        border-radius: 9px;
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .citizen-dashboard .update-item .action-details:hover {
+        background: #245ca8;
+        color: #ffffff;
+        border-color: #245ca8;
+    }
+
+    @@media (max-width: 767.98px) {
+        .citizen-dashboard .update-item {
+            padding: 15px;
+            border-radius: 12px;
+        }
+
+        .citizen-dashboard .update-indicator {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            font-size: 1.15rem;
+            border-radius: 11px;
+        }
+
+        .citizen-dashboard .update-item .action-details {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+        }
+    }
+
+</style>
+
+<div class="container-fluid py-4 citizen-dashboard">
+
+
+    @if (TempData["SuccessMessage"] is string successMessage)
+    {
+        <div class="alert alert-success alert-dismissible fade show"
+             role="alert">
+            ✅ @successMessage
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] is string errorMessage)
+    {
+        <div class="alert alert-danger alert-dismissible fade show"
+            role="alert">
+            ⚠️ @errorMessage
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"></button>
+        </div>
+    }
+
+
+
+    <!-- Dashboard Welcome -->
+    <section class="dashboard-hero mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-9">
+                <div class="hero-label mb-2">Citizen Services Portal</div>
+                <h1 class="hero-title fw-bold mb-2">Citizen Dashboard</h1>
+                <p class="hero-description mb-4">
+                    Report public issues, track your complaints, and stay updated
+                    on the actions taken by the concerned departments.
+                </p>
+
+                <a asp-controller="Complaints"
+                   asp-action="Create"
+                   class="btn-new-complaint">
+                    <span aria-hidden="true">＋</span>
+                    Submit New Complaint
+                </a>
+                <a asp-controller="Citizen"
+   asp-action="Community"
+   class="btn-community-outline ms-2 mt-2">
+
+    🌍 Community Issues
+
+</a>
+            </div>
+
+            <div class="col-md-3 text-center">
+                <div class="hero-icon" aria-hidden="true">🏛️</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-6 col-xl-3">
+            <div class="stat-card stat-total">
+                <div class="stat-top">
+                    <span class="stat-label">Total Complaints</span>
+                    <div class="stat-icon" aria-hidden="true">📋</div>
+                </div>
+                <div class="stat-number">@total</div>
+                <div class="small text-muted">All your complaints</div>
+            </div>
+        </div>
+
+        <div class="col-6 col-xl-3">
+            <div class="stat-card stat-submitted">
+                <div class="stat-top">
+                    <span class="stat-label">Submitted</span>
+                    <div class="stat-icon" aria-hidden="true">📤</div>
+                </div>
+                <div class="stat-number">@submitted</div>
+                <div class="small text-muted">Awaiting further action</div>
+            </div>
+        </div>
+
+        <div class="col-6 col-xl-3">
+            <div class="stat-card stat-progress">
+                <div class="stat-top">
+                    <span class="stat-label">In Progress</span>
+                    <div class="stat-icon" aria-hidden="true">⚙️</div>
+                </div>
+                <div class="stat-number">@inProgress</div>
+                <div class="small text-muted">Being worked on</div>
+            </div>
+        </div>
+
+        <div class="col-6 col-xl-3">
+            <div class="stat-card stat-resolved">
+                <div class="stat-top">
+                    <span class="stat-label">Resolved</span>
+                    <div class="stat-icon" aria-hidden="true">✅</div>
+                </div>
+                <div class="stat-number">@resolved</div>
+                <div class="small text-muted">Marked as resolved</div>
+            </div>
+        </div>
+
+    </div>
+    
+@if (resolutionReviewUpdates.Any())
+{
+    <div class="mb-4">
+        <h4 class="mb-3">
+            <i class="fas fa-bell me-2"></i>
+            Resolution Review Updates
+        </h4>
+
+        @foreach (var review in resolutionReviewUpdates)
+        {
+            if (review.ReviewStatus == "Reopened")
+            {
+                <div class="alert alert-success shadow-sm">
+                    <h6 class="fw-bold">
+                        <i class="fas fa-check-circle me-2"></i>
+                        Your Reopening Request Was Approved
+                    </h6>
+
+                    <p class="mb-1">
+                        Your objection for Complaint #@review.ComplaintId
+                        (@review.Complaint?.Title) has been approved.
+                        The complaint has been reopened for further action.
+                    </p>
+
+                    @if (!string.IsNullOrWhiteSpace(review.AdminRemarks))
+                    {
+                        <p class="mb-1">
+                            <strong>Admin Remarks:</strong>
+                            @review.AdminRemarks
+                        </p>
+                    }
+
+                    <small class="text-muted">
+                        Reviewed on:
+                        @review.ReviewedAt?.ToString("dd MMM yyyy, hh:mm tt")
+                    </small>
+
+                    <div class="mt-2">
+                        <a asp-controller="Citizen"
+                           asp-action="Details"
+                           asp-route-id="@review.ComplaintId"
+                           class="btn btn-sm btn-outline-success">
+                            View Complaint
+                        </a>
+                    </div>
+                </div>
+            }
+            else if (review.ReviewStatus == "Rejected")
+            {
+                <div class="alert alert-danger shadow-sm">
+                    <h6 class="fw-bold">
+                        <i class="fas fa-times-circle me-2"></i>
+                        Your Reopening Request Was Rejected
+                    </h6>
+
+                    <p class="mb-1">
+                        Your objection for Complaint #@review.ComplaintId
+                        (@review.Complaint?.Title) was reviewed and rejected.
+                        The complaint remains resolved.
+                    </p>
+
+                    @if (!string.IsNullOrWhiteSpace(review.AdminRemarks))
+                    {
+                        <p class="mb-1">
+                            <strong>Admin Remarks:</strong>
+                            @review.AdminRemarks
+                        </p>
+                    }
+
+                    <small class="text-muted">
+                        Reviewed on:
+                        @review.ReviewedAt?.ToString("dd MMM yyyy, hh:mm tt")
+                    </small>
+
+                    <div class="mt-2">
+                        <a asp-controller="Citizen"
+                           asp-action="Details"
+                           asp-route-id="@review.ComplaintId"
+                           class="btn btn-sm btn-outline-danger">
+                            View Complaint
+                        </a>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+}
+
+
+    <!-- Recent Updates -->
+    @if (recentUpdates.Any())
+    {
+        <section class="section-card mb-4">
+            <div class="section-heading">
+                <h5 class="mb-1">🔔 Recent Complaint Updates</h5>
+                <div class="section-subtitle">
+                    Status changes and updates on your complaints.
+                </div>
+            </div>
+
+            <div class="p-3 p-md-4">
+                @foreach (var update in recentUpdates)
+                {
+                    var updateIsResolved = update.Status == "Resolved";
+                    var updateIsInProgress = update.Status == "In Progress";
+
+                    var updateIcon = updateIsResolved
+                        ? "✅"
+                        : updateIsInProgress ? "⚙️" : "📤";
+
+                    var updateClass = updateIsResolved
+                        ? "update-resolved"
+                        : updateIsInProgress ? "update-progress" : "update-submitted";
+
+                    <div class="update-item">
+                        <div class="d-flex align-items-start gap-3">
+
+                            <div class="update-indicator @updateClass"
+                                 aria-hidden="true">
+                                @updateIcon
+                            </div>
+
+                            <div class="flex-grow-1 min-w-0">
+                                <div class="d-flex flex-column flex-md-row
+                                            justify-content-between gap-2">
+                                    <div>
+                                        <div class="fw-bold">
+                                            Complaint #@update.ComplaintId
+                                        </div>
+
+                                        <div class="text-muted small mt-1">
+                                            Status changed to
+                                            <strong class="text-dark">
+                                                @update.Status
+                                            </strong>
+                                        </div>
+                                    </div>
+
+                                    <small class="text-muted update-time">
+                                        @update.ChangedAt.ToString("dd MMM yyyy, hh:mm tt")
+                                    </small>
+                                </div>
+
+                                @if (!string.IsNullOrWhiteSpace(update.Department))
+                                {
+                                    <div class="small mt-2">
+                                        🏢 Department:
+                                        <strong>@update.Department</strong>
+                                    </div>
+                                }
+
+                                @if (!string.IsNullOrWhiteSpace(update.Remarks))
+                                {
+                                    <div class="small text-muted mt-2">
+                                        @update.Remarks
+                                    </div>
+                                }
+
+                                <div class="mt-3">
+                                    <a asp-controller="Citizen"
+                                       asp-action="Details"
+                                       asp-route-id="@update.ComplaintId"
+                                       class="action-link action-details">
+                                        👁 View Complaint
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+    }
+        <!-- Complaint Filters -->
+    <section class="section-card mb-4">
+        <div class="section-heading">
+            <h5 class="mb-1">🔎 Find Your Complaints</h5>
+            <div class="section-subtitle">
+                Search and filter your complaints using the options below.
+            </div>
+        </div>
+
+        <div class="p-3 p-md-4">
+            <div class="row g-3">
+
+                <div class="col-12 col-md-4">
+                    <label for="complaintSearch" class="form-label fw-bold">
+                        Search complaints
+                    </label>
+                    <input type="text"
+                           id="complaintSearch"
+                           class="form-control"
+                           placeholder="Search by ID or title..."
+                           autocomplete="off" />
+                </div>
+
+                <div class="col-6 col-md-2">
+                    <label for="statusFilter" class="form-label fw-bold">
+                        Status
+                    </label>
+                    <select id="statusFilter" class="form-select">
+                        <option value="">All Statuses</option>
+                        <option value="Submitted">Submitted</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                </div>
+
+                <div class="col-6 col-md-2">
+                    <label for="priorityFilter" class="form-label fw-bold">
+                        Priority
+                    </label>
+                    <select id="priorityFilter" class="form-select">
+                        <option value="">All Priorities</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+
+                <div class="col-6 col-md-2">
+                    <label for="categoryFilter" class="form-label fw-bold">
+                        Category
+                    </label>
+                    <select id="categoryFilter" class="form-select">
+                        <option value="">All Categories</option>
+                        <option value="Road">Road</option>
+                        <option value="Garbage">Garbage</option>
+                        <option value="Streetlight">Streetlight</option>
+                        <option value="Electricity">Electricity</option>
+                        <option value="Water">Water</option>
+                        <option value="Drainage">Drainage</option>
+                        <option value="General">General</option>
+                    </select>
+                </div>
+
+                <div class="col-6 col-md-2 d-flex align-items-end">
+                    <button type="button"
+                            id="resetFilters"
+                            class="secondary-button w-100">
+                        ↻ Reset
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="mt-3 small fw-semibold text-muted"
+                 id="filterResult"
+                 aria-live="polite">
+                Showing all complaints
+            </div>
+        </div>
+    </section>
+
+    <!-- My Complaints -->
+    <section class="section-card">
+        <div class="section-heading">
+            <div class="d-flex flex-column flex-sm-row
+                        justify-content-between align-items-sm-center gap-3">
+
+                <div>
+                    <h4 class="mb-1">My Complaints</h4>
+                    <div class="section-subtitle">
+                        View and track complaints submitted by you.
+                    </div>
+                </div>
+
+                <a asp-controller="Complaints"
+                   asp-action="Track"
+                   class="primary-button text-center">
+                    🔎 Track Complaint
+                </a>
+
+            </div>
+        </div>
+
+        @if (!complaints.Any())
+        {
+            <div class="empty-state">
+                <div class="empty-icon" aria-hidden="true">📭</div>
+                <h5 class="fw-bold">No complaints yet</h5>
+                <p class="text-muted mb-4">
+                    You haven't submitted any complaints.
+                    Submit one to get started.
+                </p>
+
+                <a asp-controller="Complaints"
+                   asp-action="Create"
+                   class="primary-button">
+                    ＋ Submit Your First Complaint
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table complaint-table table-hover align-middle mb-0"
+                       id="complaintsTable">
+
+                    <thead>
+                        <tr>
+                            <th>Complaint ID</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var complaint in complaints)
+                        {
+                            var priorityClass = complaint.Priority == "High"
+                                ? "priority-high"
+                                : complaint.Priority == "Medium"
+                                    ? "priority-medium"
+                                    : "priority-low";
+
+                            var statusClass = complaint.Status == "Resolved"
+                                ? "status-resolved"
+                                : complaint.Status == "In Progress"
+                                    ? "status-progress"
+                                    : "status-submitted";
+
+                            var statusIcon = complaint.Status == "Resolved"
+                                ? "✓"
+                                : complaint.Status == "In Progress" ? "⚙" : "●";
+
+                            <tr>
+                                <td>
+                                    <span class="complaint-id">
+                                        #@complaint.Id
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <div class="complaint-title">
+                                        @complaint.Title
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="category-badge">
+                                        @complaint.Category
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="priority-badge @priorityClass">
+                                        @complaint.Priority
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="status-badge @statusClass">
+                                        @statusIcon @complaint.Status
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="text-muted">
+                                        @complaint.CreatedAt.ToString("dd MMM yyyy")
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <div class="d-flex flex-wrap">
+                                        <a asp-controller="Citizen"
+   asp-action="Details"
+   asp-route-id="@complaint.Id"
+   class="action-link action-details">
+    👁 Details
+</a>
+
+<a asp-controller="Complaints"
+   asp-action="Track"
+   asp-route-id="@complaint.Id"
+   class="action-link action-track">
+    🔎 Track
+</a>
+
+@if (string.Equals(
+        complaint.Status,
+        "Resolved",
+        StringComparison.OrdinalIgnoreCase))
+{
+    if (feedbackSubmittedIds.Contains(complaint.Id))
+    {
+        <span class="action-link action-feedback">
+            ✅ Feedback Submitted
+        </span>
+    }
+    else
+    {
+        <a asp-controller="Feedback"
+        asp-action="Create"
+        asp-route-complaintId="@complaint.Id"
+        class="action-link action-feedback">
+            ⭐ Give Feedback
+        </a>
+    }
+}
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+            <div id="noFilterResults"
+                 class="text-center py-5 px-3"
+                 style="display:none;">
+                <div class="fs-1 mb-2" aria-hidden="true">🔍</div>
+                <h6 class="fw-bold">No matching complaints</h6>
+                <p class="text-muted small mb-3">
+                    Try changing your search or filters.
+                </p>
+                <button type="button"
+                        id="resetFiltersEmpty"
+                        class="secondary-button">
+                    Clear filters
+                </button>
+            </div>
+        }
+    </section>
+
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById("complaintSearch");
+            const statusFilter = document.getElementById("statusFilter");
+            const priorityFilter = document.getElementById("priorityFilter");
+            const categoryFilter = document.getElementById("categoryFilter");
+            const resetButton = document.getElementById("resetFilters");
+            const resetEmptyButton = document.getElementById("resetFiltersEmpty");
+            const resultText = document.getElementById("filterResult");
+            const table = document.getElementById("complaintsTable");
+            const noResults = document.getElementById("noFilterResults");
+
+            if (!searchInput || !statusFilter || !priorityFilter ||
+                !categoryFilter || !resetButton || !resultText) {
+                return;
+            }
+
+            const rows = table
+                ? Array.from(table.querySelectorAll("tbody tr"))
+                : [];
+
+            function filterComplaints() {
+                const search = searchInput.value.toLowerCase().trim();
+                const status = statusFilter.value.toLowerCase();
+                const priority = priorityFilter.value.toLowerCase();
+                const category = categoryFilter.value.toLowerCase();
+
+                let visibleCount = 0;
+
+                rows.forEach(function (row) {
+                    const cells = row.cells;
+
+                    if (cells.length < 7) {
+                        return;
+                    }
+
+                    const id = cells[0].innerText.toLowerCase();
+                    const title = cells[1].innerText.toLowerCase();
+                    const rowCategory = cells[2].innerText.toLowerCase();
+                    const rowPriority = cells[3].innerText.toLowerCase();
+                    const rowStatus = cells[4].innerText.toLowerCase();
+
+                    const matchesSearch =
+                        search === "" ||
+                        id.includes(search) ||
+                        title.includes(search);
+
+                    const matchesStatus =
+                        status === "" || rowStatus.includes(status);
+
+                    const matchesPriority =
+                        priority === "" || rowPriority.includes(priority);
+
+                    const matchesCategory =
+                        category === "" || rowCategory.includes(category);
+
+                    const showRow =
+                        matchesSearch &&
+                        matchesStatus &&
+                        matchesPriority &&
+                        matchesCategory;
+
+                    row.style.display = showRow ? "" : "none";
+
+                    if (showRow) {
+                        visibleCount++;
+                    }
+                });
+
+                const totalRows = rows.length;
+                const hasFilters =
+                    search !== "" ||
+                    status !== "" ||
+                    priority !== "" ||
+                    category !== "";
+
+                if (!hasFilters) {
+                    resultText.innerText =
+                        "Showing all " + totalRows + " complaints";
+                } else {
+                    resultText.innerText =
+                        "Showing " + visibleCount +
+                        " of " + totalRows + " complaints";
+                }
+
+                if (noResults) {
+                    noResults.style.display =
+                        totalRows > 0 && visibleCount === 0 ? "block" : "none";
+                }
+
+                if (table) {
+                    table.style.display =
+                        totalRows > 0 && visibleCount === 0 ? "none" : "";
+                }
+            }
+
+            function resetFilters() {
+                searchInput.value = "";
+                statusFilter.value = "";
+                priorityFilter.value = "";
+                categoryFilter.value = "";
+                filterComplaints();
+            }
+
+            searchInput.addEventListener("input", filterComplaints);
+            statusFilter.addEventListener("change", filterComplaints);
+            priorityFilter.addEventListener("change", filterComplaints);
+            categoryFilter.addEventListener("change", filterComplaints);
+            resetButton.addEventListener("click", resetFilters);
+
+            if (resetEmptyButton) {
+                resetEmptyButton.addEventListener("click", resetFilters);
+            }
+
+            filterComplaints();
+        });
+    </script>
+}
