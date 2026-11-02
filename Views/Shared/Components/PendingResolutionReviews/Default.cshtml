@@ -1,0 +1,41 @@
+@model PublicGrievanceSystem.ViewModels.AdminQuickMenuViewModel
+
+<div class="px-2 py-2 mb-2 border-bottom">
+    <div class="fw-bold text-primary">
+        🏢 Admin Quick Menu
+    </div>
+    <small class="text-muted">Complaint alerts and actions</small>
+</div>
+
+<a class="dropdown-item py-2 d-flex justify-content-between align-items-center"
+   asp-controller="Admin"
+   asp-action="PendingResolutionReviews">
+
+    <span>⚠️ Pending Resolution Reviews</span>
+
+    <span class="badge rounded-pill @(Model.PendingResolutionReviewsCount > 0 ? "bg-danger" : "bg-secondary")">
+        @Model.PendingResolutionReviewsCount
+    </span>
+</a>
+
+<a class="dropdown-item py-2 d-flex justify-content-between align-items-center"
+   asp-controller="Admin"
+   asp-action="OverdueComplaints">
+
+    <span>⏰ Overdue Complaints</span>
+
+    <span class="badge rounded-pill @(Model.OverdueComplaintsCount > 0 ? "bg-warning text-dark" : "bg-secondary")">
+        @Model.OverdueComplaintsCount
+    </span>
+</a>
+
+<a class="dropdown-item py-2 d-flex justify-content-between align-items-center"
+   asp-controller="Admin"
+   asp-action="EscalatedComplaints">
+
+    <span>🚨 Escalated Complaints</span>
+
+    <span class="badge rounded-pill @(Model.EscalatedComplaintsCount > 0 ? "bg-danger" : "bg-secondary")">
+        @Model.EscalatedComplaintsCount
+    </span>
+</a>
