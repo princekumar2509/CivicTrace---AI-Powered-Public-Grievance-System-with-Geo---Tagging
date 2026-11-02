@@ -1,0 +1,1048 @@
+
+@model PublicGrievanceSystem.Models.ComplaintUploadSettings
+
+@{
+    ViewData["Title"] = "System Settings";
+}
+
+<style>
+    .settings-page {
+        --civic-navy: #153866;
+        --civic-blue: #2463ad;
+        --civic-light: #eef5ff;
+        --civic-border: #e3eaf4;
+        color: #24364b;
+        padding-top: 36px;
+        padding-bottom: 55px;
+    }
+
+    .settings-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 22px;
+        padding: 32px;
+        color: #fff;
+        background: linear-gradient(125deg, #153866, #2468b6);
+        box-shadow: 0 12px 28px rgba(21, 56, 102, .16);
+    }
+
+    .settings-hero::after {
+        content: "";
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        right: -60px;
+        top: -100px;
+        border: 30px solid rgba(255,255,255,.08);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .settings-hero-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .settings-icon {
+        width: 58px;
+        height: 58px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255,255,255,.16);
+        border: 1px solid rgba(255,255,255,.22);
+        border-radius: 16px;
+        font-size: 29px;
+        flex-shrink: 0;
+    }
+
+    .settings-hero h1 {
+        font-weight: 800;
+        letter-spacing: -.6px;
+        font-size: clamp(1.7rem, 4vw, 2.25rem);
+        margin-bottom: 8px;
+    }
+
+    .settings-hero p {
+        color: rgba(255,255,255,.83);
+        margin: 0;
+        line-height: 1.7;
+    }
+
+    .settings-back {
+        color: #fff;
+        background: rgba(255,255,255,.10);
+        border: 1px solid rgba(255,255,255,.45);
+        border-radius: 10px;
+        padding: 10px 15px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-block;
+        transition: .2s ease;
+    }
+
+    .settings-back:hover {
+        background: #fff;
+        color: var(--civic-navy);
+    }
+
+    .settings-summary {
+        background: #fff;
+        border: 1px solid var(--civic-border);
+        border-radius: 15px;
+        padding: 19px;
+        height: 100%;
+        box-shadow: 0 5px 18px rgba(25, 55, 90, .045);
+    }
+
+    .summary-icon {
+        width: 43px;
+        height: 43px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--civic-light);
+        font-size: 22px;
+        margin-bottom: 13px;
+    }
+
+    .summary-label {
+        color: #75849a;
+        font-size: .84rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .summary-value {
+        font-size: 1.17rem;
+        font-weight: 800;
+        color: var(--civic-navy);
+        overflow-wrap: anywhere;
+    }
+
+    .settings-card {
+        border: 1px solid var(--civic-border);
+        border-radius: 18px;
+        background: #fff;
+        overflow: hidden;
+        box-shadow: 0 7px 24px rgba(25, 55, 90, .055);
+    }
+
+    .settings-card-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 22px 25px;
+        border-bottom: 1px solid var(--civic-border);
+        background: linear-gradient(90deg, #f5f9ff, #fff);
+    }
+
+    .settings-card-header .header-icon {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 13px;
+        background: #e5efff;
+        font-size: 23px;
+    }
+
+    .settings-card-header h2 {
+        font-size: 1.12rem;
+        font-weight: 800;
+        color: var(--civic-navy);
+        margin: 0 0 4px;
+    }
+
+    .settings-card-header p {
+        color: #7a8798;
+        font-size: .89rem;
+        margin: 0;
+    }
+
+    .settings-card-body {
+        padding: 26px;
+    }
+
+    .settings-page .form-label {
+        color: #30455f;
+        font-size: .94rem;
+        font-weight: 700;
+        margin-bottom: 9px;
+    }
+
+    .settings-page .form-control {
+        border-color: #dbe4ef;
+        border-radius: 10px;
+        min-height: 47px;
+        padding: 11px 14px;
+        color: #24364b;
+        box-shadow: none;
+    }
+
+    .settings-page .form-control:focus {
+        border-color: #6b9de5;
+        box-shadow: 0 0 0 4px rgba(36, 99, 173, .10);
+    }
+
+    .setting-help {
+        font-size: .84rem;
+        color: #7b899b;
+        margin-top: 7px;
+        line-height: 1.6;
+    }
+
+    .setting-switch-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        padding: 19px 0;
+        border-bottom: 1px solid #edf1f7;
+    }
+
+    .setting-switch-row:first-child {
+        padding-top: 3px;
+    }
+
+    .setting-switch-row:last-child {
+        padding-bottom: 3px;
+        border-bottom: 0;
+    }
+
+    .setting-switch-title {
+        color: #2b405a;
+        font-weight: 750;
+        margin-bottom: 5px;
+    }
+
+    .setting-switch-description {
+        color: #7a8798;
+        font-size: .88rem;
+        line-height: 1.6;
+        margin: 0;
+        max-width: 540px;
+    }
+
+    .settings-page .form-check-input {
+        width: 3rem;
+        height: 1.55rem;
+        margin: 0;
+        flex-shrink: 0;
+        cursor: pointer;
+        border-color: #cbd5e1;
+        box-shadow: none;
+    }
+
+    .settings-page .form-check-input:checked {
+        background-color: #2463ad;
+        border-color: #2463ad;
+    }
+
+    .settings-page .form-check-input:focus {
+        border-color: #6b9de5;
+        box-shadow: 0 0 0 4px rgba(36, 99, 173, .12);
+    }
+
+    .settings-notice {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 16px 18px;
+        border-radius: 12px;
+        border: 1px solid #d9e8fb;
+        background: #f2f7ff;
+        color: #385474;
+        font-size: .88rem;
+        line-height: 1.65;
+    }
+
+    .settings-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        padding-top: 23px;
+        margin-top: 23px;
+        border-top: 1px solid var(--civic-border);
+    }
+
+    .settings-save {
+        border: 0;
+        border-radius: 10px;
+        background: linear-gradient(120deg, #1e5598, #2874c9);
+        color: #fff;
+        padding: 12px 23px;
+        font-weight: 750;
+        box-shadow: 0 5px 13px rgba(36, 99, 173, .19);
+        transition: .2s ease;
+    }
+
+    .settings-save:hover {
+        color: #fff;
+        background: #174983;
+        transform: translateY(-1px);
+        box-shadow: 0 8px 17px rgba(36, 99, 173, .23);
+    }
+
+    .settings-reset-link {
+        color: #60738b;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .settings-reset-link:hover {
+        color: var(--civic-blue);
+        text-decoration: underline;
+    }
+
+    .settings-page .alert {
+        border-radius: 12px;
+    }
+
+    @@media (max-width: 767.98px) {
+        .settings-page {
+            padding-top: 20px;
+        }
+
+        .settings-hero {
+            padding: 23px 20px;
+        }
+
+        .settings-hero-layout {
+            flex-direction: column;
+            align-items: flex-start !important;
+        }
+
+        .settings-card-header {
+            padding: 18px;
+        }
+
+        .settings-card-body {
+            padding: 20px;
+        }
+
+        .setting-switch-row {
+            align-items: flex-start;
+        }
+
+        .settings-actions {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .settings-save {
+            width: 100%;
+        }
+    }
+    
+    /* CivicTrace ON/OFF toggle buttons */
+    .settings-page .settings-toggle {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        width: 82px;
+        min-width: 82px;
+        height: 38px;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    .settings-page .settings-toggle-input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        margin: 0;
+    }
+
+    .settings-page .settings-toggle-track {
+        position: relative;
+        display: block;
+        width: 82px;
+        height: 36px;
+        border: 1px solid #cbd5e1;
+        border-radius: 999px;
+        background: #e2e8f0;
+        transition: background-color .2s ease,
+                    border-color .2s ease;
+    }
+
+    .settings-page .settings-toggle-track::before {
+        content: "";
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, .18);
+        transition: transform .2s ease;
+    }
+
+    .settings-page .settings-toggle-track::after {
+        content: "OFF";
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        color: #475569;
+        font-size: 10px;
+        font-weight: 800;
+        line-height: 18px;
+    }
+
+    .settings-page .settings-toggle-input:checked
+        ~ .settings-toggle-track {
+        background: #16a34a;
+        border-color: #15803d;
+    }
+
+    .settings-page .settings-toggle-input:checked
+        ~ .settings-toggle-track::before {
+        transform: translateX(44px);
+    }
+
+    .settings-page .settings-toggle-input:checked
+        ~ .settings-toggle-track::after {
+        content: "ON";
+        left: 10px;
+        right: auto;
+        color: #ffffff;
+    }
+
+    .settings-page .settings-toggle-input:focus-visible
+        ~ .settings-toggle-track {
+        outline: 3px solid rgba(36, 99, 173, .25);
+        outline-offset: 3px;
+    }
+
+</style>
+
+<div class="container settings-page">
+
+    <!-- Page Header -->
+    <div class="settings-hero mb-4">
+        <div class="settings-hero-content">
+            <div class="d-flex justify-content-between align-items-center gap-4 settings-hero-layout">
+
+                <div class="d-flex align-items-center gap-3">
+                    <div class="settings-icon">⚙️</div>
+
+                    <div>
+                        <h1>System Settings</h1>
+                        <p>
+                            Configure evidence uploads and complaint submission rules for CivicTrace.
+                        </p>
+                    </div>
+                </div>
+
+                <a asp-controller="Admin"
+                   asp-action="Index"
+                   class="settings-back">
+                    ← Admin Dashboard
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Feedback -->
+    @if (TempData["SettingsSuccess"] != null)
+    {
+        <div class="alert alert-success d-flex align-items-center gap-2 mb-4">
+            <span class="fs-5">✅</span>
+            <div>@TempData["SettingsSuccess"]</div>
+        </div>
+    }
+
+    <div asp-validation-summary="ModelOnly"
+         class="alert alert-danger mb-4"></div>
+
+    <!-- Quick Summary -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-12 col-sm-6 col-lg-4">
+            <div class="settings-summary">
+                <div class="summary-icon">📦</div>
+                <div class="summary-label">Maximum file size</div>
+                <div class="summary-value">@Model.MaximumImageSizeMb MB per image</div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-4">
+            <div class="settings-summary">
+                <div class="summary-icon">🖼️</div>
+                <div class="summary-label">Image upload mode</div>
+                <div class="summary-value">
+                    @(Model.AllowMultipleImages ? "Multiple images" : "Single image")
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-4">
+            <div class="settings-summary">
+                <div class="summary-icon">📎</div>
+                <div class="summary-label">Image requirement</div>
+                <div class="summary-value">
+                    @(Model.RequireImage ? "Required" : "Optional")
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <form asp-controller="SystemSettings"
+          asp-action="Index"
+          method="post">
+
+        @Html.AntiForgeryToken()
+
+        <!-- Upload Rules -->
+        <section class="settings-card mb-4">
+
+            <div class="settings-card-header">
+                <div class="header-icon">📷</div>
+                <div>
+                    <h2>Complaint Evidence Settings</h2>
+                    <p>Control accepted formats and the size of uploaded images.</p>
+                </div>
+            </div>
+
+            <div class="settings-card-body">
+
+                <div class="row g-4">
+
+                    <div class="col-12 col-md-6">
+                        <label asp-for="MaximumImageSizeMb" class="form-label">
+                            Maximum Image Size (MB)
+                        </label>
+
+                        <input asp-for="MaximumImageSizeMb"
+                               type="number"
+                               min="1"
+                               max="20"
+                               class="form-control" />
+
+                        <span asp-validation-for="MaximumImageSizeMb"
+                              class="text-danger small"></span>
+
+                        <div class="setting-help">
+                            Maximum permitted size for each image. Choose a value from 1 to 20 MB.
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label asp-for="AllowedImageFormats" class="form-label">
+                            Allowed Image Formats
+                        </label>
+
+                        <input asp-for="AllowedImageFormats"
+                               class="form-control"
+                               placeholder="jpg,jpeg,png,webp" />
+
+                        <span asp-validation-for="AllowedImageFormats"
+                              class="text-danger small"></span>
+
+                        <div class="setting-help">
+                            Enter comma-separated extensions without dots, such as jpg,jpeg,png,webp.
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+
+        <!-- Submission Rules -->
+        <section class="settings-card mb-4">
+
+            <div class="settings-card-header">
+                <div class="header-icon">🛡️</div>
+                <div>
+                    <h2>Complaint Submission Rules</h2>
+                    <p>Choose what citizens must attach when submitting a complaint.</p>
+                </div>
+            </div>
+
+            <div class="settings-card-body">
+
+                <div class="setting-switch-row">
+
+                    <div>
+                        <div class="setting-switch-title">Require Image for Complaints</div>
+                        <p class="setting-switch-description">
+                            When enabled, citizens must attach at least one evidence image.
+                        </p>
+                    </div>
+
+                    <label class="settings-toggle">
+    <input asp-for="RequireImage"
+           class="settings-toggle-input"
+           type="checkbox"
+           role="switch"
+           aria-label="Require image for complaints" />
+
+    <span class="settings-toggle-track"
+          aria-hidden="true"></span>
+</label>
+
+                </div>
+
+                <div class="setting-switch-row">
+
+                    <div>
+                        <div class="setting-switch-title">Allow Multiple Images</div>
+                        <p class="setting-switch-description">
+                            When enabled, citizens can attach more than one evidence image to a complaint.
+                        </p>
+                    </div>
+
+                    <label class="settings-toggle">
+    <input asp-for="AllowMultipleImages"
+           class="settings-toggle-input"
+           type="checkbox"
+           role="switch"
+           aria-label="Allow multiple images" />
+
+    <span class="settings-toggle-track"
+          aria-hidden="true"></span>
+</label>
+
+                </div>
+
+                <div class="row g-3 mt-3">
+                    <div class="col-12 col-md-6">
+
+                        <label asp-for="MaximumImagesPerComplaint" class="form-label">
+                            Maximum Images Per Complaint
+                        </label>
+
+                        <input asp-for="MaximumImagesPerComplaint"
+                               type="number"
+                               min="1"
+                               max="10"
+                               class="form-control" />
+
+                        <span asp-validation-for="MaximumImagesPerComplaint"
+                              class="text-danger small"></span>
+
+                        <div class="setting-help">
+                            Choose from 1 to 10 images. This limit applies when multiple-image uploads are enabled.
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="settings-notice mt-4">
+                    <span class="fs-5">💡</span>
+                    <div>
+                        <strong>Important:</strong>
+                        These rules apply when a citizen submits a new complaint.
+                        Turning off multiple images limits each complaint to one uploaded image.
+                    </div>
+                </div>
+
+                
+
+            </div>
+        </section>
+<!-- Complaint Workflow Settings -->
+<section class="settings-card mb-4">
+
+    <div class="settings-card-header">
+        <div class="header-icon">🔄</div>
+        <div>
+            <h2>Complaint Workflow Settings</h2>
+            <p>Control complaint submissions, location requirements, and citizen services.</p>
+        </div>
+    </div>
+
+    <div class="settings-card-body">
+
+        <div class="setting-switch-row">
+            <div>
+                <div class="setting-switch-title">Allow New Complaints</div>
+                <p class="setting-switch-description">
+                    Allow citizens to submit new complaints. When disabled,
+                    the backend will block new submissions.
+                </p>
+            </div>
+
+            
+<label class="settings-toggle">
+    <input asp-for="AllowNewComplaints"
+           class="settings-toggle-input"
+           type="checkbox"
+           role="switch"
+           aria-label="Allow new complaints" />
+
+    <span class="settings-toggle-track"
+          aria-hidden="true"></span>
+</label>
+
+        </div>
+
+        <div class="setting-switch-row">
+            <div>
+                <div class="setting-switch-title">Allow Citizens to Reopen Complaints</div>
+                <p class="setting-switch-description">
+                    Allow citizens to request reopening complaints that were previously resolved.
+                </p>
+            </div>
+
+            <label class="settings-toggle">
+    <input asp-for="AllowCitizensToReopenComplaints"
+           class="settings-toggle-input"
+           type="checkbox"
+           role="switch"
+           aria-label="Allow citizens to reopen complaints" />
+
+    <span class="settings-toggle-track"
+          aria-hidden="true"></span>
+</label>
+        </div>
+
+        <div class="setting-switch-row">
+            <div>
+                <div class="setting-switch-title">Require Complaint Description</div>
+                <p class="setting-switch-description">
+                    Require a meaningful description of the reported public issue.
+                </p>
+            </div>
+
+            <label class="settings-toggle">
+    <input asp-for="RequireComplaintDescription"
+           class="settings-toggle-input"
+           type="checkbox"
+           role="switch"
+           aria-label="Require complaint description" />
+
+    <span class="settings-toggle-track"
+          aria-hidden="true"></span>
+</label>
+        </div>
+
+        <div class="setting-switch-row">
+            <div>
+                <div class="setting-switch-title">Require Location</div>
+                <p class="setting-switch-description">
+                    Require location information when a citizen submits a complaint.
+                </p>
+            </div>
+
+            <label class="settings-toggle">
+    <input asp-for="RequireLocation"
+           class="settings-toggle-input"
+           type="checkbox"
+           role="switch"
+           aria-label="Require location" />
+
+    <span class="settings-toggle-track"
+          aria-hidden="true"></span>
+</label>
+        </div>
+
+        <div class="setting-switch-row">
+            <div>
+                <div class="setting-switch-title">Allow Anonymous Complaints</div>
+                <p class="setting-switch-description">
+                    Permit complaints without publicly displaying the citizen's identity.
+                    Secure tracking and abuse prevention must be implemented before enabling this.
+                </p>
+            </div>
+
+            <label class="settings-toggle">
+    <input asp-for="AllowAnonymousComplaints"
+           class="settings-toggle-input"
+           type="checkbox"
+           role="switch"
+           aria-label="Allow anonymous complaints" />
+
+    <span class="settings-toggle-track"
+          aria-hidden="true"></span>
+</label>
+        </div>
+
+        <div class="setting-switch-row">
+            <div>
+                <div class="setting-switch-title">Enable Duplicate Detection</div>
+                <p class="setting-switch-description">
+                    Check for similar existing complaints before accepting a submission.
+                </p>
+            </div>
+
+            <label class="settings-toggle">
+    <input asp-for="EnableDuplicateDetection"
+           class="settings-toggle-input"
+           type="checkbox"
+           role="switch"
+           aria-label="Enable duplicate detection" />
+
+    <span class="settings-toggle-track"
+          aria-hidden="true"></span>
+</label>
+        </div>
+
+        <div class="setting-switch-row">
+            <div>
+                <div class="setting-switch-title">Enable Citizen Feedback</div>
+                <p class="setting-switch-description">
+                    Enable citizen feedback after a complaint has been resolved.
+                </p>
+            </div>
+
+            <label class="settings-toggle">
+    <input asp-for="EnableCitizenFeedback"
+           class="settings-toggle-input"
+           type="checkbox"
+           role="switch"
+           aria-label="Enable citizen feedback" />
+
+    <span class="settings-toggle-track"
+          aria-hidden="true"></span>
+</label>
+        </div>
+
+        <div class="settings-notice mt-4">
+            <span class="fs-5">🛡️</span>
+            <div>
+                <strong>Backend enforcement:</strong>
+                These options must also be checked by the server.
+                Hiding a button or changing a browser form is not sufficient
+                to enforce a complaint policy.
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Resolution & Escalation Settings -->
+<section class="settings-card mb-4">
+
+    <div class="settings-card-header">
+        <div class="header-icon">⏱️</div>
+        <div>
+            <h2>Resolution & Escalation Settings</h2>
+            <p>Configure resolution deadlines and automatic escalation of delayed complaints.</p>
+        </div>
+    </div>
+
+    <div class="settings-card-body">
+
+        <!-- Resolution Time Limits -->
+        <h5 class="fw-bold mb-3">Resolution Time Limits</h5>
+
+        <div class="row g-4">
+
+            <div class="col-12 col-md-4">
+                <label asp-for="HighPriorityResolutionHours"
+                       class="form-label">
+                    High Priority (Hours)
+                </label>
+
+                <input asp-for="HighPriorityResolutionHours"
+                       type="number"
+                       min="1"
+                       max="720"
+                       class="form-control" />
+
+                <span asp-validation-for="HighPriorityResolutionHours"
+                      class="text-danger small"></span>
+
+                <div class="setting-help">
+                    Target resolution time for high-priority complaints.
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <label asp-for="MediumPriorityResolutionHours"
+                       class="form-label">
+                    Medium Priority (Hours)
+                </label>
+
+                <input asp-for="MediumPriorityResolutionHours"
+                       type="number"
+                       min="1"
+                       max="720"
+                       class="form-control" />
+
+                <span asp-validation-for="MediumPriorityResolutionHours"
+                      class="text-danger small"></span>
+
+                <div class="setting-help">
+                    Target resolution time for medium-priority complaints.
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <label asp-for="LowPriorityResolutionHours"
+                       class="form-label">
+                    Low Priority (Hours)
+                </label>
+
+                <input asp-for="LowPriorityResolutionHours"
+                       type="number"
+                       min="1"
+                       max="720"
+                       class="form-control" />
+
+                <span asp-validation-for="LowPriorityResolutionHours"
+                      class="text-danger small"></span>
+
+                <div class="setting-help">
+                    Target resolution time for low-priority complaints.
+                </div>
+            </div>
+
+        </div>
+
+        <hr class="my-4" />
+
+        <!-- Automatic Overdue Detection -->
+        <div class="setting-switch-row">
+
+            <div>
+                <div class="setting-switch-title">
+                    Enable Automatic Overdue Detection
+                </div>
+
+                <p class="setting-switch-description">
+                    Automatically identify complaints that have exceeded
+                    their configured resolution deadlines.
+                </p>
+            </div>
+
+            <label class="settings-toggle">
+                <input asp-for="EnableAutomaticOverdueDetection"
+                       class="settings-toggle-input"
+                       type="checkbox"
+                       role="switch"
+                       aria-label="Enable automatic overdue detection" />
+
+                <span class="settings-toggle-track"
+                      aria-hidden="true"></span>
+            </label>
+
+        </div>
+
+        <!-- Escalation Notifications -->
+        <div class="setting-switch-row">
+
+            <div>
+                <div class="setting-switch-title">
+                    Enable Escalation Notifications
+                </div>
+
+                <p class="setting-switch-description">
+                    Notify administrators when complaints remain unresolved
+                    beyond the escalation period.
+                </p>
+            </div>
+
+            <label class="settings-toggle">
+                <input asp-for="EnableEscalationNotifications"
+                       class="settings-toggle-input"
+                       type="checkbox"
+                       role="switch"
+                       aria-label="Enable escalation notifications" />
+
+                <span class="settings-toggle-track"
+                      aria-hidden="true"></span>
+            </label>
+
+        </div>
+
+        <!-- Escalation Time -->
+        <div class="row g-3 mt-3">
+
+            <div class="col-12 col-md-6">
+
+                <label asp-for="EscalationAfterDeadlineHours"
+                       class="form-label">
+                    Escalation After Deadline (Hours)
+                </label>
+
+                <input asp-for="EscalationAfterDeadlineHours"
+                       type="number"
+                       min="1"
+                       max="720"
+                       class="form-control" />
+
+                <span asp-validation-for="EscalationAfterDeadlineHours"
+                      class="text-danger small"></span>
+
+                <div class="setting-help">
+                    Additional time allowed after the resolution deadline
+                    before a complaint is escalated.
+                </div>
+
+            </div>
+
+        </div>
+
+        <hr class="my-4" />
+
+        <!-- Resolution Proof -->
+        <div class="setting-switch-row">
+
+            <div>
+                <div class="setting-switch-title">
+                    Enable Resolution Proof
+                </div>
+
+                <p class="setting-switch-description">
+                    Allow administrators to upload photographs showing
+                    completed resolution work.
+                </p>
+            </div>
+
+            <label class="settings-toggle">
+                <input asp-for="EnableResolutionProof"
+                       class="settings-toggle-input"
+                       type="checkbox"
+                       role="switch"
+                       aria-label="Enable resolution proof" />
+
+                <span class="settings-toggle-track"
+                      aria-hidden="true"></span>
+            </label>
+
+        </div>
+
+        <div class="settings-notice mt-4">
+            <span class="fs-5">💡</span>
+            <div>
+                <strong>Important:</strong>
+                Resolution deadlines are configurable targets.
+                An escalation occurs only after the resolution deadline
+                and the additional escalation period have both passed.
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<div class="settings-actions">
+
+                    <a asp-controller="Admin"
+                       asp-action="Index"
+                       class="settings-reset-link">
+                        ← Cancel and return
+                    </a>
+
+                    <button type="submit" class="settings-save">
+                        💾 Save Settings
+                    </button>
+
+                </div>
+    </form>
+
+</div>
