@@ -1,0 +1,599 @@
+
+    @model PublicGrievanceSystem.Models.Complaint
+
+    @{
+        ViewData["Title"] = "Track Complaint";
+
+        var evidenceImages = Model?.Evidences?
+            .Where(e => !string.IsNullOrWhiteSpace(e.ImagePath))
+            .Select(e => e.ImagePath)
+            .Distinct()
+            .ToList()
+            ?? new List<string>();
+
+        // Support complaints created before multiple-image support.
+        if (Model != null &&
+            !string.IsNullOrWhiteSpace(Model.ImagePath) &&
+            !evidenceImages.Contains(Model.ImagePath))
+        {
+            evidenceImages.Insert(0, Model.ImagePath);
+        }
+    }
+
+    <style>
+        .complaint-track-page {
+            --track-navy: #142d4e;
+            --track-blue: #245ca8;
+            --track-border: #e3eaf3;
+            max-width: 1050px;
+            padding-top: 35px;
+            padding-bottom: 55px;
+            color: #1e293b;
+        }
+
+        .complaint-track-page .track-card {
+            border: 1px solid var(--track-border);
+            border-radius: 17px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(20,45,78,.08);
+        }
+
+        .complaint-track-page .track-header {
+            background: linear-gradient(120deg,#142d4e,#2864ad);
+            color: #fff;
+            padding: 24px 28px;
+            border: 0;
+        }
+
+        .complaint-track-page .track-header h3 {
+            font-weight: 750;
+            font-size: 1.55rem;
+            margin: 0;
+        }
+
+        .complaint-track-page .track-body {
+            padding: 28px;
+        }
+
+        .complaint-track-page .track-description {
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 23px;
+        }
+
+        .complaint-track-page .track-label {
+            font-weight: 700;
+            color: #243b53;
+            margin-bottom: 9px;
+        }
+
+        .complaint-track-page .track-input {
+            min-height: 51px;
+            border: 1px solid #d7e0ec;
+            border-radius: 10px;
+            padding: 12px 14px;
+        }
+
+        .complaint-track-page .track-input:focus {
+            border-color: #6195e8;
+            box-shadow: 0 0 0 4px rgba(37,99,235,.10);
+        }
+
+        .complaint-track-page .track-submit {
+            background: #245ca8;
+            border: 1px solid #245ca8;
+            color: #fff;
+            padding: 11px 20px;
+            border-radius: 9px;
+            font-weight: 700;
+            transition: .2s ease;
+        }
+
+        .complaint-track-page .track-submit:hover {
+            background: #174a91;
+            border-color: #174a91;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .complaint-track-page .result-header {
+            background: linear-gradient(120deg,#166534,#16805d);
+            color: #fff;
+            padding: 20px 25px;
+            border: 0;
+        }
+
+        .complaint-track-page .result-header h4 {
+            font-weight: 750;
+            margin: 0;
+        }
+
+        .complaint-track-page .result-body {
+            padding: 27px;
+        }
+
+        .complaint-track-page .detail-box {
+            height: 100%;
+            padding: 15px;
+            border: 1px solid #e7edf5;
+            border-radius: 11px;
+            background: #f8fafc;
+            overflow-wrap: anywhere;
+        }
+
+        .complaint-track-page .detail-label {
+            color: #64748b;
+            font-size: .78rem;
+            text-transform: uppercase;
+            letter-spacing: .6px;
+            font-weight: 750;
+            margin-bottom: 7px;
+        }
+
+        .complaint-track-page .detail-value {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .complaint-track-page .status-step {
+            padding: 18px 8px;
+            border: 1px solid #e7edf5;
+            border-radius: 12px;
+            height: 100%;
+            background: #fff;
+        }
+
+        .complaint-track-page .status-step-icon {
+            font-size: 2rem;
+            margin-bottom: 9px;
+        }
+
+        .complaint-track-page .status-step h6 {
+            font-weight: 750;
+            margin-bottom: 0;
+        }
+
+        .complaint-track-page .status-section-title {
+            color: #142d4e;
+            font-weight: 750;
+        }
+
+        .complaint-track-page .timeline-item {
+            position: relative;
+            padding: 4px 0 22px 22px;
+            border-left: 2px solid #d7e5f7;
+            margin-left: 8px;
+        }
+
+        .complaint-track-page .timeline-item:last-child {
+            border-left-color: transparent;
+            padding-bottom: 0;
+        }
+
+        .complaint-track-page .timeline-dot {
+            position: absolute;
+            left: -7px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: #2864ad;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 0 2px #d7e5f7;
+        }
+
+        .complaint-track-page .timeline-content {
+            overflow-wrap: anywhere;
+        }
+
+        .complaint-track-page .evidence-image {
+            display: block;
+            max-width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            border: 1px solid #e3eaf3;
+            border-radius: 12px;
+            background: #f8fafc;
+        }
+
+        .complaint-track-page .text-muted {
+            color: #64748b !important;
+        }
+
+        .complaint-track-page .alert {
+            border-radius: 11px;
+        }
+
+        @@media (max-width: 767.98px) {
+            .complaint-track-page {
+                padding: 20px 13px 35px;
+            }
+
+            .complaint-track-page .track-header {
+                padding: 21px 18px;
+            }
+
+            .complaint-track-page .track-header h3 {
+                font-size: 1.3rem;
+            }
+
+            .complaint-track-page .track-body,
+            .complaint-track-page .result-body {
+                padding: 19px;
+            }
+
+            .complaint-track-page .result-header {
+                padding: 18px;
+            }
+
+            .complaint-track-page .track-submit {
+                width: 100%;
+            }
+
+            .complaint-track-page .status-step {
+                padding: 14px 5px;
+            }
+        }
+    </style>
+
+    <div class="container complaint-track-page">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+
+                <!-- Complaint Search -->
+                <div class="card track-card">
+                    <div class="card-header track-header">
+                        <h3 class="mb-0">🔎 Track Your Complaint</h3>
+                    </div>
+
+                    <div class="card-body track-body">
+                        <p class="text-muted">
+                            Enter your complaint ID to check the current
+                            status of your complaint.
+                        </p>
+
+                        <form asp-controller="Complaints"
+                            asp-action="Track"
+                            method="post">
+
+                            @Html.AntiForgeryToken()
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">
+                                    Complaint ID
+                                </label>
+
+                                <input type="number"
+                                    name="id"
+                                    class="form-control track-input"
+                                    placeholder="Enter complaint ID"
+                                    min="1"
+                                    value="@(Model?.Id > 0 ? Model.Id.ToString() : "")"
+                                    required />
+                            </div>
+
+                            <button type="submit" class="track-submit">
+                                🔍 Track Complaint
+                            </button>
+                        </form>
+
+                        @if (ViewBag.Error != null)
+                        {
+                            <div class="alert alert-danger mt-4">
+                                @ViewBag.Error
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                @if (Model != null)
+                {
+                    <!-- Complaint Details -->
+                    <div class="card track-card mt-4">
+                        <div class="card-header result-header">
+                            <h4 class="mb-0">Complaint #@Model.Id</h4>
+                        </div>
+
+                        <div class="card-body result-body">
+                            <div class="row">
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="detail-box">
+                                        <div class="detail-label">Title</div>
+                                        <div class="detail-value">@Model.Title</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="detail-box">
+                                        <div class="detail-label">Category</div>
+                                        <div class="detail-value">@Model.Category</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="detail-box">
+                                        <div class="detail-label">Priority</div>
+                                        <div class="detail-value">
+                                            <span class="badge bg-warning text-dark">
+                                                @Model.Priority
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="detail-box">
+                                        <div class="detail-label">Department</div>
+                                        <div class="detail-value">
+                                            @if (string.IsNullOrEmpty(Model.Department))
+                                            {
+                                                <span class="badge bg-secondary">
+                                                    Not Assigned
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-info text-dark">
+                                                    🏢 @Model.Department
+                                                </span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 mb-3">
+                                    <div class="detail-box">
+                                        <div class="detail-label">Description</div>
+                                        <div class="detail-value"
+                                            style="font-weight:400;line-height:1.7;">
+                                            @Model.Description
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 mb-3">
+                                    <div class="detail-box">
+                                        <div class="detail-label">📍 Address</div>
+                                        <div class="detail-value">
+                                            @(string.IsNullOrWhiteSpace(Model.Address)
+                                                ? "Address not available"
+                                                : Model.Address)
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="detail-box">
+                                        <div class="detail-label">📮 PIN Code</div>
+                                        <div class="detail-value">
+                                            @(string.IsNullOrWhiteSpace(Model.PinCode)
+                                                ? "Not available"
+                                                : Model.PinCode)
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="detail-box">
+                                        <div class="detail-label">📅 Submitted On</div>
+                                        <div class="detail-value">
+                                            @Model.CreatedAt.ToString("dd MMM yyyy, hh:mm tt")
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <hr />
+
+                            <!-- Complaint Status Progress -->
+                            <h5 class="mb-4 status-section-title">
+                                Complaint Status
+                            </h5>
+
+                            <div class="row text-center">
+
+                                <!-- Submitted -->
+                                <div class="col-md-4 mb-3">
+                                    <div class="status-step">
+                                        <div class="fs-1">📨</div>
+                                        <h6 class="text-success">Submitted</h6>
+                                    </div>
+                                </div>
+
+                                <!-- In Progress -->
+                                <div class="col-md-4 mb-3">
+                                    <div class="status-step">
+                                        @if (Model.Status == "In Progress"
+                                            || Model.Status == "Resolved")
+                                        {
+                                            <div class="fs-1">🔄</div>
+                                            <h6 class="text-info">In Progress</h6>
+                                        }
+                                        else
+                                        {
+                                            <div class="fs-1 text-muted">⏳</div>
+                                            <h6 class="text-muted">In Progress</h6>
+                                        }
+                                    </div>
+                                </div>
+
+                                <!-- Resolved -->
+                                <div class="col-md-4 mb-3">
+                                    <div class="status-step">
+                                        @if (Model.Status == "Resolved")
+                                        {
+                                            <div class="fs-1">✅</div>
+                                            <h6 class="text-success">Resolved</h6>
+                                        }
+                                        else
+                                        {
+                                            <div class="fs-1 text-muted">⏳</div>
+                                            <h6 class="text-muted">Resolved</h6>
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Current Status -->
+                            <div class="alert alert-light border mt-4 text-center shadow-sm">
+                                <strong class="status-section-title">
+                                    Current Status:
+                                </strong>
+
+                                @if (Model.Status == "Submitted")
+                                {
+                                    <span class="badge bg-secondary">
+                                        📨 Submitted
+                                    </span>
+                                }
+                                else if (Model.Status == "In Progress")
+                                {
+                                    <span class="badge bg-info text-dark">
+                                        🔄 In Progress
+                                    </span>
+                                }
+                                else if (Model.Status == "Resolved")
+                                {
+                                    <span class="badge bg-success">
+                                        ✅ Resolved
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">
+                                        @Model.Status
+                                    </span>
+                                }
+                            </div>
+
+                            @if (Model.ResolvedAt.HasValue)
+                            {
+                                <div class="alert alert-success mt-3">
+                                    ✅ <strong>Resolved On:</strong>
+                                    @Model.ResolvedAt.Value.ToString("dd-MM-yyyy hh:mm tt")
+                                </div>
+                            }
+
+                            <!-- Complaint Status Timeline -->
+                            @if (ViewBag.StatusHistory != null)
+                            {
+                                var history = ViewBag.StatusHistory
+                                    as List<PublicGrievanceSystem.Models.ComplaintStatusHistory>;
+
+                                if (history != null && history.Count > 0)
+                                {
+                                    <div class="card track-card mt-4">
+                                        <div class="card-header track-header">
+                                            <h5 class="mb-0">
+                                                📋 Complaint Status Timeline
+                                            </h5>
+                                        </div>
+
+                                        <div class="card-body result-body">
+                                            @foreach (var item in history)
+                                            {
+                                                <div class="timeline-item">
+                                                    <span class="timeline-dot"></span>
+
+                                                    <div class="timeline-content">
+                                                        <h6 class="fw-bold mb-2 status-section-title">
+                                                            @item.Status
+                                                        </h6>
+
+                                                        <div class="small text-muted mb-3">
+                                                            🕒 @item.ChangedAt.ToString("dd MMM yyyy, hh:mm tt")
+                                                        </div>
+
+                                                        @if (!string.IsNullOrEmpty(item.Department))
+                                                        {
+                                                            <div class="mt-1">
+                                                                🏢 Department:
+                                                                <strong>@item.Department</strong>
+                                                            </div>
+                                                        }
+
+                                                        @if (!string.IsNullOrEmpty(item.Priority))
+                                                        {
+                                                            <div class="mt-1">
+                                                                ⭐ Priority:
+                                                                <strong>@item.Priority</strong>
+                                                            </div>
+                                                        }
+
+                                                        @if (!string.IsNullOrEmpty(item.Remarks))
+                                                        {
+                                                            <div class="mt-2 text-muted">
+                                                                <strong>Remarks:</strong>
+                                                                @item.Remarks
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            }
+
+                            <!-- Uploaded Evidence Gallery -->
+<div class="mt-4">
+
+    <h5 class="mb-3">📷 Uploaded Evidence</h5>
+
+    @if (evidenceImages.Any())
+    {
+        <div class="row g-3">
+
+            @foreach (var imagePath in evidenceImages)
+            {
+                <div class="col-12 col-md-6">
+
+                    <div class="border rounded p-2 h-100">
+
+                        <a href="@imagePath"
+                           target="_blank"
+                           rel="noopener noreferrer">
+
+                            <img src="@imagePath"
+                                 class="evidence-image"
+                                 alt="Complaint Evidence"
+                                 style="width:100%; height:220px; object-fit:contain;" />
+                        </a>
+
+                        <div class="text-center mt-2">
+                            <a href="@imagePath"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="btn btn-sm btn-outline-primary">
+                                🔍 View Full Image
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="text-center text-muted py-4">
+            <div style="font-size:45px;">📷</div>
+            <p class="mb-0">No evidence images uploaded.</p>
+        </div>
+    }
+
+</div>
+
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
