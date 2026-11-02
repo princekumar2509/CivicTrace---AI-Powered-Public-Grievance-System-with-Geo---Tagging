@@ -1,0 +1,399 @@
+@model PublicGrievanceSystem.Models.Complaint
+
+@{
+    ViewData["Title"] = "Complaint Submitted Successfully";
+}
+
+<style>
+    .success-page {
+        min-height: 85vh;
+        padding: 55px 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background:
+            radial-gradient(circle at top left, #e7f0ff 0, transparent 42%),
+            linear-gradient(135deg, #f6f9ff, #edf4fc);
+    }
+
+    .success-card {
+        width: 100%;
+        max-width: 760px;
+        overflow: hidden;
+        border: 1px solid #e1eaf6;
+        border-radius: 24px;
+        background: #ffffff;
+        box-shadow: 0 20px 60px rgba(24, 57, 100, .12);
+    }
+
+    .success-header {
+        padding: 35px 25px 25px;
+        text-align: center;
+        background: linear-gradient(135deg, #153866, #2869b5);
+        color: #ffffff;
+    }
+
+    .success-brand {
+        display: inline-block;
+        margin-bottom: 22px;
+        padding: 7px 15px;
+        border: 1px solid rgba(255, 255, 255, .3);
+        border-radius: 30px;
+        background: rgba(255, 255, 255, .12);
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+    }
+
+    .success-icon {
+        width: 82px;
+        height: 82px;
+        margin: 0 auto 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 5px solid rgba(255, 255, 255, .25);
+        border-radius: 50%;
+        background: #22a56a;
+        color: #ffffff;
+        font-size: 42px;
+        font-weight: 800;
+        box-shadow: 0 8px 22px rgba(0, 0, 0, .15);
+    }
+
+    .success-title {
+        margin: 0 0 12px;
+        font-size: clamp(1.6rem, 4vw, 2.25rem);
+        font-weight: 800;
+        letter-spacing: -.5px;
+    }
+
+    .success-subtitle {
+        max-width: 500px;
+        margin: 0 auto;
+        color: rgba(255, 255, 255, .85);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .success-body {
+        padding: 32px;
+    }
+
+    .success-status {
+        margin-bottom: 25px;
+        color: #40536c;
+        text-align: center;
+        font-size: .95rem;
+    }
+
+    .success-status strong {
+        color: #16804e;
+    }
+
+    .complaint-id-panel {
+        padding: 25px 20px;
+        border: 1px solid #cfe0fa;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #f1f7ff, #e7f1ff);
+        text-align: center;
+    }
+
+    .complaint-id-label {
+        margin-bottom: 10px;
+        color: #526b8b;
+        font-size: .82rem;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+
+    .complaint-id-value {
+        margin: 0;
+        color: #173f76;
+        font-size: clamp(2.2rem, 6vw, 3rem);
+        font-weight: 850;
+        letter-spacing: 1px;
+    }
+
+    .complaint-id-help {
+        margin: 12px 0 0;
+        color: #647994;
+        font-size: .88rem;
+        line-height: 1.6;
+    }
+
+    .success-next-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 13px;
+        margin-top: 24px;
+        padding: 17px;
+        border: 1px solid #e6edf6;
+        border-radius: 14px;
+        background: #fafcff;
+    }
+
+    .next-step-icon {
+        flex-shrink: 0;
+        font-size: 23px;
+    }
+
+    .next-step-title {
+        margin-bottom: 4px;
+        color: #203d63;
+        font-weight: 750;
+    }
+
+    .next-step-text {
+        margin: 0;
+        color: #728198;
+        font-size: .9rem;
+        line-height: 1.6;
+    }
+
+    .ai-result-card {
+        margin-top: 25px;
+        padding: 22px;
+        border: 1px solid #d9e5fb;
+        border-radius: 16px;
+        background: #f6f9ff;
+        overflow-wrap: anywhere;
+    }
+
+    .ai-result-title {
+        margin-bottom: 15px;
+        color: #204f91;
+        font-size: 1.15rem;
+        font-weight: 800;
+    }
+
+    .ai-result-card hr {
+        border-color: #d9e5f5;
+        opacity: 1;
+    }
+
+    .ai-result-card p {
+        margin-bottom: 12px;
+        color: #435771;
+        line-height: 1.7;
+    }
+
+    .ai-result-card p:last-child {
+        margin-bottom: 0;
+    }
+
+    .success-actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 28px;
+    }
+
+    .success-home-btn {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        padding: 13px 25px;
+        border: 0;
+        border-radius: 12px;
+        background: linear-gradient(120deg, #20599c, #2d76c9);
+        color: #ffffff;
+        font-weight: 750;
+        text-decoration: none;
+        box-shadow: 0 7px 17px rgba(36, 99, 173, .22);
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .success-home-btn:hover {
+        transform: translateY(-2px);
+        color: #ffffff;
+        box-shadow: 0 10px 22px rgba(36, 99, 173, .3);
+    }
+
+    .success-footer {
+        padding: 17px 20px;
+        border-top: 1px solid #edf1f7;
+        background: #fbfcff;
+        color: #8491a4;
+        text-align: center;
+        font-size: .8rem;
+    }
+
+    .success-page .alert {
+        border-radius: 13px;
+    }
+
+    @@media (max-width: 575px) {
+        .success-page {
+            padding: 25px 10px;
+        }
+
+        .success-header {
+            padding: 28px 18px 24px;
+        }
+
+        .success-body {
+            padding: 22px 17px;
+        }
+
+        .success-icon {
+            width: 70px;
+            height: 70px;
+            font-size: 35px;
+        }
+
+        .success-home-btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="success-page">
+    <div class="success-card">
+
+        <!-- Success Header -->
+        <div class="success-header">
+
+            <div class="success-brand">
+                CIVICTRACE
+            </div>
+
+            <div class="success-icon" aria-hidden="true">
+                ✓
+            </div>
+
+            <h1 class="success-title">
+                Complaint Submitted!
+            </h1>
+
+            <p class="success-subtitle">
+                Your complaint has been registered successfully.
+                Thank you for helping make your community better.
+            </p>
+
+        </div>
+
+        <!-- Main Content -->
+        <div class="success-body">
+
+            <div class="success-status">
+                <strong>✓ Submission complete</strong>
+                <span> — Your complaint has been received.</span>
+            </div>
+
+            <!-- Complaint ID -->
+            <div class="complaint-id-panel">
+
+                <div class="complaint-id-label">
+                    Your Complaint ID
+                </div>
+
+                <h2 class="complaint-id-value">
+                    #@Model.Id
+                </h2>
+
+                <p class="complaint-id-help">
+                    Keep this ID safe. You can use it to identify
+                    and track your grievance in the future.
+                </p>
+
+            </div>
+
+            <!-- Next Step Information -->
+            <div class="success-next-step">
+
+                <div class="next-step-icon" aria-hidden="true">
+                    📋
+                </div>
+
+                <div>
+                    <div class="next-step-title">
+                        What happens next?
+                    </div>
+
+                    <p class="next-step-text">
+                        The concerned authority can review your complaint
+                        and take the necessary steps to address the issue.
+                        Keep your Complaint ID for future reference.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Temporary Image Diagnostic -->
+            @* @if (ViewBag.ImageReceived != null)
+            {
+                <div class="alert alert-secondary text-start mt-4">
+                    <strong>📷 Image Upload Status</strong>
+                    <p class="mb-0 mt-2">@ViewBag.ImageReceived</p>
+                </div>
+            } *@
+
+            <!-- AI Image Analysis -->
+            @if (ViewBag.ImageCategory != null)
+            {
+                <div class="ai-result-card">
+
+                    <h3 class="ai-result-title text-center">
+                        🤖 AI Image Analysis
+                    </h3>
+
+                    <hr />
+
+                    <p>
+                        <strong>🔍 Detected Category:</strong>
+                        @ViewBag.ImageCategory
+                    </p>
+
+                    <p>
+                        <strong>📊 Confidence:</strong>
+                        @((ViewBag.ImageConfidence * 100).ToString("0"))%
+                    </p>
+
+                    <p>
+                        <strong>📝 AI Observation:</strong>
+                        @ViewBag.ImageDescription
+                    </p>
+
+                </div>
+            }
+
+            <!-- AI Image Analysis Error -->
+            @if (ViewBag.ImageAnalysisError != null)
+            {
+                <div class="alert alert-warning mt-4 mb-0">
+
+                    <strong>⚠️ AI Image Analysis</strong>
+
+                    <p class="mb-0 mt-2">
+                        @ViewBag.ImageAnalysisError
+                    </p>
+
+                </div>
+            }
+
+            <!-- Navigation -->
+            <div class="success-actions">
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="success-home-btn">
+
+                    <span aria-hidden="true">⌂</span>
+                    Back to Home
+                    <span aria-hidden="true">→</span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="success-footer">
+            CivicTrace · Public Grievance and Issue Redressal System
+        </div>
+
+    </div>
+</div>
