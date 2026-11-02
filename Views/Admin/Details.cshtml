@@ -1,0 +1,949 @@
+@model PublicGrievanceSystem.Models.Complaint
+@{
+    string suggestedDepartment = Model.Category?.ToLower() switch
+    {
+        "road" => "Road & Transport",
+        "pothole" => "Road & Transport",
+        "garbage" => "Sanitation",
+        "waste" => "Sanitation",
+        "streetlight" => "Electrical",
+        "electricity" => "Electricity Department",
+        "water" => "Water Supply",
+        "water leakage" => "Water Supply",
+        "drainage" => "Public Works",
+        "sewage" => "Public Works",
+        _ => ""
+    };
+
+    string selectedDepartment =
+        !string.IsNullOrEmpty(Model.Department)
+            ? Model.Department
+            : suggestedDepartment;
+}
+@{
+    ViewData["Title"] = "Complaint Details";
+}
+
+<link rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    crossorigin="" />
+
+<div class="container mt-4 mb-5 admin-complaint-details">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold">📋 Complaint Details</h2>
+            <p class="text-muted">
+                Complaint #@Model.Id
+            </p>
+        </div>
+
+        <a asp-controller="Admin"
+        asp-action="Index"
+        class="btn btn-outline-primary">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+
+    <div class="row g-4">
+
+        <!-- LEFT SIDE -->
+        <div class="col-lg-7">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        📝 Complaint Information
+                    </h5>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="mb-3">
+                        <strong>Complaint ID:</strong>
+                        <div class="fs-5">
+                            #@Model.Id
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="mb-3">
+                        <strong>Title:</strong>
+                        <div>
+                            @Model.Title
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>Category:</strong>
+                        <div>
+                            <span class="badge bg-primary">
+                                @Model.Category
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>Description:</strong>
+                        <div class="border rounded p-3 bg-light">
+                            @Model.Description
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Priority:</strong>
+
+                            <div>
+                                @if (Model.Priority == "High")
+                                {
+                                    <span class="badge bg-danger">
+                                        High
+                                    </span>
+                                }
+                                else if (Model.Priority == "Low")
+                                {
+                                    <span class="badge bg-success">
+                                        Low
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">
+                                        Medium
+                                    </span>
+                                }
+                            </div>
+                            <!-- AI SEVERITY -->
+<div class="mt-3">
+
+    <strong>🤖 AI Severity:</strong>
+
+    <div>
+        @if (Model.AISeverity == "Critical")
+        {
+            <span class="badge bg-danger">
+                🚨 Critical
+            </span>
+        }
+        else if (Model.AISeverity == "High")
+        {
+            <span class="badge bg-danger">
+                🔴 High
+            </span>
+        }
+        else if (Model.AISeverity == "Medium")
+        {
+            <span class="badge bg-warning text-dark">
+                🟡 Medium
+            </span>
+        }
+        else
+        {
+            <span class="badge bg-success">
+                🟢 Low
+            </span>
+        }
+    </div>
+
+    <small class="text-muted">
+        Automatically predicted by AI
+    </small>
+
+</div>
+
+                        </div>
+
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Status:</strong>
+
+                            <div>
+
+                                @if (Model.Status == "Resolved")
+                                {
+                                    <span class="badge bg-success">
+                                        ✅ Resolved
+                                    </span>
+                                }
+                                else if (Model.Status == "In Progress")
+                                {
+                                    <span class="badge bg-info text-dark">
+                                        🔄 In Progress
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">
+                                        📨 Submitted
+                                    </span>
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <!-- ADDRESS -->
+
+                    <div class="mb-3">
+
+                        <strong>🏠 Complete Address:</strong>
+
+                        <div class="mt-1">
+                            @(string.IsNullOrEmpty(Model.Address)
+                                ? "Address not available"
+                                : Model.Address)
+                        </div>
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <strong>📮 PIN Code:</strong>
+
+                        <div class="mt-1">
+                            @(string.IsNullOrEmpty(Model.PinCode)
+                                ? "Not available"
+                                : Model.PinCode)
+                        </div>
+
+                    </div>
+
+
+                    <!-- COORDINATES -->
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Latitude:</strong>
+
+                            <div>
+                                @Model.Latitude
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Longitude:</strong>
+
+                            <div>
+                                @Model.Longitude
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <hr />
+
+                    <div class="mb-3">
+
+                        <strong>📅 Submitted:</strong>
+
+                        <div>
+                            @Model.CreatedAt.ToString("dd-MM-yyyy hh:mm tt")
+                        </div>
+
+                    </div>
+
+
+                    @if (Model.ResolvedAt != null)
+                    {
+                        <div class="mb-3">
+
+                            <strong>✅ Resolved:</strong>
+
+                            <div>
+                                @Model.ResolvedAt.Value.ToString(
+                                    "dd-MM-yyyy hh:mm tt")
+                            </div>
+
+                        </div>
+                    }
+                    <hr />
+
+<!-- UPDATE STATUS -->
+
+<!-- UPDATE COMPLAINT -->
+
+<div class="card border-warning mt-4">
+
+    <div class="card-header bg-warning">
+        <h5 class="mb-0">
+            🔄 Update Complaint
+        </h5>
+    </div>
+
+    <div class="card-body">
+
+        <form asp-controller="Admin"
+    asp-action="UpdateStatus"
+    method="post">
+
+    @Html.AntiForgeryToken()
+
+    <input type="hidden"
+        name="id"
+        value="@Model.Id" />
+
+    <!-- COMPLAINT STATUS -->
+    <div class="mb-3">
+        <label class="form-label fw-bold">
+            Complaint Status
+        </label>
+
+        <select name="status" class="form-select">
+
+            @if (Model.Status == "Submitted")
+            {
+                <option value="Submitted" selected>
+                    📩 Submitted
+                </option>
+            }
+            else
+            {
+                <option value="Submitted">
+                    📩 Submitted
+                </option>
+            }
+
+            @if (Model.Status == "In Progress")
+            {
+                <option value="In Progress" selected>
+                    🔄 In Progress
+                </option>
+            }
+            else
+            {
+                <option value="In Progress">
+                    🔄 In Progress
+                </option>
+            }
+
+            @if (Model.Status == "Resolved")
+            {
+                <option value="Resolved" selected>
+                    ✅ Resolved
+                </option>
+            }
+            else
+            {
+                <option value="Resolved">
+                    ✅ Resolved
+                </option>
+            }
+
+        </select>
+@*<div class="mb-4">
+    <label class="form-label fw-bold">
+        ⚡ Priority
+    </label>
+
+    <select name="priority" class="form-select">
+        <option value="High"
+            selected="@(Model.Priority == "High")">
+            🔴 High
+        </option>
+
+        <option value="Medium"
+            selected="@(Model.Priority == "Medium")">
+            🟡 Medium
+        </option>
+
+        <option value="Low"
+            selected="@(Model.Priority == "Low")">
+            🟢 Low
+        </option>
+    </select>
+</div>*@
+    </div>
+
+
+    <!-- COMPLAINT PRIORITY -->
+    <div class="mb-3">
+
+        <label class="form-label fw-bold">
+            ⭐ Complaint Priority
+        </label>
+
+        <select name="priority" class="form-select">
+
+            @if (Model.Priority == "High")
+            {
+                <option value="High" selected>
+                    🔴 High
+                </option>
+            }
+            else
+            {
+                <option value="High">
+                    🔴 High
+                </option>
+            }
+
+            @if (Model.Priority == "Medium")
+            {
+                <option value="Medium" selected>
+                    🟡 Medium
+                </option>
+            }
+            else
+            {
+                <option value="Medium">
+                    🟡 Medium
+                </option>
+            }
+
+            @if (Model.Priority == "Low")
+            {
+                <option value="Low" selected>
+                    🟢 Low
+                </option>
+            }
+            else
+            {
+                <option value="Low">
+                    🟢 Low
+                </option>
+            }
+
+        </select>
+
+    </div>
+
+
+    <!-- ASSIGN DEPARTMENT -->
+    <div class="mb-3">
+
+        <label class="form-label fw-bold">
+            🏢 Assign Department
+        </label>
+
+        <select name="department" class="form-select">
+
+    @if (string.IsNullOrEmpty(selectedDepartment))
+    {
+        <option value="" selected>
+            -- Select Department --
+        </option>
+    }
+    else
+    {
+        <option value="">
+            -- Select Department --
+        </option>
+    }
+
+    @if (selectedDepartment == "Road & Transport")
+    {
+        <option value="Road & Transport" selected>
+            🚧 Road & Transport
+        </option>
+    }
+    else
+    {
+        <option value="Road & Transport">
+            🚧 Road & Transport
+        </option>
+    }
+
+    @if (selectedDepartment == "Sanitation")
+    {
+        <option value="Sanitation" selected>
+            🗑️ Sanitation
+        </option>
+    }
+    else
+    {
+        <option value="Sanitation">
+            🗑️ Sanitation
+        </option>
+    }
+
+    @if (selectedDepartment == "Electrical")
+    {
+        <option value="Electrical" selected>
+            💡 Electrical
+        </option>
+    }
+    else
+    {
+        <option value="Electrical">
+            💡 Electrical
+        </option>
+    }
+
+    @if (selectedDepartment == "Water Supply")
+    {
+        <option value="Water Supply" selected>
+            💧 Water Supply
+        </option>
+    }
+    else
+    {
+        <option value="Water Supply">
+            💧 Water Supply
+        </option>
+    }
+
+    @if (selectedDepartment == "Public Works")
+    {
+        <option value="Public Works" selected>
+            🏗️ Public Works
+        </option>
+    }
+    else
+    {
+        <option value="Public Works">
+            🏗️ Public Works
+        </option>
+    }
+
+    @if (selectedDepartment == "Electricity Department")
+    {
+        <option value="Electricity Department" selected>
+            ⚡ Electricity Department
+        </option>
+    }
+    else
+    {
+        <option value="Electricity Department">
+            ⚡ Electricity Department
+        </option>
+    }
+
+</select>
+
+    </div>
+
+
+    <!-- UPDATE BUTTON -->
+    <button type="submit"
+            class="btn btn-warning">
+        💾 Update Complaint
+    </button>
+
+</form>
+
+    </div>
+
+</div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+        <div class="col-lg-5">
+
+
+            <!-- PHOTO -->
+
+            <div class="card shadow mb-4">
+
+                <div class="card-header bg-dark text-white">
+
+                    <h5 class="mb-0">
+                        📷 Complaint Evidence
+                    </h5>
+
+                </div>
+
+                <div class="card-body text-center">
+
+                    @if (!string.IsNullOrEmpty(Model.ImagePath))
+                    {
+                        <img src="@Model.ImagePath"
+                            alt="Complaint Evidence"
+                            class="img-fluid rounded"
+                            style="max-height:350px; object-fit:contain;" />
+                    }
+                    else
+                    {
+                        <div class="py-5 text-muted">
+
+                            <div class="display-5">
+                                📷
+                            </div>
+
+                            <p class="mt-2">
+                                No image uploaded
+                            </p>
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+<!-- RESOLUTION PROOF -->
+
+<div class="card shadow mb-4">
+
+    <div class="card-header bg-success text-white">
+        <h5 class="mb-0">
+            ✅ Resolution Proof (After)
+        </h5>
+    </div>
+
+    <div class="card-body">
+
+        @if (TempData["ResolutionProofSuccess"] != null)
+        {
+            <div class="alert alert-success">
+                ✅ @TempData["ResolutionProofSuccess"]
+            </div>
+        }
+
+        @if (TempData["ResolutionProofError"] != null)
+        {
+            <div class="alert alert-danger">
+                ⚠️ @TempData["ResolutionProofError"]
+            </div>
+        }
+
+        @{
+            var resolutionEvidence =
+                ViewBag.ResolutionEvidence
+                as List<PublicGrievanceSystem.Models.ComplaintResolutionEvidence>
+                ?? new List<PublicGrievanceSystem.Models.ComplaintResolutionEvidence>();
+        }
+
+        @if (resolutionEvidence.Any())
+        {
+            <h6 class="fw-bold mb-3">
+                Uploaded Resolution Photographs
+            </h6>
+
+            <div class="row g-3">
+
+                @foreach (var evidence in resolutionEvidence)
+                {
+                    <div class="col-12">
+
+                        <img src="@evidence.ImagePath"
+                             alt="Resolution Proof"
+                             class="img-fluid rounded border"
+                             style="width:100%; max-height:300px; object-fit:contain;" />
+
+                        <small class="text-muted d-block mt-2">
+                            Uploaded on:
+                            @evidence.UploadedAt.ToString("dd-MM-yyyy hh:mm tt")
+                        </small>
+
+                    </div>
+                }
+
+            </div>
+
+            <hr />
+        }
+        else
+        {
+            <div class="text-center py-3 text-muted">
+                <div class="display-5">📷</div>
+                <p class="mt-2 mb-0">
+                    No resolution photograph uploaded yet.
+                </p>
+            </div>
+        }
+
+        @if (Model.Status == "Resolved")
+        {
+            <form asp-controller="Admin"
+                  asp-action="UploadResolutionProof"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       name="id"
+                       value="@Model.Id" />
+
+                <div class="mb-3">
+
+                    <label class="form-label fw-bold">
+                        Upload After-Resolution Photograph
+                    </label>
+
+<!-- GALLERY AND CAMERA OPTIONS -->
+
+<div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+
+    <!-- GALLERY OPTION -->
+    <input type="file"
+           id="resolutionGalleryFile"
+           name="file"
+           class="form-control"
+           accept="image/jpeg,image/png,image/webp"
+           style="width: 380px; max-width: 100%;" />
+
+    <!-- HIDDEN CAMERA INPUT -->
+    <input type="file"
+           id="resolutionCameraFile"
+           name="cameraFile"
+           accept="image/*"
+           capture="environment"
+           class="d-none" />
+
+    <!-- CAMERA BUTTON -->
+    <button type="button"
+            class="btn btn-outline-primary"
+            onclick="document.getElementById('resolutionCameraFile').click()">
+
+        📷 Take Photo
+
+    </button>
+
+</div>
+
+                    <small class="text-muted">
+                        Upload a photograph showing the completed repair.
+                    </small>
+
+                </div>
+
+                <button type="submit"
+                        class="btn btn-success">
+                    📤 Upload Resolution Proof
+                </button>
+
+            </form>
+        }
+        else
+        {
+            <div class="alert alert-info mb-0">
+                ℹ️ Mark this complaint as Resolved before uploading
+                its resolution photograph.
+            </div>
+        }
+
+    </div>
+
+</div>
+
+<!-- CITIZEN RESOLUTION OBJECTION REVIEW -->
+
+@if (TempData["ReviewMessage"] != null)
+{
+    <div class="alert alert-info alert-dismissible fade show mb-4">
+        @TempData["ReviewMessage"]
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"></button>
+    </div>
+}
+
+@if (ViewBag.PendingResolutionResponses is
+    List<PublicGrievanceSystem.Models.ComplaintResolutionResponse> pendingResponses
+    && pendingResponses.Any())
+{
+    <div class="card shadow mb-4">
+
+        <div class="card-header text-white"
+             style="background:linear-gradient(120deg,#9b3d32,#d45b45);">
+
+            <h5 class="mb-0">
+                ⚠️ Citizen Resolution Objection
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            @foreach (var response in pendingResponses)
+            {
+                <div class="border rounded p-3 mb-3">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+
+                        <strong>
+                            Complaint #@response.ComplaintId
+                        </strong>
+
+                        <span class="badge bg-warning text-dark">
+                            Pending Review
+                        </span>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <strong>Citizen's Remarks:</strong>
+
+                        <div class="bg-light border rounded p-3 mt-2">
+                            @(string.IsNullOrWhiteSpace(response.Remarks)
+                                ? "No remarks provided."
+                                : response.Remarks)
+                        </div>
+
+                    </div>
+
+                    <p class="text-muted small">
+                        Reported on:
+                        @response.RespondedAt.ToString(
+                            "dd MMM yyyy, hh:mm tt")
+                    </p>
+
+                    <hr />
+
+                    <form asp-controller="Admin"
+                          asp-action="ReviewResolutionResponse"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden"
+                               name="responseId"
+                               value="@response.Id" />
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Administrator Remarks
+                            </label>
+
+                            <textarea name="adminRemarks"
+                                      class="form-control"
+                                      rows="3"
+                                      maxlength="1000"
+                                      placeholder="Enter your review decision or explanation..."></textarea>
+
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2">
+
+                            <button type="submit"
+                                    name="decision"
+                                    value="Reopened"
+                                    class="btn btn-success"
+                                    onclick="return confirm('Approve this objection and reopen the complaint?');">
+
+                                ✅ Approve Reopening
+
+                            </button>
+
+                            <button type="submit"
+                                    name="decision"
+                                    value="Rejected"
+                                    class="btn btn-outline-danger"
+                                    onclick="return confirm('Reject this objection? The complaint will remain resolved.');">
+
+                                ❌ Reject Request
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+}
+
+            <!-- MAP -->
+
+            <div class="card shadow">
+
+                <div class="card-header bg-success text-white">
+
+                    <h5 class="mb-0">
+                        🗺️ Complaint Location
+                    </h5>
+
+                </div>
+
+                <div class="card-body p-0">
+
+                    <div id="complaintMap"
+                         style="
+                            height:350px;
+                            width:100%;
+                         ">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        crossorigin=""></script>
+
+
+<script>
+
+    // Complaint coordinates from database
+
+    const latitude = @Model.Latitude;
+    const longitude = @Model.Longitude;
+
+
+    // Create map
+
+    const map = L.map("complaintMap").setView(
+        [latitude, longitude],
+        17
+    );
+
+
+    // OpenStreetMap tiles
+
+    L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            maxZoom: 19,
+            attribution:
+                "&copy; OpenStreetMap contributors"
+        }
+    ).addTo(map);
+
+
+    // Add complaint marker
+
+    const marker = L.marker(
+        [latitude, longitude]
+    ).addTo(map);
+
+
+    marker.bindPopup(
+        "<b>Complaint #" + @Model.Id + "</b><br>" +
+        "Latitude: " + latitude + "<br>" +
+        "Longitude: " + longitude
+    ).openPopup();
+
+</script>
