@@ -1,0 +1,565 @@
+@{
+    ViewData["Title"] = "Project Overview";
+}
+
+<style>
+    .overview-page {
+        color: #263449;
+        background: #f6f9ff;
+        padding-bottom: 45px;
+    }
+
+    .overview-hero {
+        background: linear-gradient(135deg, #12376b, #2874c8);
+        color: white;
+        padding: 65px 24px;
+        border-radius: 0 0 28px 28px;
+        text-align: center;
+    }
+
+    .overview-hero h1 {
+        font-size: clamp(2rem, 5vw, 3.2rem);
+        font-weight: 800;
+        margin-bottom: 18px;
+    }
+
+    .overview-hero p {
+        max-width: 800px;
+        margin: 0 auto 25px;
+        font-size: 1.08rem;
+        line-height: 1.8;
+        color: #edf5ff;
+    }
+
+    .overview-btn {
+        display: inline-block;
+        padding: 12px 22px;
+        margin: 5px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 700;
+        transition: 0.2s ease;
+    }
+
+    .overview-btn-primary {
+        background: white;
+        color: #17477f;
+    }
+
+    .overview-btn-outline {
+        border: 1px solid white;
+        color: white;
+    }
+
+    .overview-btn:hover {
+        transform: translateY(-2px);
+        opacity: 0.92;
+    }
+
+    .overview-container {
+        max-width: 1150px;
+        margin: 0 auto;
+        padding: 35px 20px 0;
+    }
+
+    .overview-heading {
+        text-align: center;
+        margin-bottom: 28px;
+    }
+
+    .overview-heading h2 {
+        color: #153b6d;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .overview-heading p {
+        color: #64748b;
+        line-height: 1.7;
+    }
+
+    .overview-card {
+        background: white;
+        border: 1px solid #e2eaf5;
+        border-radius: 16px;
+        padding: 24px;
+        height: 100%;
+        box-shadow: 0 5px 18px rgba(25, 55, 95, 0.05);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .overview-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px rgba(25, 55, 95, 0.10);
+    }
+
+    .overview-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        margin-bottom: 17px;
+        background: #eaf2ff;
+    }
+
+    .overview-card h3 {
+        font-size: 1.15rem;
+        font-weight: 750;
+        color: #193c6a;
+        margin-bottom: 12px;
+    }
+
+    .overview-card p,
+    .overview-card li {
+        color: #596a80;
+        line-height: 1.75;
+        font-size: 0.96rem;
+    }
+
+    .overview-card ul {
+        padding-left: 20px;
+        margin-bottom: 0;
+    }
+
+    .overview-step {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+        margin-bottom: 22px;
+    }
+
+    .overview-step-number {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #1e63b5;
+        color: white;
+        font-weight: 800;
+        font-size: 1.05rem;
+    }
+
+    .overview-step h3 {
+        font-size: 1.05rem;
+        font-weight: 750;
+        color: #193c6a;
+        margin-bottom: 6px;
+    }
+
+    .overview-step p {
+        color: #596a80;
+        line-height: 1.7;
+        margin-bottom: 0;
+    }
+
+    .overview-note {
+        background: #eaf3ff;
+        border-left: 4px solid #2874c8;
+        padding: 20px;
+        border-radius: 10px;
+        color: #294b77;
+        line-height: 1.8;
+    }
+
+    .overview-final {
+        text-align: center;
+        background: linear-gradient(135deg, #153b6d, #2874c8);
+        color: white;
+        border-radius: 20px;
+        padding: 35px 22px;
+    }
+
+    .overview-final h2 {
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+
+    .overview-final p {
+        color: #edf5ff;
+        line-height: 1.8;
+        max-width: 760px;
+        margin: 0 auto 20px;
+    }
+
+    @@media (max-width: 767.98px) {
+        .overview-hero {
+            padding: 45px 18px;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .overview-container {
+            padding: 28px 14px 0;
+        }
+
+        .overview-card {
+            padding: 20px;
+        }
+    }
+</style>
+
+<div class="overview-page">
+
+@if (TempData["LogoutMessage"] is string logoutMessage)
+{
+    <div class="container mt-3">
+        <div class="alert alert-success alert-dismissible fade show"
+            role="alert">
+            <strong>Logged Out Successfully!</strong>
+            @logoutMessage
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"></button>
+        </div>
+    </div>
+}
+
+    <!-- Introduction -->
+    <section class="overview-hero civictrace-hero">
+        <div class="container">
+
+
+<div class="mb-4"
+    style="width: min(560px, 100%);
+            margin: 0 auto 28px;
+            padding: 18px 22px;
+            background: #ffffff;
+            border: 1px solid #e2eaf5;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(10, 30, 60, 0.14);">
+
+    <img src="~/images/civictrace-logo.png"
+        alt="CivicTrace - Report, Track, Build Better Communities"
+        style="display: block;
+                width: 100%;
+                max-width: 520px;
+                height: auto;
+                margin: 0 auto;
+                object-fit: contain;" />
+</div>
+
+
+
+            <p>
+                A digital platform designed to help citizens report public
+                problems, share their locations, upload supporting photographs,
+                and follow the progress of their complaints. It also helps
+                authorized officials organize complaints and update their
+                resolution status.
+            </p>
+
+
+@if (User.Identity?.IsAuthenticated != true)
+{
+    <a asp-area="Identity"
+    asp-page="/Account/Register"
+    class="overview-btn overview-btn-primary">
+        📝 Create Account
+    </a>
+
+    <a asp-area="Identity"
+    asp-page="/Account/LoginChoice"
+    class="overview-btn overview-btn-primary">
+        🔐 Login
+    </a>
+}
+
+        </div>
+    </section>
+
+    <div class="overview-container">
+
+        <!-- About the project -->
+        <section class="mb-5">
+            <div class="overview-heading">
+                <h2>About the CivicTrace</h2>
+                <p>
+                    Understand the purpose of the system and the problems
+                    it aims to address.
+                </p>
+            </div>
+
+            <div class="overview-card">
+                <p>
+                    Public places can face problems such as damaged roads,
+                    overflowing garbage, broken streetlights, and other
+                    civic issues. Reporting these problems and finding out
+                    what happened afterward can sometimes be difficult.
+                </p>
+
+                <p>
+                    The CivicTrace provides a common online
+                    platform where citizens can submit complaints and check
+                    their progress. Complaints can include a description,
+                    location details, and an image as evidence. Authorized
+                    officials can review complaints, assign departments,
+                    set priorities, and update their status.
+                </p>
+
+                <p class="mb-0">
+                    The main aim is to make complaint reporting more organized,
+                    improve communication about progress, and make complaint
+                    information easier to access.
+                </p>
+            </div>
+        </section>
+
+        <!-- Main features -->
+        <section class="mb-5">
+            <div class="overview-heading">
+                <h2>Main Features</h2>
+                <p>
+                    The important facilities available in the system.
+                </p>
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="overview-card">
+                        <div class="overview-icon">📝</div>
+                        <h3>Complaint Registration</h3>
+                        <p>
+                            Citizens can submit a complaint with a title,
+                            description, category information, and supporting
+                            details through the website.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="overview-card">
+                        <div class="overview-icon">📍</div>
+                        <h3>Geo-Tagging</h3>
+                        <p>
+                            Location coordinates and available address
+                            information help identify where a reported
+                            public problem is located.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="overview-card">
+                        <div class="overview-icon">🤖</div>
+                        <h3>AI-Assisted Classification</h3>
+                        <p>
+                            The system uses complaint text to help identify
+                            a category, suggested department, and priority.
+                            Image analysis is an additional AI component
+                            whose results depend on its integration.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="overview-card">
+                        <div class="overview-icon">📷</div>
+                        <h3>Image Upload</h3>
+                        <p>
+                            Citizens can attach photographs to provide
+                            visual evidence of the reported issue.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="overview-card">
+                        <div class="overview-icon">🔎</div>
+                        <h3>Complaint Tracking</h3>
+                        <p>
+                            Citizens can view complaint details and check
+                            the current status, department information,
+                            and available status history.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="overview-card">
+                        <div class="overview-icon">🏢</div>
+                        <h3>Authority Dashboard</h3>
+                        <p>
+                            Authorized officials can review complaints,
+                            assign departments, manage priorities, update
+                            statuses, and view complaint statistics.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- How it works -->
+        <section class="mb-5">
+            <div class="overview-heading">
+                <h2>How the Website Works</h2>
+                <p>
+                    Follow these steps to understand the complaint process.
+                </p>
+            </div>
+
+            <div class="overview-card">
+
+                <div class="overview-step">
+                    <div class="overview-step-number">1</div>
+                    <div>
+                        <h3>Create an Account or Login</h3>
+                        <p>
+                            Citizens register or log in to access their
+                            dashboard and complaint facilities.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="overview-step">
+                    <div class="overview-step-number">2</div>
+                    <div>
+                        <h3>Submit a Complaint</h3>
+                        <p>
+                            Enter the issue details, provide location
+                            information, and upload a photograph if available.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="overview-step">
+                    <div class="overview-step-number">3</div>
+                    <div>
+                        <h3>Complaint Processing</h3>
+                        <p>
+                            The system saves the complaint and uses its
+                            classification logic to suggest a category,
+                            department, and priority. Similarity checks can
+                            also help flag possible duplicate complaints.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="overview-step">
+                    <div class="overview-step-number">4</div>
+                    <div>
+                        <h3>Review by Authorized Officials</h3>
+                        <p>
+                            Authorized officials review submitted complaints,
+                            assign departments where needed, and update
+                            progress as work proceeds.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="overview-step">
+                    <div class="overview-step-number">5</div>
+                    <div>
+                        <h3>Track Status and Updates</h3>
+                        <p>
+                            Citizens can check their own complaints through
+                            the dashboard and tracking page. Available
+                            status history shows how the complaint has
+                            progressed.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="overview-step mb-0">
+                    <div class="overview-step-number">6</div>
+                    <div>
+                        <h3>Resolution</h3>
+                        <p>
+                            When officials mark a complaint as resolved,
+                            its latest status is displayed to the citizen.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Roles -->
+        <section class="mb-5">
+            <div class="overview-heading">
+                <h2>Who Can Use the System?</h2>
+                <p>
+                    Different facilities are available according to the
+                    user's role and permissions.
+                </p>
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-md-6">
+                    <div class="overview-card">
+                        <div class="overview-icon">👤</div>
+                        <h3>Citizen</h3>
+                        <ul>
+                            <li>Register and log in.</li>
+                            <li>Submit a new public complaint.</li>
+                            <li>View personal complaints and dashboard statistics.</li>
+                            <li>Check the latest complaint updates.</li>
+                            <li>Track complaint status and available history.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="overview-card">
+                        <div class="overview-icon">🛡️</div>
+                        <h3>Authorized Authority</h3>
+                        <ul>
+                            <li>View complaints available to authorized officials.</li>
+                            <li>Review complaint details and evidence.</li>
+                            <li>Assign departments and manage priority.</li>
+                            <li>Update complaint status and add remarks.</li>
+                            <li>Monitor complaint statistics and progress.</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- Privacy and access -->
+        <section class="mb-5">
+            <div class="overview-note">
+                <strong>🔐 Privacy and Access Control</strong>
+                <p class="mb-0 mt-2">
+                    The citizen-facing complaint pages are designed to
+                    restrict access to complaints according to ownership.
+                    Citizens should be able to view their own complaint
+                    details, while authority functions are available only
+                    to appropriately authorized users.
+                </p>
+            </div>
+        </section>
+
+        <!-- Closing -->
+        <section class="overview-final">
+            <h2>Report an Issue. Follow Its Progress.</h2>
+            <p>
+                The CivicTrace aims to provide a convenient
+                way to report public problems and follow the steps taken
+                to address them.
+            </p>
+
+
+@if (User.Identity?.IsAuthenticated != true)
+{
+    <a asp-area="Identity"
+    asp-page="/Account/Register"
+    class="overview-btn overview-btn-primary">
+        Get Started
+    </a>
+}
+
+        </section>
+
+    </div>
+</div>
