@@ -1,0 +1,174 @@
+
+@model PublicGrievanceSystem.Models.FeedbackFormViewModel
+
+@{
+    ViewData["Title"] = "Complaint Feedback";
+}
+
+<div class="container py-5" style="max-width: 850px;">
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+
+        <div class="p-4 p-md-5 text-white"
+             style="background:linear-gradient(120deg,#142d4e,#245ca8);">
+
+            <div class="mb-2" style="font-size:2rem;">⭐</div>
+
+            <h1 class="h2 fw-bold mb-2">Share Your Feedback</h1>
+
+            <p class="mb-0">
+                Your feedback helps CivicTrace improve public services.
+            </p>
+
+        </div>
+
+        <div class="card-body p-4 p-md-5">
+
+            <h2 class="h5 fw-bold mb-2">Complaint</h2>
+            <p class="text-secondary mb-4">@Model.ComplaintTitle</p>
+
+            <form asp-controller="Feedback"
+                  asp-action="Create"
+                  method="post">
+
+                <input asp-for="ComplaintId" type="hidden" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"
+                     role="alert"></div>
+
+                <div class="mb-4">
+    <label asp-for="Rating" class="form-label fw-semibold">
+        How satisfied are you with the resolution?
+    </label>
+
+    <div class="feedback-rating"
+         role="radiogroup"
+         aria-label="Select your satisfaction rating">
+
+        <input asp-for="Rating" type="radio" id="rating5" value="5" />
+        <label for="rating5" title="Excellent">★</label>
+
+        <input asp-for="Rating" type="radio" id="rating4" value="4" />
+        <label for="rating4" title="Good">★</label>
+
+        <input asp-for="Rating" type="radio" id="rating3" value="3" />
+        <label for="rating3" title="Average">★</label>
+
+        <input asp-for="Rating" type="radio" id="rating2" value="2" />
+        <label for="rating2" title="Poor">★</label>
+
+        <input asp-for="Rating" type="radio" id="rating1" value="1" />
+        <label for="rating1" title="Very poor">★</label>
+    </div>
+
+    <span asp-validation-for="Rating" class="text-danger"></span>
+</div>
+
+                <div class="mb-4">
+                    <label asp-for="Comments"
+                           class="form-label fw-semibold">
+                        Additional comments (optional)
+                    </label>
+
+                    <textarea asp-for="Comments"
+                              class="form-control"
+                              rows="5"
+                              maxlength="1000"
+                              placeholder="Tell us about your experience with the resolution..."></textarea>
+
+                    <div class="form-text">
+                        Maximum 1000 characters.
+                    </div>
+
+                    <span asp-validation-for="Comments"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2">
+
+                    <button type="submit" class="btn feedback-submit px-4">
+                        Submit Feedback
+                    </button>
+
+                    <a asp-controller="Citizen"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary px-4">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<style>
+    .feedback-rating {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 6px;
+        margin: 10px 0 12px;
+    }
+
+    .feedback-rating input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        width: 1px;
+        height: 1px;
+    }
+
+    .feedback-rating label {
+        font-size: 40px;
+        line-height: 1;
+        color: #cbd5e1;
+        cursor: pointer;
+        transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .feedback-rating label:hover {
+        transform: scale(1.12);
+    }
+
+    .feedback-rating label:hover,
+    .feedback-rating label:hover ~ label,
+    .feedback-rating input[type="radio"]:checked ~ label {
+        color: #f5b301;
+    }
+
+    .feedback-rating input[type="radio"]:focus-visible + label {
+        outline: 2px solid #2563eb;
+        outline-offset: 4px;
+        border-radius: 4px;
+    }
+    .feedback-submit {
+    background: linear-gradient(120deg, #142d4e, #245ca8);
+    border: 1px solid #245ca8;
+    color: #ffffff;
+    font-weight: 600;
+    transition: all 0.25s ease;
+}
+
+.feedback-submit:hover {
+    background: linear-gradient(120deg, #0e213a, #1b4b8c);
+    border-color: #1b4b8c;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(20, 45, 78, 0.25);
+}
+
+.feedback-submit:focus-visible {
+    outline: 3px solid #8bb8f0;
+    outline-offset: 3px;
+}
+
+.feedback-submit:active {
+    transform: translateY(0);
+}
+</style>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
