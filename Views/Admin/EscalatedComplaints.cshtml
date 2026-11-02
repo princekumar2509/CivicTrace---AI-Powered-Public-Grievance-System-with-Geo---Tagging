@@ -1,0 +1,421 @@
+
+@model List<PublicGrievanceSystem.Models.Complaint>
+
+@{
+    ViewData["Title"] = "Escalated Complaints";
+}
+
+<style>
+    .escalated-page {
+        max-width: 1450px;
+        padding-top: 35px;
+        padding-bottom: 50px;
+        color: #24364b;
+    }
+
+    .escalated-hero {
+        background: linear-gradient(120deg, #711f28, #c0392b);
+        color: white;
+        padding: 30px;
+        border-radius: 18px;
+        box-shadow: 0 9px 24px rgba(160, 35, 45, .15);
+    }
+
+    .escalated-hero h1 {
+        font-size: clamp(1.6rem, 3vw, 2.2rem);
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .escalated-hero p {
+        color: #ffe2e2;
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .escalated-back {
+        color: white;
+        border: 1px solid rgba(255,255,255,.65);
+        border-radius: 9px;
+        padding: 10px 15px;
+        text-decoration: none;
+        font-weight: 650;
+        white-space: nowrap;
+    }
+
+    .escalated-back:hover {
+        background: white;
+        color: #8e2630;
+    }
+
+    .escalated-stat {
+        height: 100%;
+        padding: 23px;
+        background: white;
+        border: 1px solid #f0dfe1;
+        border-top: 4px solid #c0392b;
+        border-radius: 14px;
+        box-shadow: 0 5px 18px rgba(25,55,90,.05);
+    }
+
+    .escalated-stat-number {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: #b52d36;
+    }
+
+    .escalated-stat-label {
+        color: #718096;
+        font-size: .9rem;
+        font-weight: 650;
+    }
+
+    .escalated-card {
+        border: 1px solid #f0dfe1;
+        border-radius: 15px;
+        background: white;
+        overflow: hidden;
+        box-shadow: 0 6px 20px rgba(25,55,90,.055);
+    }
+
+    .escalated-card-header {
+        padding: 19px 23px;
+        background: linear-gradient(110deg, #922b21, #c0392b);
+        color: white;
+    }
+
+    .escalated-card-header h4 {
+        font-size: 1.12rem;
+        font-weight: 750;
+        margin: 0;
+    }
+
+    .escalated-card-body {
+        padding: 22px;
+    }
+
+    .escalated-table {
+        margin-bottom: 0;
+        vertical-align: middle;
+    }
+
+    .escalated-table thead th {
+        background: #fff0f0;
+        color: #70252b;
+        font-size: .85rem;
+        font-weight: 750;
+        padding: 15px 13px;
+        white-space: nowrap;
+        border-bottom: 2px solid #efd7d9;
+    }
+
+    .escalated-table tbody td {
+        padding: 16px 13px;
+        border-color: #f2e9e9;
+        font-size: .91rem;
+    }
+
+    .escalated-table tbody tr:hover {
+        background: #fff8f8;
+    }
+
+    .escalated-action {
+        background: linear-gradient(120deg, #922b21, #c0392b);
+        border: 0;
+        color: white;
+        border-radius: 8px;
+        padding: 9px 13px;
+        font-weight: 650;
+        text-decoration: none;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .escalated-action:hover {
+        color: white;
+        background: #741f23;
+    }
+
+    .escalated-empty {
+        padding: 55px 20px;
+        text-align: center;
+    }
+
+    .escalated-empty-icon {
+        width: 76px;
+        height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e8f7ef;
+        border-radius: 20px;
+        margin: 0 auto 18px;
+        font-size: 38px;
+    }
+
+    @@media (max-width: 767.98px) {
+        .escalated-page {
+            padding-top: 20px;
+        }
+
+        .escalated-hero {
+            padding: 22px 18px;
+        }
+
+        .escalated-card-body {
+            padding: 13px;
+        }
+
+        .escalated-table {
+            min-width: 1050px;
+        }
+    }
+</style>
+
+<div class="container-fluid escalated-page">
+
+    <!-- PAGE HERO -->
+    <div class="escalated-hero mb-4">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+            <div>
+                <div class="mb-2">
+                    <span class="badge bg-light text-danger">
+                        🚨 URGENT ADMIN ATTENTION
+                    </span>
+                </div>
+
+                <h1>
+                    🚨 Escalated Complaints
+                </h1>
+
+                <p>
+                    Monitor unresolved complaints that have exceeded their escalation deadlines.
+                </p>
+            </div>
+
+            <a asp-controller="Admin"
+               asp-action="Index"
+               class="escalated-back">
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- SUMMARY CARDS -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-12 col-md-6">
+
+            <div class="escalated-stat">
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div style="font-size:35px;">
+                        🚨
+                    </div>
+
+                    <div>
+                        <div class="escalated-stat-label">
+                            TOTAL ESCALATED COMPLAINTS
+                        </div>
+
+                        <div class="escalated-stat-number">
+                            @Model.Count
+                        </div>
+
+                        <small class="text-muted">
+                            Requiring administrator attention
+                        </small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-12 col-md-6">
+
+            <div class="escalated-stat">
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div style="font-size:35px;">
+                        🛡️
+                    </div>
+
+                    <div>
+                        <div class="escalated-stat-label">
+                            ESCALATION MANAGEMENT
+                        </div>
+
+                        <div class="fw-bold fs-4 text-danger mt-1">
+                            Admin Review
+                        </div>
+
+                        <small class="text-muted">
+                            Review delayed complaints and take action
+                        </small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ESCALATED COMPLAINTS TABLE -->
+    <div class="escalated-card">
+
+        <div class="escalated-card-header">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                <h4>
+                    🚨 Complaints Requiring Urgent Attention
+                </h4>
+
+                <span class="badge bg-light text-danger fs-6">
+                    @Model.Count Escalated
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="escalated-card-body">
+
+            <p class="text-muted mb-4">
+                These complaints remained unresolved even after their
+                additional escalation period. Review each complaint
+                and take the necessary administrative action.
+            </p>
+
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-hover escalated-table">
+
+                        <thead>
+                            <tr>
+                                <th>Complaint ID</th>
+                                <th>Complaint Title</th>
+                                <th>Priority</th>
+                                <th>Department</th>
+                                <th>Resolution Deadline</th>
+                                <th>Overdue Since</th>
+                                <th>Escalated On</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var complaint in Model)
+                            {
+                                <tr>
+
+                                    <td class="fw-bold text-primary">
+                                        #@complaint.Id
+                                    </td>
+
+                                    <td class="fw-semibold">
+                                        @complaint.Title
+                                    </td>
+
+                                    <td>
+
+                                        @if (complaint.Priority == "High")
+                                        {
+                                            <span class="badge bg-danger p-2">
+                                                🔴 High
+                                            </span>
+                                        }
+                                        else if (complaint.Priority == "Low")
+                                        {
+                                            <span class="badge bg-success p-2">
+                                                🟢 Low
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark p-2">
+                                                🟡 @complaint.Priority
+                                            </span>
+                                        }
+
+                                    </td>
+
+                                    <td>
+                                        @(string.IsNullOrWhiteSpace(complaint.Department)
+                                            ? "Not Assigned"
+                                            : complaint.Department)
+                                    </td>
+
+                                    <td>
+                                        @complaint.ResolutionDeadline?.ToString(
+                                            "dd MMM yyyy, hh:mm tt")
+                                    </td>
+
+                                    <td>
+                                        @(complaint.OverdueAt.HasValue
+                                            ? complaint.OverdueAt.Value.ToString("dd MMM yyyy, hh:mm tt")
+                                            : "Not recorded")
+                                    </td>
+
+                                    <td class="text-danger fw-semibold">
+                                        @complaint.EscalatedAt?.ToString(
+                                            "dd MMM yyyy, hh:mm tt")
+                                    </td>
+
+                                    <td>
+                                        <a asp-controller="Admin"
+                                           asp-action="Details"
+                                           asp-route-id="@complaint.Id"
+                                           class="escalated-action">
+                                            🔍 Review Complaint
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+            else
+            {
+                <div class="escalated-empty">
+
+                    <div class="escalated-empty-icon">
+                        ✅
+                    </div>
+
+                    <h4 class="fw-bold text-dark">
+                        No Escalated Complaints
+                    </h4>
+
+                    <p class="text-muted mb-0">
+                        No complaints have exceeded their escalation
+                        deadlines yet. The system will display them here
+                        when escalation conditions are met.
+                    </p>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>

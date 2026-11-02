@@ -1,0 +1,2757 @@
+@model IEnumerable<PublicGrievanceSystem.Models.Complaint>
+
+@using System.Text.Json
+
+@{
+    ViewData["Title"] = "Authority Dashboard";
+
+    var complaints = Model.ToList();
+    var mostSupportedComplaints =
+    ViewBag.MostSupportedComplaints as
+        List<PublicGrievanceSystem.Models.CommunityComplaintViewModel>
+    ?? new List<PublicGrievanceSystem.Models.CommunityComplaintViewModel>();
+        var pendingResolutionReviews =
+    ViewBag.PendingResolutionReviews
+    as List<PublicGrievanceSystem.Models.ComplaintResolutionResponse>
+    ?? new List<PublicGrievanceSystem.Models.ComplaintResolutionResponse>();
+        var overdueComplaints =
+    ViewBag.OverdueComplaints
+    as List<PublicGrievanceSystem.Models.Complaint>
+    ?? new List<PublicGrievanceSystem.Models.Complaint>();
+
+var escalatedComplaints =
+    ViewBag.EscalatedComplaints
+    as List<PublicGrievanceSystem.Models.Complaint>
+    ?? new List<PublicGrievanceSystem.Models.Complaint>();
+
+    var totalComplaints = complaints.Count;
+
+    var submittedCount = complaints.Count(c =>
+        c.Status == "Submitted");
+
+    var inProgressCount = complaints.Count(c =>
+        c.Status == "In Progress");
+
+    var resolvedCount = complaints.Count(c =>
+        c.Status == "Resolved");
+
+    var complaintMapData = complaints.Select(c => new
+    {
+        id = c.Id,
+        title = c.Title,
+        category = c.Category,
+        status = c.Status,
+        priority = c.Priority,
+        severity = c.AISeverity,
+        department = c.Department ?? "",
+        latitude = c.Latitude,
+        longitude = c.Longitude,
+        address = c.Address ?? "",
+        pinCode = c.PinCode ?? ""
+    });
+
+var highPriorityComplaints =
+    Model.Count(c => c.Priority == "High");
+
+var mediumPriorityComplaints =
+    Model.Count(c => c.Priority == "Medium");
+
+var lowPriorityComplaints =
+    Model.Count(c => c.Priority == "Low");
+
+    var criticalSeverityComplaints =
+    Model.Count(c => c.AISeverity == "Critical");
+
+var highSeverityComplaints =
+    Model.Count(c => c.AISeverity == "High");
+
+var mediumSeverityComplaints =
+    Model.Count(c => c.AISeverity == "Medium");
+
+var lowSeverityComplaints =
+    Model.Count(c => c.AISeverity == "Low");
+
+var assignedComplaints =
+    Model.Count(c => !string.IsNullOrEmpty(c.Department));
+
+var unassignedComplaints =
+    Model.Count(c => string.IsNullOrEmpty(c.Department));
+
+var departmentCounts = Model
+    .Where(c => !string.IsNullOrEmpty(c.Department))
+    .GroupBy(c => c.Department)
+    .Select(g => new
+    {
+        Department = g.Key,
+        Count = g.Count()
+    })
+    .OrderByDescending(x => x.Count)
+    .ToList();
+var categorySeverityCounts = Model
+    .GroupBy(c => c.Category)
+    .Select(g => new
+    {
+        Category = g.Key,
+        Critical = g.Count(c => c.AISeverity == "Critical"),
+        High = g.Count(c => c.AISeverity == "High"),
+        Medium = g.Count(c => c.AISeverity == "Medium"),
+        Low = g.Count(c => c.AISeverity == "Low")
+    })
+    .OrderByDescending(x =>
+        x.Critical + x.High + x.Medium + x.Low)
+    .ToList();
+}
+<!--=========================================================-->
+<!--PAGE STYLING -->
+<!--=========================================================-->
+
+<style>
+
+    body {
+        background-color: #f5f7fa;
+    }
+
+    .dashboard-header {
+        background: #0d6efd;
+        color: white;
+        border-radius: 8px 8px 0 0;
+        padding: 22px 28px;
+    }
+
+.dashboard-header h1 {
+    font-size: 2.2rem;
+    margin: 0;
+}
+
+    .dashboard-subtitle {
+    background: white;
+    color: #212529;
+    padding: 18px 28px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    font-size: 1.35rem;
+}
+
+    .stat-card {
+        background: white;
+        border-radius: 8px;
+        padding: 22px;
+        text-align: center;
+        min-height: 145px;
+        font-size: 1.8rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        border: 1px solid #ddd;
+    }
+
+    .stat-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .stat-number {
+        font-size: 42px;
+        font-weight: 700;
+        color: #111;
+    }
+
+    .stat-total {
+        border-color: #0d6efd;
+    }
+
+    .stat-submitted {
+        border-color: #ffc107;
+    }
+
+    .stat-progress {
+        border-color: #0dcaf0;
+    }
+
+    .stat-resolved {
+        border-color: #198754;
+    }
+
+    .section-header {
+        background: #198754;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 6px 6px 0 0;
+        font-size: 25px;
+        font-weight: 600;
+    }
+
+    .filter-header {
+        background: #212529;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 6px 6px 0 0;
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    .complaint-header {
+        background: #0d6efd;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 6px 6px 0 0;
+        font-size: 25px;
+        font-weight: 600;
+    }
+
+    #hotspotMap {
+        width: 100%;
+        height: 500px;
+        border-radius: 8px;
+    }
+
+    .map-container {
+        background: white;
+        padding: 20px;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .filter-container {
+        background: white;
+        padding: 22px;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .table-container {
+        background: white;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+    .table th {
+        white-space: nowrap;
+    }
+
+    .table td {
+        vertical-align: middle;
+    }
+
+    .complaint-id {
+        min-width: 50px;
+    }
+
+    .location-cell {
+        min-width: 350px;
+    }
+
+    .badge-custom {
+        font-size: 14px;
+        padding: 7px 10px;
+    }
+
+    .filter-result {
+        font-weight: 600;
+        color: #555;
+    }
+
+    /* CivicTrace Admin Dashboard - modern visual styling */
+
+    body {
+        background: #f3f6fb;
+    }
+
+    .container-fluid.mt-4 {
+        max-width: 1800px;
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .dashboard-header {
+        background: linear-gradient(120deg, #123b70, #1769aa);
+        padding: 28px 30px;
+        border-radius: 16px 16px 0 0;
+    }
+
+    .dashboard-header h1 {
+        font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+        font-weight: 750;
+        letter-spacing: -0.5px;
+    }
+
+    .dashboard-subtitle {
+        padding: 18px 30px;
+        border-radius: 0 0 16px 16px;
+        color: #526176;
+        font-size: 1rem;
+    }
+
+    .dashboard-subtitle h4 {
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .stat-card {
+        position: relative;
+        overflow: hidden;
+        border: 0;
+        border-radius: 16px;
+        padding: 24px 18px;
+        min-height: 150px;
+        box-shadow: 0 5px 20px rgba(24, 48, 84, 0.07);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 28px rgba(24, 48, 84, 0.12);
+    }
+
+    .stat-title {
+        font-size: 0.98rem;
+        line-height: 1.5;
+    }
+
+    .stat-number {
+        font-size: clamp(2rem, 3vw, 2.6rem);
+        margin-top: 8px;
+        color: #172b4d;
+    }
+
+    .stat-total {
+        border-top: 4px solid #2878e0;
+    }
+
+    .stat-submitted {
+        border-top: 4px solid #e6a817;
+    }
+
+    .stat-progress {
+        border-top: 4px solid #12a9c7;
+    }
+
+    .stat-resolved {
+        border-top: 4px solid #209765;
+    }
+
+    .section-header,
+    .filter-header,
+    .complaint-header {
+        padding: 17px 22px;
+        font-size: 1.15rem;
+        font-weight: 700;
+        border-radius: 14px 14px 0 0;
+    }
+
+    .section-header {
+        background: linear-gradient(110deg, #1769aa, #2878e0);
+    }
+
+    .filter-header {
+        background: #172b4d;
+    }
+
+    .complaint-header {
+        background: linear-gradient(110deg, #1769aa, #2878e0);
+    }
+
+    .card.shadow,
+    .card.border-0 {
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .card.shadow {
+        box-shadow: 0 5px 20px rgba(24, 48, 84, 0.06) !important;
+        border: 1px solid #e8edf5;
+    }
+
+    .card-header {
+        padding: 17px 22px;
+    }
+
+    .card-header h4 {
+        font-size: 1.1rem;
+        font-weight: 700;
+    }
+
+    .filter-container,
+    .map-container,
+    .table-container {
+        background: #ffffff;
+    }
+
+    .filter-container {
+        padding: 24px;
+    }
+
+    .form-control,
+    .form-select {
+        min-height: 44px;
+        border-color: #d8e1ed;
+        border-radius: 9px;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #2878e0;
+        box-shadow: 0 0 0 3px rgba(40, 120, 224, 0.12);
+    }
+
+    .table-container {
+        border-radius: 0 0 14px 14px;
+    }
+
+    .table {
+        margin-bottom: 0;
+    }
+
+    .table thead th {
+        background: #eef3fa;
+        color: #263d5b;
+        font-size: 0.82rem;
+        font-weight: 750;
+        padding: 15px 12px;
+        border-bottom: 2px solid #dce5f1;
+    }
+
+    .table tbody td {
+        padding: 14px 12px;
+        border-color: #edf1f7;
+        font-size: 0.9rem;
+    }
+
+    .table-hover tbody tr:hover > * {
+        background-color: #f2f7ff;
+    }
+
+    .badge-custom {
+        border-radius: 7px;
+        font-size: 0.78rem;
+        font-weight: 650;
+        padding: 7px 10px;
+        white-space: nowrap;
+    }
+
+    .complaint-id .btn {
+        border-radius: 8px;
+        font-weight: 700;
+    }
+
+    .location-cell {
+        min-width: 260px;
+        max-width: 380px;
+        overflow-wrap: anywhere;
+    }
+
+    #hotspotMap {
+        height: 460px;
+        border: 1px solid #e1e8f2;
+        border-radius: 12px;
+        z-index: 1;
+    }
+
+    .filter-result {
+        color: #245ca8;
+        font-size: 0.9rem;
+    }
+
+    @@media (max-width: 767.98px) {
+        .container-fluid.mt-4 {
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+
+        .dashboard-header,
+        .dashboard-subtitle,
+        .filter-container,
+        .map-container {
+            padding: 17px;
+        }
+
+        .stat-card {
+            min-height: 125px;
+            padding: 18px 12px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+        }
+
+        .section-header,
+        .filter-header,
+        .complaint-header {
+            padding: 15px;
+            font-size: 1rem;
+        }
+
+        #hotspotMap {
+            height: 350px;
+        }
+    }
+
+/* Admin complaint table improvements */
+.complaints-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.complaints-table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    padding: 14px 12px;
+    white-space: nowrap;
+    font-size: 0.9rem;
+    font-weight: 700;
+    background: #edf3fb;
+    color: #203858;
+    border-bottom: 2px solid #243f63;
+}
+
+.complaints-table td {
+    padding: 14px 12px;
+    vertical-align: middle;
+    line-height: 1.5;
+    border-bottom: 1px solid #e5ebf3;
+}
+
+.complaints-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.complaints-table tbody tr:hover {
+    background-color: #f0f6ff;
+}
+
+.complaints-table td a {
+    overflow-wrap: anywhere;
+}
+
+.complaints-table .badge {
+    display: inline-block;
+    max-width: 100%;
+    padding: 7px 10px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: normal;
+}
+
+.complaints-table td:first-child {
+    white-space: nowrap;
+}
+
+@@media (max-width: 767.98px) {
+    .complaints-table th,
+    .complaints-table td {
+        padding: 10px 8px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Admin dashboard filter improvements */
+.filter-card input,
+.filter-card select {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 14px;
+    border: 1px solid #d5e0ef;
+    border-radius: 10px;
+    background-color: #ffffff;
+    color: #203858;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-card input:focus,
+.filter-card select:focus {
+    border-color: #2673e8;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(38, 115, 232, 0.14);
+}
+
+.filter-card label {
+    display: block;
+    margin-bottom: 8px;
+    color: #203858;
+    font-weight: 700;
+}
+
+.filter-card button {
+    min-height: 44px;
+    border-radius: 9px;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-card button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(30, 70, 130, 0.14);
+}
+
+@@media (max-width: 767.98px) {
+    .filter-card input,
+    .filter-card select {
+        min-height: 44px;
+    }
+}
+
+/* CivicTrace statistics card enhancements */
+.stat-card {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background: linear-gradient(145deg, #ffffff, #f7faff);
+    border: 1px solid #e3eaf5;
+}
+
+.stat-card::after {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    right: -28px;
+    bottom: -35px;
+    border-radius: 50%;
+    background: rgba(40, 120, 224, 0.07);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.stat-card .stat-title {
+    position: relative;
+    font-weight: 650;
+    letter-spacing: 0.1px;
+}
+
+.stat-card .stat-number {
+    position: relative;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.2;
+}
+
+.stat-card.stat-total::after {
+    background: rgba(40, 120, 224, 0.12);
+}
+
+.stat-card.stat-submitted::after {
+    background: rgba(230, 168, 23, 0.14);
+}
+
+.stat-card.stat-progress::after {
+    background: rgba(18, 169, 199, 0.13);
+}
+
+.stat-card.stat-resolved::after {
+    background: rgba(32, 151, 101, 0.13);
+}
+
+@@media (max-width: 767.98px) {
+    .stat-card {
+        min-height: 125px;
+    }
+}
+
+/* CivicTrace analytics section enhancements */
+.section-header {
+    border-radius: 12px 12px 0 0;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+
+.section-header + .card-body {
+    padding: 22px;
+}
+
+.card {
+    border-radius: 14px;
+}
+
+.card-body {
+    min-width: 0;
+}
+
+canvas {
+    max-width: 100%;
+}
+
+.progress {
+    height: 12px;
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: #e9eef5;
+}
+
+.progress-bar {
+    border-radius: 10px;
+    transition: width 0.4s ease;
+}
+
+.table-container {
+    border-radius: 0 0 12px 12px;
+    overflow-x: auto;
+}
+
+@@media (max-width: 767.98px) {
+    .section-header + .card-body {
+        padding: 14px;
+    }
+
+    .card-body {
+        overflow-wrap: anywhere;
+    }
+}
+
+/* CivicTrace dashboard section headings */
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 58px;
+    padding: 16px 20px;
+    background: linear-gradient(120deg, #203858, #315b88);
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    border-radius: 12px 12px 0 0;
+}
+
+.filter-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 58px;
+    padding: 16px 20px;
+    background: linear-gradient(120deg, #203858, #315b88);
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 700;
+    border-radius: 12px 12px 0 0;
+}
+
+.complaint-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px;
+    background: linear-gradient(120deg, #203858, #315b88);
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 700;
+    border-radius: 12px 12px 0 0;
+}
+
+@@media (max-width: 767.98px) {
+    .section-header,
+    .filter-header,
+    .complaint-header {
+        min-height: 52px;
+        padding: 14px;
+        font-size: 0.95rem;
+    }
+}
+
+/* CivicTrace department distribution cards */
+.department-card {
+    height: 100%;
+    background: linear-gradient(145deg, #ffffff, #f7faff);
+    border: 1px solid #dce6f2 !important;
+    border-radius: 12px !important;
+    padding: 20px !important;
+    box-shadow: 0 3px 10px rgba(31, 55, 85, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease,
+                border-color 0.2s ease;
+}
+
+.department-card:hover {
+    transform: translateY(-3px);
+    border-color: #8bb8f5 !important;
+    box-shadow: 0 8px 20px rgba(31, 85, 150, 0.10);
+}
+
+.department-card .fw-bold {
+    color: #203858;
+}
+
+.department-card .progress {
+    height: 11px !important;
+    margin-top: 14px !important;
+    border-radius: 20px;
+    background-color: #e7edf5;
+    overflow: hidden;
+}
+
+.department-card .progress-bar {
+    border-radius: 20px;
+    transition: width 0.5s ease;
+}
+
+/* CivicTrace complaint priority badges */
+.badge-custom {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0.2px;
+}
+
+/* CivicTrace priority badge polish */
+.badge-custom {
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 5px rgba(31, 55, 85, 0.10);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.badge-custom:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 9px rgba(31, 55, 85, 0.16);
+}
+
+/* CivicTrace dashboard summary card interaction */
+.stat-card {
+    cursor: default;
+    transition: transform 0.22s ease,
+                box-shadow 0.22s ease,
+                border-color 0.22s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(31, 55, 85, 0.12);
+    border-color: #c7d8ed;
+}
+
+.stat-card .stat-number {
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.stat-card .stat-title {
+    font-size: 0.95rem;
+}
+
+/* CivicTrace priority analytics cards */
+.row.g-4.mt-2.mb-4 > .col-md-4 > .card {
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform 0.22s ease,
+                box-shadow 0.22s ease;
+}
+
+.row.g-4.mt-2.mb-4 > .col-md-4 > .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 22px rgba(31, 55, 85, 0.12);
+}
+
+.row.g-4.mt-2.mb-4 > .col-md-4 > .card .card-body {
+    padding: 24px 18px;
+}
+
+.row.g-4.mt-2.mb-4 > .col-md-4 > .card .card-body > div:first-child {
+    line-height: 1.2;
+}
+
+/* CivicTrace priority analytics cards */
+.row.g-4.mt-2.mb-4 > .col-md-4 > .card {
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.row.g-4.mt-2.mb-4 > .col-md-4 > .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(31, 56, 88, 0.12);
+}
+
+.row.g-4.mt-2.mb-4 > .col-md-4 > .card .card-body {
+    padding: 24px 18px;
+}
+
+.row.g-4.mt-2.mb-4 > .col-md-4 > .card .text-muted {
+    font-weight: 600;
+}
+
+/* CivicTrace dashboard header refinement */
+.dashboard-header {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    padding: 28px 30px;
+    box-shadow: 0 8px 24px rgba(31, 55, 85, 0.10);
+}
+
+.dashboard-header h1,
+.dashboard-header h2 {
+    font-weight: 800;
+    letter-spacing: -0.4px;
+    line-height: 1.25;
+}
+
+.dashboard-subtitle {
+    margin-top: 8px;
+    line-height: 1.6;
+}
+
+@@media (max-width: 767.98px) {
+    .dashboard-header {
+        padding: 20px 18px;
+        border-radius: 12px;
+    }
+
+    .dashboard-header h1,
+    .dashboard-header h2 {
+        font-size: 1.5rem;
+        letter-spacing: 0;
+    }
+
+    .dashboard-subtitle {
+        font-size: 0.9rem;
+    }
+}
+
+/* CivicTrace responsive dashboard improvements */
+@@media (max-width: 767.98px) {
+    .container-fluid.mt-4 {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .stat-card {
+        min-height: 120px;
+        padding: 16px 12px;
+    }
+
+    .stat-number {
+        font-size: 1.8rem;
+        overflow-wrap: anywhere;
+    }
+
+    .section-header,
+    .filter-header,
+    .complaint-header {
+        padding: 14px;
+        font-size: 0.95rem;
+    }
+
+    .map-container {
+        padding: 0;
+    }
+
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .complaints-table {
+        min-width: 900px;
+    }
+
+    .filter-container {
+        padding: 14px;
+    }
+}
+
+/* CivicTrace dashboard button polish */
+.container-fluid.mt-4 .btn {
+    transition: transform 0.18s ease,
+                box-shadow 0.18s ease;
+}
+
+.container-fluid.mt-4 .btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(31, 55, 85, 0.14);
+}
+
+.container-fluid.mt-4 .btn:focus-visible {
+    outline: 3px solid #8bb8f5;
+    outline-offset: 3px;
+}
+
+</style>
+
+
+<div class="container-fluid mt-4">
+
+    <!-- ===================================================== -->
+    <!-- DASHBOARD HEADER -->
+    <!-- ===================================================== -->
+
+    <div class="card border-0 mb-4"
+     style="overflow:visible; position:relative; z-index:1050;">
+
+        <div class="dashboard-header d-flex align-items-center justify-content-between"
+     style="overflow:visible; position:relative; z-index:1051;">
+
+    <h1 class="mb-0">
+        🏢 Authority Dashboard
+    </h1>
+
+    <!-- ADMIN QUICK MENU -->
+    <div class="dropdown">
+
+        <button class="btn bg-transparent border-0 p-0 d-flex align-items-center justify-content-center"
+                type="button"
+                id="civicTraceDashboardMenu"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                aria-label="Open admin quick menu"
+                style="width:48px;height:48px;">
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 width="27"
+                 height="27"
+                 viewBox="0 0 24 24"
+                 fill="#ffffff"
+                 aria-hidden="true">
+
+                <circle cx="5" cy="5" r="2"/>
+                <circle cx="12" cy="5" r="2"/>
+                <circle cx="19" cy="5" r="2"/>
+
+                <circle cx="5" cy="12" r="2"/>
+                <circle cx="12" cy="12" r="2"/>
+                <circle cx="19" cy="12" r="2"/>
+
+                <circle cx="5" cy="19" r="2"/>
+                <circle cx="12" cy="19" r="2"/>
+                <circle cx="19" cy="19" r="2"/>
+
+            </svg>
+
+        </button>
+
+        <div class="dropdown-menu dropdown-menu-end mt-2 p-2 shadow border-0"
+             aria-labelledby="civicTraceDashboardMenu"
+             style="min-width:280px;">
+
+            @await Component.InvokeAsync("PendingResolutionReviews")
+
+        </div>
+
+    </div>
+
+</div>
+
+        <div class="dashboard-subtitle">
+
+            <h4 class="mb-0">
+                Monitor, manage and resolve public complaints.
+            </h4>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- STATISTICS CARDS -->
+    <!-- ===================================================== -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-3">
+
+            <div class="stat-card stat-total">
+
+                <div class="stat-title text-primary">
+                    📋 Total Complaints
+                </div>
+
+                <div class="stat-number">
+                    @totalComplaints
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="stat-card stat-submitted">
+
+                <div class="stat-title text-warning">
+                    📩 Submitted
+                </div>
+
+                <div class="stat-number">
+                    @submittedCount
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="stat-card stat-progress">
+
+                <div class="stat-title text-info">
+                    🔄 In Progress
+                </div>
+
+                <div class="stat-number">
+                    @inProgressCount
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="stat-card stat-resolved">
+
+                <div class="stat-title text-success">
+                    ✅ Resolved
+                </div>
+
+                <div class="stat-number">
+                    @resolvedCount
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+<!-- PRIORITY ANALYTICS -->
+<div class="row g-4 mt-2 mb-4">
+
+    <!-- HIGH PRIORITY -->
+    <div class="col-md-4">
+        <div class="card shadow h-100"
+            style="border-left: 6px solid #dc3545;">
+
+            <div class="card-body text-center">
+
+                <div style="font-size: 40px;">
+                    🔴
+                </div>
+
+                <h5 class="fw-bold text-danger">
+                    High Priority
+                </h5>
+
+                <div class="display-5 fw-bold text-danger">
+                    @highPriorityComplaints
+                </div>
+
+                <p class="text-muted mb-0">
+                    Urgent attention required
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- MEDIUM PRIORITY -->
+    <div class="col-md-4">
+        <div class="card shadow h-100"
+            style="border-left: 6px solid #ffc107;">
+
+            <div class="card-body text-center">
+
+                <div style="font-size: 40px;">
+                    🟡
+                </div>
+
+                <h5 class="fw-bold text-warning">
+                    Medium Priority
+                </h5>
+
+                <div class="display-5 fw-bold text-warning">
+                    @mediumPriorityComplaints
+                </div>
+
+                <p class="text-muted mb-0">
+                    Normal attention
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- LOW PRIORITY -->
+    <div class="col-md-4">
+        <div class="card shadow h-100"
+            style="border-left: 6px solid #198754;">
+
+            <div class="card-body text-center">
+
+                <div style="font-size: 40px;">
+                    🟢
+                </div>
+
+                <h5 class="fw-bold text-success">
+                    Low Priority
+                </h5>
+
+                <div class="display-5 fw-bold text-success">
+                    @lowPriorityComplaints
+                </div>
+
+                <p class="text-muted mb-0">
+                    Lower urgency
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+    <!-- MOST SUPPORTED COMPLAINTS -->
+
+<section class="card shadow mb-4">
+
+    <div class="section-header">
+        🏆 Most Supported Complaints
+    </div>
+
+    <div class="card-body">
+
+        <p class="text-muted mb-4">
+            Complaints receiving the highest community support
+            from citizens.
+        </p>
+
+        @if (mostSupportedComplaints.Any())
+        {
+            @for (int i = 0; i < mostSupportedComplaints.Count; i++)
+            {
+                var item = mostSupportedComplaints[i];
+
+                <div class="d-flex flex-column flex-md-row
+                            justify-content-between align-items-md-center
+                            gap-3 p-3 mb-3 border rounded">
+
+                    <div class="d-flex align-items-start gap-3">
+
+                        <div class="fw-bold text-primary fs-4">
+                            #@(i + 1)
+                        </div>
+
+                        <div>
+
+                            <h5 class="fw-bold mb-2">
+                                @item.Title
+                            </h5>
+
+                            <div class="small text-muted mb-2">
+                                Complaint ID: #@item.ComplaintId
+                                &nbsp; | &nbsp;
+                                Category: @item.Category
+                            </div>
+
+                            <div class="d-flex flex-wrap gap-2">
+
+                                <span class="badge bg-info text-dark">
+                                    @item.Status
+                                </span>
+
+                                <span class="badge bg-warning text-dark">
+                                    Priority: @item.Priority
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <span class="badge bg-success fs-6 p-2">
+                            👍 @item.UpvoteCount @(item.UpvoteCount == 1 ? "Support" : "Supports")
+                        </span>
+
+                        <a asp-controller="Admin"
+                           asp-action="Details"
+                           asp-route-id="@item.ComplaintId"
+                           class="btn btn-outline-primary btn-sm">
+
+                            View Details
+
+                        </a>
+
+                    </div>
+
+                </div>
+            }
+        }
+        else
+        {
+            <div class="text-center py-4">
+
+                <div class="fs-1 mb-2">👍</div>
+
+                <h5 class="fw-bold">
+                    No Community Support Yet
+                </h5>
+
+                <p class="text-muted mb-0">
+                    Complaints will appear here once citizens start
+                    supporting them.
+                </p>
+
+            </div>
+        }
+
+    </div>
+
+</section>
+<!-- ===================================================== -->
+<!-- AI SEVERITY CHART -->
+<!-- ===================================================== -->
+
+<div class="card shadow mb-4">
+
+    <div class="card-header bg-dark text-white">
+        <h4 class="mb-0">
+            🤖 AI Severity Overview
+        </h4>
+    </div>
+
+    <div class="card-body">
+
+        <div style="height: 350px;">
+            <canvas id="aiSeverityChart"></canvas>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- DEPARTMENT ANALYTICS -->
+<div class="row g-4 mt-2 mb-4">
+
+    <!-- ASSIGNED COMPLAINTS -->
+    <div class="col-md-6">
+        <div class="card shadow h-100"
+            style="border-left: 6px solid #0d6efd;">
+
+            <div class="card-body text-center">
+
+                <div style="font-size: 40px;">
+                    🏢
+                </div>
+
+                <h5 class="fw-bold text-primary">
+                    Assigned Complaints
+                </h5>
+
+                <div class="display-5 fw-bold text-primary">
+                    @assignedComplaints
+                </div>
+
+                <p class="text-muted mb-0">
+                    Complaints assigned to departments
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- UNASSIGNED COMPLAINTS -->
+    <div class="col-md-6">
+        <div class="card shadow h-100"
+             style="border-left: 6px solid #fd7e14;">
+
+            <div class="card-body text-center">
+
+                <div style="font-size: 40px;">
+                    ⚠️
+                </div>
+
+                <h5 class="fw-bold text-warning">
+                    Unassigned Complaints
+                </h5>
+
+                <div class="display-5 fw-bold text-warning">
+                    @unassignedComplaints
+                </div>
+
+                <p class="text-muted mb-0">
+                    Complaints awaiting department assignment
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- DEPARTMENT-WISE DISTRIBUTION -->
+<div class="card shadow mb-4">
+
+    <div class="card-header text-white" style="background-color: #29496f;">
+        <h4 class="mb-0">
+            🏢 Department-wise Complaint Distribution
+        </h4>
+    </div>
+
+    <div class="card-body">
+
+        @if (departmentCounts.Count > 0)
+        {
+            <div class="row g-3">
+
+                @foreach (var department in departmentCounts)
+                {
+                    <div class="col-md-6">
+
+                        <div class="department-card border rounded p-3">
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <span class="fw-bold">
+                                    🏢 @department.Department
+                                </span>
+
+                                <span class="badge bg-primary fs-6">
+                                    @department.Count
+                                </span>
+
+                            </div>
+
+                            <div class="progress mt-2"
+                                style="height: 10px;">
+
+                                <div class="progress-bar bg-primary"
+                                    role="progressbar"
+                                     style="width: @((department.Count * 100.0) / Math.Max(1, totalComplaints))%;">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info mb-0">
+                No complaints have been assigned to departments yet.
+            </div>
+        }
+
+    </div>
+
+</div>
+
+
+    <!-- ===================================================== -->
+    <!-- HOTSPOT MAP -->
+    <!-- ===================================================== -->
+
+    <div class="card border-0 mb-4">
+
+        <div class="section-header">
+            🗺️ Complaint Hotspot Map
+        </div>
+
+        <div class="map-container">
+
+            <p class="lead mb-3">
+                📍 Complaint locations based on GPS coordinates
+            </p>
+
+            <div id="hotspotMap"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- FILTER SYSTEM -->
+    <!-- ===================================================== -->
+
+    <div class="card border-0 mb-4">
+
+        <div class="filter-header">
+            🔎 Filter Complaints
+        </div>
+
+        <div class="filter-container">
+
+            <div class="row g-3">
+
+                <!-- SEARCH -->
+
+                <div class="col-md-4">
+
+                    <label for="searchInput"
+                           class="form-label fw-bold">
+                        Search
+                    </label>
+
+                    <input type="text"
+                           id="searchInput"
+                           class="form-control"
+                           placeholder="Search title or location..." />
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="col-md-2">
+
+                    <label for="statusFilter"
+                           class="form-label fw-bold">
+                        Status
+                    </label>
+
+                    <select id="statusFilter"
+                            class="form-select">
+
+                        <option value="">
+                            All Statuses
+                        </option>
+
+                        <option value="Submitted">
+                            Submitted
+                        </option>
+
+                        <option value="In Progress">
+                            In Progress
+                        </option>
+
+                        <option value="Resolved">
+                            Resolved
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- CATEGORY -->
+
+                <div class="col-md-2">
+
+                    <label for="categoryFilter"
+                           class="form-label fw-bold">
+                        Category
+                    </label>
+
+                    <select id="categoryFilter"
+                            class="form-select">
+
+                        <option value="">
+                            All Categories
+                        </option>
+
+                        <option value="Road">
+                            Road
+                        </option>
+
+                        <option value="Pothole">
+                            Pothole
+                        </option>
+
+                        <option value="Garbage">
+                            Garbage
+                        </option>
+
+                        <option value="Waste">
+                            Waste
+                        </option>
+
+                        <option value="Street Light">
+                            Street Light
+                        </option>
+
+                        <option value="Electricity">
+                            Electricity
+                        </option>
+
+                        <option value="Water">
+                            Water
+                        </option>
+
+                        <option value="Water Leakage">
+                            Water Leakage
+                        </option>
+
+                        <option value="Drainage">
+                            Drainage
+                        </option>
+
+                        <option value="Sewage">
+                            Sewage
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- PRIORITY -->
+
+                <div class="col-md-2">
+
+                    <label for="priorityFilter"
+                        class="form-label fw-bold">
+                        Priority
+                    </label>
+
+                    <select id="priorityFilter"
+                            class="form-select">
+
+                        <option value="">
+                            All Priorities
+                        </option>
+
+                        <option value="Low">
+                            Low
+                        </option>
+
+                        <option value="Medium">
+                            Medium
+                        </option>
+
+                        <option value="High">
+                            High
+                        </option>
+
+                        <option value="Critical">
+                            Critical
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- DEPARTMENT -->
+
+                <div class="col-md-2">
+
+                    <label for="departmentFilter"
+                           class="form-label fw-bold">
+                        Department
+                    </label>
+
+                    <select id="departmentFilter"
+                            class="form-select">
+
+                        <option value="">
+                            All Departments
+                        </option>
+
+                        <option value="Road & Transport">
+                            Road & Transport
+                        </option>
+
+                        <option value="Sanitation">
+                            Sanitation
+                        </option>
+
+                        <option value="Electrical">
+                            Electrical
+                        </option>
+
+                        <option value="Electricity Department">
+                            Electricity Department
+                        </option>
+
+                        <option value="Water Supply">
+                            Water Supply
+                        </option>
+
+                        <option value="Public Works">
+                            Public Works
+                        </option>
+
+                    </select>
+
+                </div>
+                <div class="col-md-2">
+    <label class="form-label fw-bold">
+        🤖 AI Severity
+    </label>
+
+    <select id="severityFilter"
+            class="form-select">
+
+        <option value="">All Severity</option>
+
+        <option value="Critical">
+            🚨 Critical
+        </option>
+
+        <option value="High">
+            🔴 High
+        </option>
+
+        <option value="Medium">
+            🟡 Medium
+        </option>
+
+        <option value="Low">
+            🟢 Low
+        </option>
+
+    </select>
+</div>
+
+            </div>
+
+
+            <!-- FILTER BUTTON / RESULT -->
+
+            <div class="row mt-3">
+
+                <div class="col-md-6">
+
+                    <button type="button"
+                            id="resetFilters"
+                            class="btn btn-primary">
+
+                        🔄 Reset Filters
+
+                    </button>
+
+                </div>
+
+                <div class="col-md-6 text-md-end mt-3 mt-md-0">
+
+                    <span id="filterResult"
+                        class="filter-result">
+
+                        Showing @totalComplaints of
+                        @totalComplaints complaints
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- ALL COMPLAINTS TABLE -->
+    <!-- ===================================================== -->
+
+    <div class="card border-0 mb-5">
+
+        <div class="complaint-header">
+            📋 All Complaints
+        </div>
+
+        <div class="table-container">
+
+            @if (complaints.Any())
+            {
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover table-bordered mb-0 complaints-table">
+
+                        <thead class="table-light">
+
+                            <tr>
+
+                                <th>
+                                    ID
+                                </th>
+
+                                <th>
+                                    Title
+                                </th>
+
+                                <th>
+                                    Category
+                                </th>
+
+                                <th>
+                                    Location
+                                </th>
+
+                                <th>
+                                    Priority
+                                </th>
+
+                                <th>
+                                    AI Severity
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Department
+                                </th>
+
+                                <th>
+                                    Submitted
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            @foreach (var complaint in complaints)
+                            {
+
+                                <tr class="complaint-row"
+                                    data-title="@complaint.Title"
+                                    data-location="@complaint.Address"
+                                    data-category="@complaint.Category"
+                                    data-status="@complaint.Status"
+                                    data-priority="@complaint.Priority"
+                                    data-department="@complaint.Department"
+                                    data-severity="@complaint.AISeverity">
+
+                                    <!-- ID -->
+
+                                    <td class="complaint-id">
+
+                                        <a asp-controller="Admin"
+                                        asp-action="Details"
+                                        asp-route-id="@complaint.Id"
+                                        class="btn btn-sm btn-primary">
+
+                                            #@complaint.Id
+
+                                        </a>
+
+                                    </td>
+
+
+                                    <!-- TITLE -->
+
+                                    <td>
+
+                                        <a asp-controller="Admin"
+                                        asp-action="Details"
+                                        asp-route-id="@complaint.Id"
+                                           class="text-decoration-none fw-bold">
+
+                                            @complaint.Title
+
+                                        </a>
+
+                                    </td>
+
+
+                                    <!-- CATEGORY -->
+
+                                    <td>
+
+                                        @complaint.Category
+
+                                    </td>
+
+
+                                    <!-- LOCATION -->
+
+                                    <td class="location-cell">
+
+                                        @if (!string.IsNullOrWhiteSpace(complaint.Address))
+                                        {
+
+                                            <div>
+
+                                                📍 @complaint.Address
+
+                                            </div>
+
+                                            @if (!string.IsNullOrWhiteSpace(complaint.PinCode))
+                                            {
+
+                                                <div class="text-muted mt-1">
+
+                                                    PIN: @complaint.PinCode
+
+                                                </div>
+
+                                            }
+
+                                        }
+                                        else
+                                        {
+
+                                            <span class="text-muted">
+                                                Location not available
+                                            </span>
+
+                                        }
+
+                                    </td>
+
+
+                                    <!-- PRIORITY -->
+
+                                    <td>
+
+                                        @if (complaint.Priority == "High")
+                                        {
+
+                                            <span class="badge bg-danger badge-custom">
+                                                🔴 High
+                                            </span>
+
+                                        }
+                                        else if (complaint.Priority == "Critical")
+                                        {
+
+                                            <span class="badge bg-dark badge-custom">
+                                                🚨 Critical
+                                            </span>
+
+                                        }
+                                        else if (complaint.Priority == "Low")
+                                        {
+
+                                            <span class="badge bg-success badge-custom">
+                                                🟢 Low
+                                            </span>
+
+                                        }
+                                        else
+                                        {
+
+                                            <span class="badge bg-warning text-dark badge-custom">
+                                                🟡 Medium
+                                            </span>
+
+                                        }
+
+                                    </td>
+                                    <!-- AI SEVERITY -->
+<td>
+    @if (complaint.AISeverity == "Critical")
+    {
+        <span class="badge bg-danger">
+            🚨 Critical
+        </span>
+    }
+    else if (complaint.AISeverity == "High")
+    {
+        <span class="badge bg-danger">
+            🔴 High
+        </span>
+    }
+    else if (complaint.AISeverity == "Medium")
+    {
+        <span class="badge bg-warning text-dark">
+            🟡 Medium
+        </span>
+    }
+    else if (complaint.AISeverity == "Low")
+    {
+        <span class="badge bg-success">
+            🟢 Low
+        </span>
+    }
+    else
+    {
+        <span class="badge bg-secondary">
+            —
+        </span>
+    }
+</td>
+
+
+                                    <!-- STATUS -->
+
+                                    <td>
+
+                                        @if (complaint.Status == "Resolved")
+                                        {
+
+                                            <span class="badge bg-success badge-custom">
+                                                ✅ Resolved
+                                            </span>
+
+                                        }
+                                        else if (complaint.Status == "In Progress")
+                                        {
+
+                                            <span class="badge bg-info text-dark badge-custom">
+                                                🔄 In Progress
+                                            </span>
+
+                                        }
+                                        else
+                                        {
+
+                                            <span class="badge bg-warning text-dark badge-custom">
+                                                📩 Submitted
+                                            </span>
+
+                                        }
+
+                                    </td>
+
+
+                                    <!-- DEPARTMENT -->
+
+                                    <td>
+
+                                        @if (string.IsNullOrWhiteSpace(
+                                            complaint.Department))
+                                        {
+
+                                            <span class="badge bg-secondary badge-custom">
+                                                Not Assigned
+                                            </span>
+
+                                        }
+                                        else
+                                        {
+
+                                            <span class="badge bg-info text-dark badge-custom">
+                                                🏢 @complaint.Department
+                                            </span>
+
+                                        }
+
+                                    </td>
+
+
+                                    <!-- SUBMITTED -->
+
+                                    <td>
+
+                                        @complaint.CreatedAt.ToString(
+                                            "dd-MM-yyyy HH:mm")
+
+                                    </td>
+
+                                </tr>
+
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            }
+            else
+            {
+
+                <div class="alert alert-info m-4">
+
+                    No complaints have been submitted yet.
+
+                </div>
+
+            }
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- LEAFLET CSS -->
+<!-- ========================================================= -->
+
+<link rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    crossorigin="" />
+
+
+<!-- ========================================================= -->
+<!-- LEAFLET JS -->
+<!-- ========================================================= -->
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        crossorigin=""></script>
+
+        <!-- CHART.JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<!-- ========================================================= -->
+<!-- OUR JAVASCRIPT -->
+<!-- ========================================================= -->
+
+<script>
+
+    // =========================================================
+    // COMPLAINT DATA FROM ASP.NET
+    // =========================================================
+
+    const complaintData =
+        @Html.Raw(JsonSerializer.Serialize(complaintMapData));
+
+        // =========================================================
+// AI SEVERITY CHART
+// =========================================================
+
+const aiSeverityChartElement =
+    document.getElementById("aiSeverityChart");
+
+if (aiSeverityChartElement) {
+
+    new Chart(aiSeverityChartElement, {
+
+        type: "bar",
+
+        data: {
+            labels: [
+                "Critical",
+                "High",
+                "Medium",
+                "Low"
+            ],
+
+            datasets: [{
+                label: "Complaints",
+
+                data: [
+                    @criticalSeverityComplaints,
+                    @highSeverityComplaints,
+                    @mediumSeverityComplaints,
+                    @lowSeverityComplaints
+                ],
+
+                backgroundColor: [
+                    "#dc3545",
+                    "#fd7e14",
+                    "#ffc107",
+                    "#198754"
+                ],
+
+                borderWidth: 1,
+
+                borderRadius: 8
+            }]
+        },
+
+        options: {
+
+            indexAxis: "y",
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+                    display: false
+                },
+
+                title: {
+                    display: true,
+                    text: "Complaint Severity Distribution",
+                    font: {
+                        size: 18,
+                        weight: "bold"
+                    }
+                }
+            },
+
+            scales: {
+
+                x: {
+                    beginAtZero: true,
+
+                    ticks: {
+                        precision: 0,
+                        stepSize: 1
+                    },
+
+                    title: {
+                        display: true,
+                        text: "Number of Complaints"
+                    }
+                },
+
+                y: {
+                    title: {
+                        display: true,
+                        text: "AI Severity"
+                    }
+                }
+            }
+        }
+    });
+}
+
+
+    // =========================================================
+    // CREATE LEAFLET MAP
+    // =========================================================
+
+    const hotspotMap =
+        L.map("hotspotMap").setView(
+            [23.3441, 85.3096],
+            7
+        );
+
+
+    // =========================================================
+    // OPENSTREETMAP TILE LAYER
+    // =========================================================
+
+    L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            maxZoom: 19,
+            attribution:
+                "&copy; OpenStreetMap contributors"
+        }
+    ).addTo(hotspotMap);
+
+
+    // =========================================================
+    // STORE MARKERS
+    // =========================================================
+
+    const complaintMarkers = [];
+
+
+    // =========================================================
+    // ADD COMPLAINT MARKERS
+    // =========================================================
+
+    complaintData.forEach(function (complaint) {
+
+        const latitude =
+            Number(complaint.latitude);
+
+        const longitude =
+            Number(complaint.longitude);
+
+
+        // Ignore invalid coordinates
+
+        if (
+            !Number.isFinite(latitude) ||
+            !Number.isFinite(longitude) ||
+            (latitude === 0 && longitude === 0)
+        ) {
+
+            return;
+
+        }
+
+
+        // Create marker
+
+        const marker =
+            L.marker([
+                latitude,
+                longitude
+            ]);
+
+
+        // Popup content
+
+        const popupContent =
+
+            "<div style='min-width:220px;'>" +
+
+                "<h5 style='margin-bottom:8px;'>" +
+
+                    "Complaint #" +
+                    complaint.id +
+
+                "</h5>" +
+
+                "<strong>" +
+                    escapeHtml(complaint.title) +
+                "</strong>" +
+
+                "<br>" +
+
+                "<b>Category:</b> " +
+                escapeHtml(complaint.category) +
+
+                "<br>" +
+
+                "<b>Status:</b> " +
+                escapeHtml(complaint.status) +
+
+                "<br>" +
+
+                "<b>Priority:</b> " +
+escapeHtml(complaint.priority) +
+"<br>" +
+
+"<b>AI Severity:</b> " +
+escapeHtml(complaint.severity || "Not Available") +
+"<br>" +
+
+"<b>Department:</b> " +
+                (
+                    complaint.department
+                    ? escapeHtml(complaint.department)
+                    : "Not Assigned"
+                ) +
+
+                "<br><br>" +
+
+                "<a href='/Admin/Details/" +
+                    complaint.id +
+                    "' class='btn btn-sm btn-primary'>" +
+
+                    "View Complaint" +
+
+                "</a>" +
+
+            "</div>";
+
+
+        marker.bindPopup(
+            popupContent
+        );
+
+
+        // Add marker to map
+
+        marker.addTo(
+            hotspotMap
+        );
+
+
+        // Save marker information
+
+        complaintMarkers.push({
+
+            id: complaint.id,
+
+            marker: marker,
+
+            title:
+                (complaint.title || "")
+                    .toLowerCase(),
+
+            location:
+                (complaint.address || "")
+                    .toLowerCase(),
+
+            category:
+                (complaint.category || "")
+                    .toLowerCase(),
+
+            status:
+                (complaint.status || "")
+                    .toLowerCase(),
+
+            priority:
+                (complaint.priority || "")
+                    .toLowerCase(),
+                    severity:
+        (complaint.severity || "")
+            .toLowerCase(),
+
+            department:
+                (complaint.department || "")
+                    .toLowerCase()
+
+        });
+
+    });
+
+
+    // =========================================================
+    // FIT MAP TO COMPLAINT LOCATIONS
+    // =========================================================
+
+    if (complaintMarkers.length > 0) {
+
+        const bounds =
+            L.latLngBounds(
+                complaintMarkers.map(function (item) {
+
+                    return item.marker.getLatLng();
+
+                })
+            );
+
+        hotspotMap.fitBounds(
+            bounds,
+            {
+                padding: [30, 30]
+            }
+        );
+
+    }
+
+
+    // =========================================================
+    // ESCAPE HTML
+    // =========================================================
+
+    function escapeHtml(value) {
+
+        if (!value) {
+            return "";
+        }
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    // =========================================================
+    // FILTER ELEMENTS
+    // =========================================================
+
+    const searchInput =
+        document.getElementById(
+            "searchInput"
+        );
+
+    const statusFilter =
+        document.getElementById(
+            "statusFilter"
+        );
+
+    const categoryFilter =
+        document.getElementById(
+            "categoryFilter"
+        );
+
+    const priorityFilter =
+        document.getElementById(
+            "priorityFilter"
+        );
+
+const severityFilter =
+    document.getElementById(
+        "severityFilter"
+    );
+
+    const departmentFilter =
+        document.getElementById(
+            "departmentFilter"
+        );
+
+    const resetFilters =
+        document.getElementById(
+            "resetFilters"
+        );
+
+    const filterResult =
+        document.getElementById(
+            "filterResult"
+        );
+
+    const complaintRows =
+        document.querySelectorAll(
+            ".complaint-row"
+        );
+        
+
+
+    // =========================================================
+    // FILTER FUNCTION
+    // =========================================================
+
+    function filterComplaints() {
+
+        const searchValue =
+            searchInput.value
+                .toLowerCase()
+                .trim();
+
+        const statusValue =
+            statusFilter.value
+                .toLowerCase();
+
+        const categoryValue =
+            categoryFilter.value
+                .toLowerCase();
+
+        const priorityValue =
+            priorityFilter.value
+                .toLowerCase();
+
+                const severityValue =
+    severityFilter.value
+        .toLowerCase();
+
+        const departmentValue =
+            departmentFilter.value
+                .toLowerCase();
+
+
+        let visibleCount = 0;
+
+
+        // -----------------------------------------------------
+        // FILTER TABLE ROWS
+        // -----------------------------------------------------
+
+        complaintRows.forEach(function (row) {
+
+            const title =
+                (row.dataset.title || "")
+                    .toLowerCase();
+
+            const location =
+                (row.dataset.location || "")
+                    .toLowerCase();
+
+            const category =
+                (row.dataset.category || "")
+                    .toLowerCase();
+
+            const status =
+                (row.dataset.status || "")
+                    .toLowerCase();
+
+            const priority =
+                (row.dataset.priority || "")
+                    .toLowerCase();
+
+                    const severity =
+    (row.dataset.severity || "")
+        .toLowerCase();
+
+            const department =
+                (row.dataset.department || "")
+                    .toLowerCase();
+
+
+            const matchesSearch =
+                searchValue === "" ||
+                title.includes(searchValue) ||
+                location.includes(searchValue);
+
+
+            const matchesStatus =
+                statusValue === "" ||
+                status === statusValue;
+
+
+            const matchesCategory =
+                categoryValue === "" ||
+                category === categoryValue;
+
+
+            const matchesPriority =
+                priorityValue === "" ||
+                priority === priorityValue;
+
+                const matchesSeverity =
+    severityValue === "" ||
+    severity === severityValue;
+
+
+            const matchesDepartment =
+                departmentValue === "" ||
+                department === departmentValue;
+
+
+            const shouldShow =
+
+                matchesSearch &&
+                matchesStatus &&
+                matchesCategory &&
+                matchesPriority &&
+                matchesSeverity &&
+                matchesDepartment;
+
+
+            if (shouldShow) {
+
+                row.style.display = "";
+
+                visibleCount++;
+
+            }
+            else {
+
+                row.style.display = "none";
+
+            }
+
+        });
+
+
+        // -----------------------------------------------------
+        // FILTER MAP MARKERS
+        // -----------------------------------------------------
+
+        complaintMarkers.forEach(function (item) {
+
+            const matchesSearch =
+                searchValue === "" ||
+                item.title.includes(searchValue) ||
+                item.location.includes(searchValue);
+
+
+            const matchesStatus =
+                statusValue === "" ||
+                item.status === statusValue;
+
+
+            const matchesCategory =
+                categoryValue === "" ||
+                item.category === categoryValue;
+
+
+            const matchesPriority =
+                priorityValue === "" ||
+                item.priority === priorityValue;
+
+
+            const matchesDepartment =
+                departmentValue === "" ||
+                item.department === departmentValue;
+
+
+            const shouldShow =
+
+                matchesSearch &&
+                matchesStatus &&
+                matchesCategory &&
+                matchesPriority &&
+                matchesDepartment;
+
+
+            if (shouldShow) {
+
+                if (!hotspotMap.hasLayer(
+                    item.marker
+                )) {
+
+                    item.marker.addTo(
+                        hotspotMap
+                    );
+
+                }
+
+            }
+            else {
+
+                if (hotspotMap.hasLayer(
+                    item.marker
+                )) {
+
+                    hotspotMap.removeLayer(
+                        item.marker
+                    );
+
+                }
+
+            }
+
+        });
+
+
+        // -----------------------------------------------------
+        // RESULT MESSAGE
+        // -----------------------------------------------------
+
+        filterResult.textContent =
+
+            "Showing " +
+            visibleCount +
+            " of " +
+            complaintRows.length +
+            " complaints";
+
+    }
+
+
+    // =========================================================
+    // FILTER EVENTS
+    // =========================================================
+
+    searchInput.addEventListener(
+        "input",
+        filterComplaints
+    );
+
+
+    statusFilter.addEventListener(
+        "change",
+        filterComplaints
+    );
+
+
+    categoryFilter.addEventListener(
+        "change",
+        filterComplaints
+    );
+
+
+    priorityFilter.addEventListener(
+        "change",
+        filterComplaints
+    );
+
+    severityFilter.addEventListener(
+    "change",
+    filterComplaints
+);
+
+
+    departmentFilter.addEventListener(
+        "change",
+        filterComplaints
+    );
+
+
+    // =========================================================
+    // RESET FILTERS
+    // =========================================================
+
+    resetFilters.addEventListener(
+        "click",
+        function () {
+
+            searchInput.value = "";
+
+            statusFilter.value = "";
+
+            categoryFilter.value = "";
+
+            priorityFilter.value = "";
+
+            severityFilter.value = "";
+
+            departmentFilter.value = "";
+
+            filterComplaints();
+
+        }
+    );
+
+
+    // =========================================================
+    // INITIAL FILTER STATE
+    // =========================================================
+
+    filterComplaints();
+
+</script>

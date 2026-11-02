@@ -1,0 +1,403 @@
+
+@model List<PublicGrievanceSystem.Models.ComplaintResolutionResponse>
+
+@{
+    ViewData["Title"] = "Pending Resolution Reviews";
+}
+
+<style>
+    .review-page {
+        max-width: 1450px;
+        padding-top: 35px;
+        padding-bottom: 50px;
+        color: #24364b;
+    }
+
+    .review-hero {
+        background: linear-gradient(120deg, #153866, #2468b6);
+        color: white;
+        padding: 30px;
+        border-radius: 18px;
+        box-shadow: 0 9px 24px rgba(21, 56, 102, .13);
+    }
+
+    .review-hero h1 {
+        font-size: clamp(1.6rem, 3vw, 2.2rem);
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .review-hero p {
+        color: #dce9f8;
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .review-back {
+        color: #fff;
+        border: 1px solid rgba(255,255,255,.55);
+        border-radius: 9px;
+        padding: 10px 15px;
+        text-decoration: none;
+        font-weight: 650;
+        white-space: nowrap;
+    }
+
+    .review-back:hover {
+        background: white;
+        color: #153866;
+    }
+
+    .review-stat {
+        height: 100%;
+        padding: 23px;
+        background: white;
+        border: 1px solid #e4ebf4;
+        border-radius: 14px;
+        box-shadow: 0 5px 18px rgba(25,55,90,.05);
+    }
+
+    .review-stat-number {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: #153866;
+    }
+
+    .review-stat-label {
+        color: #718096;
+        font-size: .9rem;
+        font-weight: 650;
+    }
+
+    .review-card {
+        border: 1px solid #e1e9f4;
+        border-radius: 15px;
+        background: white;
+        overflow: hidden;
+        box-shadow: 0 6px 20px rgba(25,55,90,.055);
+    }
+
+    .review-card-header {
+        padding: 19px 23px;
+        background: linear-gradient(110deg, #203858, #315b88);
+        color: white;
+    }
+
+    .review-card-header h4 {
+        font-size: 1.12rem;
+        font-weight: 750;
+        margin: 0;
+    }
+
+    .review-card-body {
+        padding: 22px;
+    }
+
+    .review-table {
+        margin-bottom: 0;
+        vertical-align: middle;
+    }
+
+    .review-table thead th {
+        background: #eef3fa;
+        color: #263d5b;
+        font-size: .85rem;
+        font-weight: 750;
+        padding: 15px 13px;
+        white-space: nowrap;
+        border-bottom: 2px solid #dce5f1;
+    }
+
+    .review-table tbody td {
+        padding: 16px 13px;
+        border-color: #edf1f7;
+        font-size: .91rem;
+    }
+
+    .review-table tbody tr:hover {
+        background: #f5f9ff;
+    }
+
+    .review-action {
+        background: linear-gradient(120deg, #153866, #2874c9);
+        border: 0;
+        color: white;
+        border-radius: 8px;
+        padding: 9px 13px;
+        font-weight: 650;
+        text-decoration: none;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .review-action:hover {
+        color: white;
+        background: #174983;
+    }
+
+    .review-empty {
+        padding: 55px 20px;
+        text-align: center;
+    }
+
+    .review-empty-icon {
+        width: 76px;
+        height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e8f7ef;
+        border-radius: 20px;
+        margin: 0 auto 18px;
+        font-size: 38px;
+    }
+
+    .review-remarks {
+        min-width: 210px;
+        max-width: 340px;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        color: #526176;
+        line-height: 1.6;
+    }
+
+    @@media (max-width: 767.98px) {
+        .review-page {
+            padding-top: 20px;
+        }
+
+        .review-hero {
+            padding: 22px 18px;
+        }
+
+        .review-card-body {
+            padding: 13px;
+        }
+
+        .review-table {
+            min-width: 850px;
+        }
+    }
+</style>
+
+<div class="container-fluid review-page">
+
+    <!-- PAGE HERO -->
+    <div class="review-hero mb-4">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+            <div>
+                <div class="mb-2">
+                    <span class="badge bg-warning text-dark">
+                        ⚠️ ADMIN ACTION REQUIRED
+                    </span>
+                </div>
+
+                <h1>
+                    🛡️ Resolution Review Center
+                </h1>
+
+                <p>
+                    Review citizen objections and manage complaint
+                    resolution decisions.
+                </p>
+            </div>
+
+            <a asp-controller="Admin"
+               asp-action="Index"
+               class="review-back">
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- SUMMARY CARDS -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-12 col-md-6">
+
+            <div class="review-stat">
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div style="font-size:35px;">
+                        📋
+                    </div>
+
+                    <div>
+                        <div class="review-stat-label">
+                            PENDING RESOLUTION REVIEWS
+                        </div>
+
+                        <div class="review-stat-number">
+                            @Model.Count
+                        </div>
+
+                        <small class="text-muted">
+                            Awaiting administrator action
+                        </small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-12 col-md-6">
+
+            <div class="review-stat">
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div style="font-size:35px;">
+                        🛡️
+                    </div>
+
+                    <div>
+                        <div class="review-stat-label">
+                            REVIEW MANAGEMENT
+                        </div>
+
+                        <div class="fw-bold fs-4 text-primary mt-1">
+                            Administrator
+                        </div>
+
+                        <small class="text-muted">
+                            Review and decide each objection
+                        </small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- CITIZEN OBJECTIONS -->
+    <div class="review-card">
+
+        <div class="review-card-header">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                <h4>
+                    ⚠️ Citizen Resolution Objections
+                </h4>
+
+                <span class="badge bg-light text-danger fs-6">
+                    @Model.Count Pending
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="review-card-body">
+
+            <p class="text-muted mb-4">
+                Citizens have reported that their complaints were not
+                properly resolved. Review their remarks and take appropriate action.
+            </p>
+
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-hover review-table">
+
+                        <thead>
+                            <tr>
+                                <th>Complaint ID</th>
+                                <th>Complaint Title</th>
+                                <th>Citizen Remarks</th>
+                                <th>Reported On</th>
+                                <th>Review Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var review in Model)
+                            {
+                                <tr>
+
+                                    <td class="fw-bold text-primary">
+                                        #@review.ComplaintId
+                                    </td>
+
+                                    <td class="fw-semibold">
+                                        @(review.Complaint?.Title ?? "Unavailable")
+                                    </td>
+
+                                    <td>
+                                        <div class="review-remarks">
+                                            @(string.IsNullOrWhiteSpace(review.Remarks)
+                                                ? "No remarks provided."
+                                                : review.Remarks)
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <span class="text-nowrap">
+                                            @review.RespondedAt.ToString(
+                                                "dd MMM yyyy, hh:mm tt")
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge bg-warning text-dark p-2">
+                                            Awaiting Review
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <a asp-controller="Admin"
+                                           asp-action="Details"
+                                           asp-route-id="@review.ComplaintId"
+                                           class="review-action">
+                                            🔍 Review Complaint
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+            else
+            {
+                <div class="review-empty">
+
+                    <div class="review-empty-icon">
+                        ✅
+                    </div>
+
+                    <h4 class="fw-bold text-dark">
+                        No Pending Resolution Reviews
+                    </h4>
+
+                    <p class="text-muted mb-0">
+                        All citizen resolution objections have been reviewed.
+                        New objections will appear here when citizens report
+                        unresolved complaints.
+                    </p>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>

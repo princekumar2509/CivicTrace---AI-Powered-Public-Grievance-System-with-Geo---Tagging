@@ -1,0 +1,413 @@
+
+@model List<PublicGrievanceSystem.Models.Complaint>
+
+@{
+    ViewData["Title"] = "Overdue Complaints";
+}
+
+<style>
+    .overdue-page {
+        max-width: 1450px;
+        padding-top: 35px;
+        padding-bottom: 50px;
+        color: #24364b;
+    }
+
+    .overdue-hero {
+        background: linear-gradient(120deg, #8c5812, #e0a126);
+        color: white;
+        padding: 30px;
+        border-radius: 18px;
+        box-shadow: 0 9px 24px rgba(180, 120, 25, .14);
+    }
+
+    .overdue-hero h1 {
+        font-size: clamp(1.6rem, 3vw, 2.2rem);
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .overdue-hero p {
+        color: #fff5dc;
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .overdue-back {
+        color: white;
+        border: 1px solid rgba(255,255,255,.65);
+        border-radius: 9px;
+        padding: 10px 15px;
+        text-decoration: none;
+        font-weight: 650;
+        white-space: nowrap;
+    }
+
+    .overdue-back:hover {
+        background: white;
+        color: #8c5812;
+    }
+
+    .overdue-stat {
+        height: 100%;
+        padding: 23px;
+        background: white;
+        border: 1px solid #e9e3d7;
+        border-top: 4px solid #e0a126;
+        border-radius: 14px;
+        box-shadow: 0 5px 18px rgba(25,55,90,.05);
+    }
+
+    .overdue-stat-number {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: #a86b12;
+    }
+
+    .overdue-stat-label {
+        color: #718096;
+        font-size: .9rem;
+        font-weight: 650;
+    }
+
+    .overdue-card {
+        border: 1px solid #e9e3d7;
+        border-radius: 15px;
+        background: white;
+        overflow: hidden;
+        box-shadow: 0 6px 20px rgba(25,55,90,.055);
+    }
+
+    .overdue-card-header {
+        padding: 19px 23px;
+        background: linear-gradient(110deg, #9b6419, #e0a126);
+        color: white;
+    }
+
+    .overdue-card-header h4 {
+        font-size: 1.12rem;
+        font-weight: 750;
+        margin: 0;
+    }
+
+    .overdue-card-body {
+        padding: 22px;
+    }
+
+    .overdue-table {
+        margin-bottom: 0;
+        vertical-align: middle;
+    }
+
+    .overdue-table thead th {
+        background: #fff7e8;
+        color: #62451b;
+        font-size: .85rem;
+        font-weight: 750;
+        padding: 15px 13px;
+        white-space: nowrap;
+        border-bottom: 2px solid #f0dfbd;
+    }
+
+    .overdue-table tbody td {
+        padding: 16px 13px;
+        border-color: #f1ede5;
+        font-size: .91rem;
+    }
+
+    .overdue-table tbody tr:hover {
+        background: #fffbf3;
+    }
+
+    .overdue-action {
+        background: linear-gradient(120deg, #a86b12, #d99920);
+        border: 0;
+        color: white;
+        border-radius: 8px;
+        padding: 9px 13px;
+        font-weight: 650;
+        text-decoration: none;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .overdue-action:hover {
+        color: white;
+        background: #8c5812;
+    }
+
+    .overdue-empty {
+        padding: 55px 20px;
+        text-align: center;
+    }
+
+    .overdue-empty-icon {
+        width: 76px;
+        height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e8f7ef;
+        border-radius: 20px;
+        margin: 0 auto 18px;
+        font-size: 38px;
+    }
+
+    @@media (max-width: 767.98px) {
+        .overdue-page {
+            padding-top: 20px;
+        }
+
+        .overdue-hero {
+            padding: 22px 18px;
+        }
+
+        .overdue-card-body {
+            padding: 13px;
+        }
+
+        .overdue-table {
+            min-width: 950px;
+        }
+    }
+</style>
+
+<div class="container-fluid overdue-page">
+
+    <!-- PAGE HERO -->
+    <div class="overdue-hero mb-4">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+            <div>
+                <div class="mb-2">
+                    <span class="badge bg-light text-dark">
+                        ⏰ DEADLINE EXCEEDED
+                    </span>
+                </div>
+
+                <h1>
+                    ⏰ Overdue Complaints
+                </h1>
+
+                <p>
+                    Monitor complaints that have exceeded their expected resolution deadlines.
+                </p>
+            </div>
+
+            <a asp-controller="Admin"
+               asp-action="Index"
+               class="overdue-back">
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- SUMMARY CARD -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-12 col-md-6">
+
+            <div class="overdue-stat">
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div style="font-size:35px;">
+                        ⏰
+                    </div>
+
+                    <div>
+                        <div class="overdue-stat-label">
+                            TOTAL OVERDUE COMPLAINTS
+                        </div>
+
+                        <div class="overdue-stat-number">
+                            @Model.Count
+                        </div>
+
+                        <small class="text-muted">
+                            Awaiting escalation
+                        </small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-12 col-md-6">
+
+            <div class="overdue-stat">
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div style="font-size:35px;">
+                        📅
+                    </div>
+
+                    <div>
+                        <div class="overdue-stat-label">
+                            MONITORING
+                        </div>
+
+                        <div class="fw-bold fs-4 text-warning mt-1">
+                            Deadline Tracking
+                        </div>
+
+                        <small class="text-muted">
+                            Based on administrator-configured targets
+                        </small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- OVERDUE COMPLAINTS TABLE -->
+    <div class="overdue-card">
+
+        <div class="overdue-card-header">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                <h4>
+                    ⚠️ Complaints Awaiting Escalation
+                </h4>
+
+                <span class="badge bg-light text-dark fs-6">
+                    @Model.Count Overdue
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="overdue-card-body">
+
+            <p class="text-muted mb-4">
+                These complaints have passed their resolution deadlines
+                but have not yet reached the escalation stage.
+            </p>
+
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-hover overdue-table">
+
+                        <thead>
+                            <tr>
+                                <th>Complaint ID</th>
+                                <th>Complaint Title</th>
+                                <th>Priority</th>
+                                <th>Department</th>
+                                <th>Resolution Deadline</th>
+                                <th>Overdue Since</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var complaint in Model)
+                            {
+                                <tr>
+
+                                    <td class="fw-bold text-primary">
+                                        #@complaint.Id
+                                    </td>
+
+                                    <td class="fw-semibold">
+                                        @complaint.Title
+                                    </td>
+
+                                    <td>
+
+                                        @if (complaint.Priority == "High")
+                                        {
+                                            <span class="badge bg-danger p-2">
+                                                🔴 High
+                                            </span>
+                                        }
+                                        else if (complaint.Priority == "Low")
+                                        {
+                                            <span class="badge bg-success p-2">
+                                                🟢 Low
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark p-2">
+                                                🟡 @complaint.Priority
+                                            </span>
+                                        }
+
+                                    </td>
+
+                                    <td>
+                                        @(string.IsNullOrWhiteSpace(complaint.Department)
+                                            ? "Not Assigned"
+                                            : complaint.Department)
+                                    </td>
+
+                                    <td class="text-danger fw-semibold">
+                                        @complaint.ResolutionDeadline?.ToString(
+                                            "dd MMM yyyy, hh:mm tt")
+                                    </td>
+
+                                    <td>
+                                        @(complaint.OverdueAt.HasValue
+                                            ? complaint.OverdueAt.Value.ToString("dd MMM yyyy, hh:mm tt")
+                                            : "Detection pending")
+                                    </td>
+
+                                    <td>
+                                        <a asp-controller="Admin"
+                                           asp-action="Details"
+                                           asp-route-id="@complaint.Id"
+                                           class="overdue-action">
+                                            🔍 View Details
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+            else
+            {
+                <div class="overdue-empty">
+
+                    <div class="overdue-empty-icon">
+                        ✅
+                    </div>
+
+                    <h4 class="fw-bold text-dark">
+                        No Overdue Complaints
+                    </h4>
+
+                    <p class="text-muted mb-0">
+                        All complaints are currently within their resolution
+                        deadlines or have already been escalated.
+                    </p>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>
