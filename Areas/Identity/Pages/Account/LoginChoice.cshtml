@@ -1,0 +1,54 @@
+
+@page
+@{
+    ViewData["Title"] = "Choose Login";
+}
+
+<div class="container py-5 civictrace-login-choice">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold login-choice-title">Welcome to CivicTrace</h1>
+        <p class="text-muted fs-5">
+            Choose how you want to sign in to your account.
+        </p>
+    </div>
+
+    <div class="row justify-content-center g-4">
+        <div class="col-md-5 col-lg-4">
+            <div class="card h-100 shadow-sm border-0 p-4 text-center civictrace-role-card">
+                <div class="card-body">
+                    <div class="login-choice-icon mb-3">🏛️</div>
+                    <h3 class="fw-bold">Admin Login</h3>
+                    <p class="text-muted my-3">
+                        Access the authority dashboard to manage complaints,
+                        assign departments, and update complaint status.
+                    </p>
+                    <a asp-area="Identity"
+                    asp-page="/Account/Login"
+                    asp-route-loginType="Admin"
+                    class="btn btn-lg w-100 mt-3 civictrace-role-button">
+                        Login as Admin
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5 col-lg-4">
+            <div class="card h-100 shadow-sm border-0 p-4 text-center civictrace-role-card">
+                <div class="card-body">
+                    <div class="login-choice-icon mb-3">👤</div>
+                    <h3 class="fw-bold">Citizen Login</h3>
+                    <p class="text-muted my-3">
+                        Sign in to submit public grievances, track complaints,
+                        and view updates on your requests.
+                    </p>
+                    <a asp-area="Identity"
+                    asp-page="/Account/Login"
+                    asp-route-loginType="Citizen"
+                    class="btn btn-lg w-100 mt-3 civictrace-role-button">
+                        Login as Citizen
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
