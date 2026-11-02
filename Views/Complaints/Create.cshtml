@@ -1,0 +1,858 @@
+@model PublicGrievanceSystem.Models.Complaint
+
+@{
+    ViewData["Title"] = "Submit Complaint";
+}
+
+<style>
+    .civic-form-page {
+        --civic-primary: #245ca8;
+        --civic-navy: #142d4e;
+        --civic-border: #e3eaf3;
+        --civic-muted: #64748b;
+        max-width: 1180px;
+        color: #1e293b;
+        padding-top: 20px;
+        padding-bottom: 40px;
+    }
+
+    .civic-form-page .grievance-form-card {
+        border: 1px solid var(--civic-border);
+        border-radius: 18px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 12px 36px rgba(20, 45, 78, .09) !important;
+    }
+
+    .civic-form-page .grievance-form-header {
+        background: linear-gradient(120deg, #142d4e, #2864ad);
+        color: #fff;
+        padding: 27px 30px;
+        border: 0;
+    }
+
+    .civic-form-page .grievance-form-header h3 {
+        font-weight: 750;
+        letter-spacing: -.4px;
+        font-size: 1.65rem;
+    }
+
+    .civic-form-page .card-body {
+        padding: 30px;
+    }
+
+    .civic-form-page .form-label {
+        color: #243b53;
+        font-size: .94rem;
+        font-weight: 650;
+        margin-bottom: 9px;
+    }
+
+    .civic-form-page .form-control,
+    .civic-form-page .form-select {
+        min-height: 47px;
+        border: 1px solid #d7e0ec;
+        border-radius: 10px;
+        padding: 11px 14px;
+        color: #243b53;
+        background-color: #fff;
+        transition: border-color .2s, box-shadow .2s;
+    }
+
+    .civic-form-page textarea.form-control {
+        min-height: 115px;
+        resize: vertical;
+    }
+
+    .civic-form-page .form-control:focus,
+    .civic-form-page .form-select:focus {
+        border-color: #6195e8;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, .10);
+    }
+
+    .civic-form-page .form-control::placeholder {
+        color: #94a3b8;
+    }
+
+    .civic-form-page .text-muted,
+    .civic-form-page small {
+        color: var(--civic-muted) !important;
+    }
+
+    .civic-form-page .form-section {
+        border: 1px solid var(--civic-border);
+        border-radius: 14px;
+        padding: 22px;
+        margin-bottom: 25px;
+        background: #fff;
+    }
+
+    .civic-form-page .form-section-heading {
+        color: var(--civic-navy);
+        font-weight: 750;
+        font-size: 1.1rem;
+        margin-bottom: 6px;
+    }
+
+    .civic-form-page .form-section-description {
+        color: var(--civic-muted);
+        font-size: .88rem;
+        margin-bottom: 20px;
+    }
+
+    .civic-form-page .location-panel {
+        border: 1px solid #d6e4f7 !important;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(20, 45, 78, .04);
+    }
+
+    .civic-form-page .location-panel > .card-header {
+        background: #f0f6ff !important;
+        color: var(--civic-navy);
+        border-bottom: 1px solid #d6e4f7;
+        padding: 17px 21px;
+    }
+
+    .civic-form-page .location-panel > .card-body {
+        padding: 22px;
+    }
+
+    .civic-form-page #map {
+        height: 360px !important;
+        width: 100%;
+        border: 1px solid #d7e0ec !important;
+        border-radius: 12px !important;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    .civic-form-page #locationBtn {
+        background: #e8f3ff;
+        border: 1px solid #bfd8fa;
+        color: #174a91;
+        border-radius: 9px;
+        padding: 10px 16px;
+        font-weight: 700;
+    }
+
+    .civic-form-page #locationBtn:hover {
+        background: #d5e8ff;
+    }
+
+    .civic-form-page input[type="file"] {
+        padding: 9px;
+        background: #f8fafc;
+    }
+
+    .civic-form-page .btn-primary {
+        background: var(--civic-primary);
+        border-color: var(--civic-primary);
+        border-radius: 10px;
+        font-weight: 700;
+        transition: transform .2s, box-shadow .2s;
+    }
+
+    .civic-form-page .btn-primary:hover {
+        background: #174a91;
+        border-color: #174a91;
+        transform: translateY(-1px);
+        box-shadow: 0 5px 14px rgba(37, 99, 235, .20);
+    }
+
+    .civic-form-page .btn-lg {
+        padding: 13px 30px;
+    }
+
+    .civic-form-page .alert {
+        border-radius: 11px;
+    }
+
+    .civic-form-page .alert-warning {
+        border-color: #f2d28b;
+    }
+
+    @@media (max-width: 767.98px) {
+        .civic-form-page {
+            padding: 12px 12px 28px;
+        }
+
+        .civic-form-page .grievance-form-header {
+            padding: 21px 18px;
+        }
+
+        .civic-form-page .grievance-form-header h3 {
+            font-size: 1.3rem;
+        }
+
+        .civic-form-page .card-body {
+            padding: 18px;
+        }
+
+        .civic-form-page .form-section {
+            padding: 16px;
+        }
+
+        .civic-form-page .location-panel > .card-body {
+            padding: 14px;
+        }
+
+        .civic-form-page #map {
+            height: 300px !important;
+        }
+
+        .civic-form-page .btn-lg {
+            width: 100%;
+        }
+    }
+</style>
+
+<link rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    crossorigin="" />
+
+<div class="container mt-4 mb-5 civic-form-page">
+    
+    <div class="card shadow grievance-form-card">
+        <div class="card-header grievance-form-header">
+            <h3 class="mb-0">📢 Submit Public Complaint</h3>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Create"
+                method="post"
+                enctype="multipart/form-data">
+                @if (ViewBag.DuplicateMatches != null &&
+    ViewBag.DuplicateMatches.Count > 0)
+{
+    <div class="alert alert-warning shadow-sm mb-4">
+
+        <h5 class="fw-bold">
+            ⚠️ Similar Complaint Detected
+        </h5>
+
+        <p>
+            A similar complaint may already exist near this location.
+        </p>
+
+        @foreach (var match in ViewBag.DuplicateMatches)
+        {
+            <div class="border rounded p-3 mb-2 bg-white">
+
+                <strong>
+                    Complaint #@match.ComplaintId
+                </strong>
+
+                <div>
+                    @match.Title
+                </div>
+
+                <div class="mt-2">
+                    📍 Distance:
+                    <strong>
+                        @match.DistanceInMeters.ToString("0") m
+                    </strong>
+                </div>
+
+                <div>
+                    🔍 Text similarity:
+                    <strong>
+                        @((match.Similarity * 100).ToString("0"))%
+                    </strong>
+                </div>
+
+                @if (!string.IsNullOrEmpty(match.Department))
+                {
+                    <div>
+                        🏢 Department:
+                        <strong>@match.Department</strong>
+                    </div>
+                }
+
+                <div class="mt-2">
+
+    @if (match.MatchType == "Likely Duplicate")
+    {
+        <span class="badge bg-danger">
+            🔴 Likely Duplicate
+        </span>
+    }
+    else
+    {
+        <span class="badge bg-warning text-dark">
+            🟡 Possible Duplicate
+        </span>
+    }
+
+</div>
+
+            </div>
+        }
+
+        <div class="mt-3">
+
+    <p class="mb-2">
+        If this is a different issue, you can still submit it.
+    </p>
+
+    <button type="submit"
+            name="forceSubmit"
+            value="true"
+            class="btn btn-danger">
+        ⚠️ Submit Anyway
+    </button>
+
+</div>
+
+    </div>
+}
+
+                @Html.AntiForgeryToken()
+
+                <!-- Complaint Title -->
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label">
+                        Complaint Title
+                    </label>
+
+                    <input asp-for="Title"
+                        class="form-control"
+                        placeholder="Enter complaint title" />
+
+                    <span asp-validation-for="Title"
+                        class="text-danger"></span>
+                </div>
+
+                <!-- Category -->
+                <div class="mb-3">
+
+    <label class="form-label">
+        Complaint Category
+    </label>
+
+    <select name="Category" class="form-select">
+        <option value="">-- Select Category --</option>
+        <option value="Road">Road / Pothole</option>
+        <option value="Garbage">Garbage / Waste</option>
+        <option value="Streetlight">Streetlight</option>
+        <option value="Electricity">Electricity</option>
+        <option value="Water">Water</option>
+        <option value="Drainage">Drainage / Sewage</option>
+        <option value="Other">Other</option>
+    </select>
+
+    <small class="text-muted">
+        Category will be automatically classified by the system
+        if left unselected.
+    </small>
+
+</div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label">
+                        Description
+                    </label>
+
+                    <textarea asp-for="Description"
+                            class="form-control"
+                            rows="4"
+                            placeholder="Describe the problem"></textarea>
+
+                    <span asp-validation-for="Description"
+                        class="text-danger"></span>
+                </div>
+
+                <!-- IMAGE -->
+                <div class="mb-4">
+                    <label for="ImageFile" class="form-label">
+    Choose Image from Gallery / Files
+</label>
+
+<input type="file"
+    name="ImageFiles"
+    id="ImageFile"
+    class="form-control"
+    accept="image/*"
+    multiple />
+
+<div class="mt-3">
+    <button type="button"
+            id="openCameraButton"
+            class="btn btn-outline-primary">
+        📷 Take Photo
+    </button>
+
+    <input type="file"
+           id="CameraImageFile"
+           accept="image/*"
+           capture="environment"
+           style="display: none;" />
+</div>
+
+<script>
+    (function () {
+        const galleryInput = document.getElementById("ImageFile");
+        const cameraInput = document.getElementById("CameraImageFile");
+        const cameraButton = document.getElementById("openCameraButton");
+
+        if (!galleryInput || !cameraInput || !cameraButton) return;
+
+        cameraButton.addEventListener("click", function () {
+            cameraInput.click();
+        });
+
+        cameraInput.addEventListener("change", function () {
+            const file = cameraInput.files[0];
+
+            if (!file) return;
+
+            const dataTransfer = new DataTransfer();
+
+Array.from(galleryInput.files).forEach(function (existingFile) {
+    dataTransfer.items.add(existingFile);
+});
+
+dataTransfer.items.add(file);
+
+galleryInput.files = dataTransfer.files;
+
+            galleryInput.dispatchEvent(
+                new Event("change", { bubbles: true })
+            );
+        });
+    })();
+</script>
+                    @if (ViewBag.ImageCategory != null)
+{
+    <div class="alert alert-info mt-3">
+
+        <h5 class="fw-bold">
+            🤖 AI Image Analysis
+        </h5>
+
+        <p class="mb-1">
+            <strong>Detected Category:</strong>
+            @ViewBag.ImageCategory
+        </p>
+
+        <p class="mb-1">
+            <strong>Confidence:</strong>
+            @((ViewBag.ImageConfidence * 100).ToString("0"))%
+        </p>
+
+        <p class="mb-0">
+            <strong>AI Observation:</strong>
+            @ViewBag.ImageDescription
+        </p>
+
+    </div>
+}
+
+@if (ViewBag.ImageAnalysisError != null)
+{
+    <div class="alert alert-warning mt-3">
+        ⚠️ @ViewBag.ImageAnalysisError
+    </div>
+}
+
+                    <small class="text-muted">
+                        You can select an existing image or take a photo
+                        using your phone camera.
+                    </small>
+                </div>
+
+
+                <!-- LOCATION -->
+                <div class="card border-primary mb-4 location-panel">
+
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">📍 Complaint Location</h5>
+                    </div>
+
+                    <div class="card-body">
+
+                        <button type="button"
+                                id="locationBtn"
+                                class="btn btn-success mb-3">
+
+                            📍 Get My Current Location
+
+                        </button>
+
+                        <div id="locationMessage"
+                            class="mb-3 text-muted">
+                        </div>
+
+
+                        <!-- MAP -->
+                        <div id="map"
+                            style="
+                                height:400px;
+                                width:100%;
+                                border-radius:10px;
+                                border:1px solid #ccc;
+                            ">
+                        </div>
+
+                        <div class="mt-2 text-muted">
+                            <small>
+                                🗺️ Click on the map to select the complaint
+                                location manually.
+                            </small>
+                        </div>
+
+
+                        <!-- LATITUDE / LONGITUDE -->
+                        <div class="row mt-4">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label asp-for="Latitude"
+                                    class="form-label">
+                                    Latitude
+                                </label>
+
+                                <input asp-for="Latitude"
+                                    id="Latitude"
+                                    class="form-control"
+                                    readonly />
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label asp-for="Longitude"
+                                    class="form-label">
+                                    Longitude
+                                </label>
+
+                                <input asp-for="Longitude"
+                                    id="Longitude"
+                                    class="form-control"
+                                    readonly />
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ADDRESS -->
+                        <div class="mb-3">
+
+                            <label asp-for="Address"
+                                class="form-label">
+
+                                🏠 Complete Address
+
+                            </label>
+
+                            <textarea asp-for="Address"
+                                    id="Address"
+                                    class="form-control"
+                                    rows="2"
+                                    placeholder="Address will appear here after selecting a location..."
+                                    readonly></textarea>
+
+                        </div>
+
+
+                        <!-- PIN CODE -->
+                        <div class="mb-3">
+
+                            <label asp-for="PinCode"
+                                class="form-label">
+
+                                📮 PIN Code
+
+                            </label>
+
+                            <input asp-for="PinCode"
+                                id="PinCode"
+                                class="form-control"
+                                placeholder="PIN Code"
+                                readonly />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SUBMIT -->
+                <div class="text-center">
+
+                    <button type="submit"
+                            class="btn btn-primary btn-lg px-5">
+
+                        🚀 Submit Complaint
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        crossorigin=""></script>
+
+
+<script>
+
+    // Default map location
+    // India
+    const defaultLatitude = 23.3441;
+    const defaultLongitude = 85.3096;
+
+    // Create map
+    const map = L.map('map').setView(
+        [defaultLatitude, defaultLongitude],
+        13
+    );
+
+
+    // OpenStreetMap layer
+    L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            maxZoom: 19,
+            attribution:
+                '&copy; OpenStreetMap contributors'
+        }
+    ).addTo(map);
+
+
+    let marker = null;
+
+
+    // Set location on map
+    function setLocation(latitude, longitude) {
+
+        document.getElementById("Latitude").value =
+            latitude.toFixed(6);
+
+        document.getElementById("Longitude").value =
+            longitude.toFixed(6);
+
+
+        // Remove old marker
+        if (marker !== null) {
+            map.removeLayer(marker);
+        }
+
+
+        // Add new marker
+        marker = L.marker(
+            [latitude, longitude],
+            { draggable: true }
+        ).addTo(map);
+
+
+        marker.bindPopup(
+            "<b>Complaint Location</b><br>" +
+            "Latitude: " + latitude.toFixed(6) +
+            "<br>Longitude: " + longitude.toFixed(6)
+        ).openPopup();
+
+
+        // Move map
+        map.setView(
+            [latitude, longitude],
+            17
+        );
+
+
+        // Get address
+        getAddress(latitude, longitude);
+
+
+        // If marker is dragged
+        marker.on("dragend", function (event) {
+
+            const position =
+                event.target.getLatLng();
+
+            setLocation(
+                position.lat,
+                position.lng
+            );
+
+        });
+
+    }
+
+
+    // Reverse geocoding
+    async function getAddress(latitude, longitude) {
+
+        document.getElementById("Address").value =
+            "Finding address...";
+
+        document.getElementById("PinCode").value =
+            "";
+
+
+        try {
+
+            const response = await fetch(
+                "https://nominatim.openstreetmap.org/reverse" +
+                "?format=json" +
+                "&lat=" + latitude +
+                "&lon=" + longitude +
+                "&zoom=18" +
+                "&addressdetails=1",
+                {
+                    headers: {
+                        "Accept-Language": "en"
+                    }
+                }
+            );
+
+
+            if (!response.ok) {
+                throw new Error("Address lookup failed");
+            }
+
+
+            const data = await response.json();
+
+
+            if (data.display_name) {
+
+                document.getElementById("Address").value =
+                    data.display_name;
+
+            }
+            else {
+
+                document.getElementById("Address").value =
+                    "Address not found";
+
+            }
+
+
+            // PIN / Postal Code
+            if (data.address &&
+                data.address.postcode) {
+
+                document.getElementById("PinCode").value =
+                    data.address.postcode;
+
+            }
+            else {
+
+                document.getElementById("PinCode").value =
+                    "Not available";
+
+            }
+
+        }
+        catch (error) {
+
+            console.error(error);
+
+            document.getElementById("Address").value =
+                "Unable to find address";
+
+            document.getElementById("PinCode").value =
+                "";
+
+        }
+
+    }
+
+
+    // GET CURRENT LOCATION
+    document
+        .getElementById("locationBtn")
+        .addEventListener("click", function () {
+
+            const message =
+                document.getElementById("locationMessage");
+
+
+            if (!navigator.geolocation) {
+
+                message.innerHTML =
+                    "❌ Geolocation is not supported by this browser.";
+
+                return;
+            }
+
+
+            message.innerHTML =
+                "📍 Getting your current location...";
+
+
+            navigator.geolocation.getCurrentPosition(
+
+                function (position) {
+
+                    const latitude =
+                        position.coords.latitude;
+
+                    const longitude =
+                        position.coords.longitude;
+
+
+                    setLocation(
+                        latitude,
+                        longitude
+                    );
+
+
+                    message.innerHTML =
+                        "✅ Location detected successfully!";
+
+                },
+
+                function (error) {
+
+                    console.error(error);
+
+                    message.innerHTML =
+                        "❌ Unable to get your location. " +
+                        "Please allow location permission.";
+
+                },
+
+                {
+                    enableHighAccuracy: true,
+                    timeout: 15000,
+                    maximumAge: 0
+                }
+
+            );
+
+        });
+
+
+    // CLICK MAP TO SELECT LOCATION
+    map.on("click", function (event) {
+
+        setLocation(
+            event.latlng.lat,
+            event.latlng.lng
+        );
+
+    });
+
+
+</script>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}
