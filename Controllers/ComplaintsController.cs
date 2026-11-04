@@ -509,7 +509,19 @@ if (savedImagePaths.Count > 0)
             // =====================================================
             // STEP 10: SHOW SUCCESS PAGE
             // =====================================================
+// Close streams used to restore the temporary images.
+foreach (var stream in restoredImageStreams)
+{
+    await stream.DisposeAsync();
+}
 
+// Delete the temporary upload after successful submission.
+if (!string.IsNullOrWhiteSpace(temporaryUploadToken))
+{
+    await _pendingUploadStore.DeleteAsync(
+        temporaryUploadToken,
+        currentUserId);
+}
             return View("Success", complaint);
         }
 
