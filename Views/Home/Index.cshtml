@@ -186,7 +186,135 @@
         max-width: 760px;
         margin: 0 auto 20px;
     }
+/* BEFORE AND AFTER SLIDESHOW */
 
+.before-after-section {
+    padding: 10px 0;
+}
+
+.before-after-kicker {
+    display: inline-block;
+    color: #2874c8;
+    background: #eaf2ff;
+    padding: 7px 15px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.before-after-shell {
+    background: #ffffff;
+    border: 1px solid #e2eaf5;
+    border-radius: 22px;
+    padding: 18px;
+    box-shadow: 0 8px 28px rgba(25, 55, 95, 0.08);
+}
+
+.before-after-slide-card {
+    background: #f6f9ff;
+    border: 1px solid #e2eaf5;
+    border-radius: 17px;
+    overflow: hidden;
+}
+
+.before-after-image {
+    position: relative;
+    height: 340px;
+    background: #e9eef5;
+    overflow: hidden;
+}
+
+.before-after-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.before-after-tag {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 2;
+    padding: 8px 15px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+.before-after-tag.before {
+    background: #fff1f2;
+    color: #be123c;
+}
+
+.before-after-tag.after {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.before-after-caption {
+    padding: 18px;
+    text-align: center;
+}
+
+.before-after-caption h5 {
+    color: #193c6a;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+.before-after-caption p {
+    color: #64748b;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.before-after-carousel .carousel-indicators {
+    position: static;
+    margin: 18px 0 0;
+}
+
+.before-after-carousel .carousel-indicators button {
+    width: 25px;
+    height: 6px;
+    border: 0;
+    border-radius: 10px;
+    background: #b8c8dc;
+}
+
+.before-after-carousel .carousel-indicators button.active {
+    background: #245ca8;
+}
+
+.before-after-carousel .carousel-control-prev,
+.before-after-carousel .carousel-control-next {
+    width: 7%;
+}
+
+.before-after-carousel .carousel-control-prev-icon,
+.before-after-carousel .carousel-control-next-icon {
+    background-color: #173d70;
+    border-radius: 50%;
+    padding: 18px;
+    background-size: 55%;
+}
+
+@@media (max-width: 767.98px) {
+    .before-after-shell {
+        padding: 10px;
+    }
+
+    .before-after-image {
+        height: 230px;
+    }
+
+    .before-after-carousel .carousel-control-prev,
+    .before-after-carousel .carousel-control-next {
+        width: 10%;
+    }
+}
     @@media (max-width: 767.98px) {
         .overview-hero {
             padding: 45px 18px;
@@ -309,6 +437,173 @@
                     information easier to access.
                 </p>
             </div>
+                </section>
+
+        <!-- BEFORE & AFTER RESOLUTION SLIDESHOW -->
+
+        @{
+    var slides = new List<dynamic>();
+
+    if (ViewBag.BeforeAfterSlides is System.Collections.IEnumerable items)
+    {
+        foreach (var item in items)
+        {
+            slides.Add(item);
+        }
+    }
+}
+
+        <section class="before-after-section mb-5">
+
+            <div class="overview-heading">
+                <span class="before-after-kicker">
+                    CIVICTRACE IMPACT
+                </span>
+
+                <h2>Before & After Resolution</h2>
+
+                <p>
+                    See the difference made when reported public issues
+                    are successfully resolved.
+                </p>
+            </div>
+
+            @if (slides.Count > 0)
+            {
+                <div class="before-after-shell">
+
+                    <div id="beforeAfterCarousel"
+                         class="carousel slide before-after-carousel"
+                         data-bs-ride="carousel"
+                         data-bs-interval="3000"
+                         data-bs-pause="hover">
+
+                        <div class="carousel-inner">
+
+                            @for (int i = 0; i < slides.Count; i++)
+                            {
+                                var slide = slides[i];
+
+                                <div class="carousel-item @(i == 0 ? "active" : "")">
+
+                                    <div class="before-after-slide-card">
+
+                                        <div class="row g-0">
+
+                                            <!-- BEFORE IMAGE -->
+                                            <div class="col-md-6">
+
+                                                <div class="before-after-image">
+
+                                                    <span class="before-after-tag before">
+                                                        BEFORE
+                                                    </span>
+
+                                                    <img src="@slide.BeforeImagePath"
+                                                         alt="Original complaint photograph"
+                                                         loading="lazy" />
+
+                                                </div>
+
+                                            </div>
+
+                                            <!-- AFTER IMAGE -->
+                                            <div class="col-md-6">
+
+                                                <div class="before-after-image">
+
+                                                    <span class="before-after-tag after">
+                                                        AFTER
+                                                    </span>
+
+                                                    <img src="@slide.AfterImagePath"
+                                                         alt="Resolved complaint photograph"
+                                                         loading="lazy" />
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="before-after-caption">
+
+                                            <h5>@slide.Title</h5>
+
+                                            <p>
+                                                <span class="text-success fw-bold">
+                                                    ✓ Successfully Resolved
+                                                </span>
+                                                &nbsp; | &nbsp;
+                                                Complaint #@slide.ComplaintId
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            }
+
+                        </div>
+
+                        <!-- PREVIOUS BUTTON -->
+                        <button class="carousel-control-prev"
+                                type="button"
+                                data-bs-target="#beforeAfterCarousel"
+                                data-bs-slide="prev"
+                                aria-label="Previous slide">
+
+                            <span class="carousel-control-prev-icon"></span>
+
+                        </button>
+
+                        <!-- NEXT BUTTON -->
+                        <button class="carousel-control-next"
+                                type="button"
+                                data-bs-target="#beforeAfterCarousel"
+                                data-bs-slide="next"
+                                aria-label="Next slide">
+
+                            <span class="carousel-control-next-icon"></span>
+
+                        </button>
+
+                        <!-- SLIDE INDICATORS -->
+                        <div class="carousel-indicators">
+
+                            @for (int i = 0; i < slides.Count; i++)
+                            {
+                                <button type="button"
+                                        data-bs-target="#beforeAfterCarousel"
+                                        data-bs-slide-to="@i"
+                                        class="@(i == 0 ? "active" : "")"
+                                        aria-label="Slide @(i + 1)">
+                                </button>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+            else
+            {
+                <div class="before-after-shell text-center py-5">
+
+                    <h5 class="fw-bold text-primary">
+                        Community Improvements
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        Before-and-after photographs of resolved
+                        complaints will appear here.
+                    </p>
+
+                </div>
+            }
+
         </section>
 
         <!-- Main features -->
