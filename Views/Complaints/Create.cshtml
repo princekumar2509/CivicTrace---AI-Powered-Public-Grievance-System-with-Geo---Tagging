@@ -309,6 +309,9 @@
 }
 
                 @Html.AntiForgeryToken()
+<input type="hidden"
+       name="temporaryUploadToken"
+       value="@ViewBag.TemporaryUploadToken" />
 
                 <!-- Complaint Title -->
                 <div class="mb-3">
