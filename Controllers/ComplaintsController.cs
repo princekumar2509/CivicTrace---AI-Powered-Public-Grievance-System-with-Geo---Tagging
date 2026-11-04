@@ -17,6 +17,7 @@ namespace PublicGrievanceSystem.Controllers
         private readonly DuplicateComplaintDetector _duplicateDetector;
         private readonly AIImageAnalyzer _aiImageAnalyzer;
         private readonly AISeverityPredictor _aiSeverityPredictor;
+        private readonly PendingComplaintUploadStore _pendingUploadStore;
 
         public ComplaintsController(
             ApplicationDbContext context,
@@ -24,7 +25,8 @@ namespace PublicGrievanceSystem.Controllers
             AIComplaintClassifier aiClassifier,
             DuplicateComplaintDetector duplicateDetector,
             AIImageAnalyzer aiImageAnalyzer,
-            AISeverityPredictor aiSeverityPredictor)
+AISeverityPredictor aiSeverityPredictor,
+PendingComplaintUploadStore pendingUploadStore)
         {
             _context = context;
             _environment = environment;
@@ -32,6 +34,7 @@ namespace PublicGrievanceSystem.Controllers
             _duplicateDetector = duplicateDetector;
             _aiImageAnalyzer = aiImageAnalyzer;
             _aiSeverityPredictor = aiSeverityPredictor;
+            _pendingUploadStore = pendingUploadStore;
         }
 
         // =========================
@@ -64,7 +67,8 @@ public async Task<IActionResult> Create()
         public async Task<IActionResult> Create(
             Complaint complaint,
             List<IFormFile>? ImageFiles,
-            bool forceSubmit = false)
+            bool forceSubmit = false,
+    string? temporaryUploadToken = null)
         {
             // Category is generated automatically by AI classifier
             ModelState.Remove(nameof(Complaint.Category));
@@ -112,9 +116,44 @@ if (uploadSettings.RequireLocation && !hasValidLocation)
         string.Empty,
         "Please select a valid complaint location on the map.");
 }
+var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+if (string.IsNullOrWhiteSpace(currentUserId))
+{
+    return Forbid();
+}
+
 var uploadedImages = (ImageFiles ?? new List<IFormFile>())
     .Where(file => file != null && file.Length > 0)
     .ToList();
+
+var restoredImageStreams = new List<MemoryStream>();
+
+// Restore previously uploaded images when the citizen clicks Submit Anyway.
+if (uploadedImages.Count == 0 &&
+    !string.IsNullOrWhiteSpace(temporaryUploadToken))
+{
+    var pendingImages = await _pendingUploadStore.RestoreAsync(
+        temporaryUploadToken,
+        currentUserId);
+
+    foreach (var pendingImage in pendingImages)
+    {
+        var stream = new MemoryStream(pendingImage.Content);
+        restoredImageStreams.Add(stream);
+
+        uploadedImages.Add(new FormFile(
+            stream,
+            0,
+            stream.Length,
+            "ImageFiles",
+            pendingImage.FileName)
+        {
+            Headers = new HeaderDictionary(),
+            ContentType = pendingImage.ContentType
+        });
+    }
+}
 
 // Keep the first image available for the existing AI analysis code.
 var ImageFile = uploadedImages.FirstOrDefault();
@@ -261,11 +300,18 @@ if (ImageFile != null && ImageFile.Length > 0)
                 // Show the warning unless the citizen chooses
                 // to submit the complaint anyway.
                 if (duplicateMatches.Count > 0 && !forceSubmit)
-                {
-                    ViewBag.DuplicateMatches = duplicateMatches;
+{
+    if (uploadedImages.Count > 0)
+    {
+        ViewBag.TemporaryUploadToken =
+            await _pendingUploadStore.SaveAsync(
+                uploadedImages,
+                currentUserId);
+    }
 
-                    return View("Create", complaint);
-                }
+    ViewBag.DuplicateMatches = duplicateMatches;
+    return View("Create", complaint);
+}
             }
 
 
