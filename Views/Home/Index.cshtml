@@ -68,7 +68,7 @@
     }
 
     .overview-heading h2 {
-        color: #153b6d;
+        color: #4fc8ea;
         font-weight: 800;
         margin-bottom: 10px;
     }
@@ -79,14 +79,17 @@
     }
 
     .overview-card {
-        background: white;
-        border: 1px solid #e2eaf5;
-        border-radius: 16px;
-        padding: 24px;
-        height: 100%;
-        box-shadow: 0 5px 18px rgba(25, 55, 95, 0.05);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
+    background: linear-gradient(145deg, #122b45, #0b1b30);
+    border: 1px solid #244866;
+    border-radius: 16px;
+    padding: 24px;
+    height: 100%;
+    color: #eaf6ff;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+    transition: transform 0.25s ease,
+                box-shadow 0.25s ease,
+                border-color 0.25s ease;
+}
 
     .overview-card:hover {
         transform: translateY(-4px);
@@ -108,13 +111,13 @@
     .overview-card h3 {
         font-size: 1.15rem;
         font-weight: 750;
-        color: #193c6a;
+        color: #EAF6FF;
         margin-bottom: 12px;
     }
 
     .overview-card p,
     .overview-card li {
-        color: #596a80;
+        color: #B8CBE0;
         line-height: 1.75;
         font-size: 0.96rem;
     }
@@ -148,12 +151,12 @@
     .overview-step h3 {
         font-size: 1.05rem;
         font-weight: 750;
-        color: #193c6a;
+        color: #FFFFFF !important;
         margin-bottom: 6px;
     }
 
     .overview-step p {
-        color: #596a80;
+        color: #CBD5E1 !important;
         line-height: 1.7;
         margin-bottom: 0;
     }
@@ -167,25 +170,31 @@
         line-height: 1.8;
     }
 
-    .overview-final {
-        text-align: center;
-        background: linear-gradient(135deg, #153b6d, #2874c8);
-        color: white;
-        border-radius: 20px;
-        padding: 35px 22px;
-    }
+    
+.overview-final {
+    text-align: center;
+    background: #10243B !important;
+    background-image: none !important;
+    color: #FFFFFF;
+    border: 1px solid #294967;
+    border-radius: 18px;
+    padding: 40px 25px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+}
+
 
     .overview-final h2 {
-        font-weight: 800;
-        margin-bottom: 12px;
-    }
+    color: #FFFFFF !important;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
 
     .overview-final p {
-        color: #edf5ff;
-        line-height: 1.8;
-        max-width: 760px;
-        margin: 0 auto 20px;
-    }
+    color: #CBD5E1 !important;
+    line-height: 1.8;
+    max-width: 760px;
+    margin: 0 auto 20px;
+}
 /* BEFORE AND AFTER SLIDESHOW */
 
 .before-after-section {
@@ -329,9 +338,871 @@
             padding: 20px;
         }
     }
+/* ==========================================
+   CIVICTRACE - DARK PREMIUM HOME THEME
+========================================== */
+
+.civictrace-dark-home {
+    color: #e5edf8;
+    background: linear-gradient(180deg, #071426, #0b1930 55%, #071426);
+}
+
+/* Hero section */
+.civictrace-dark-home .overview-hero {
+    background:
+        radial-gradient(circle at 85% 15%, rgba(0,220,255,.15), transparent 28%),
+        linear-gradient(125deg, #071426, #102d52 65%, #063b61);
+    color: #f8fbff;
+    border: 1px solid rgba(77, 210, 255, .18);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, .3);
+}
+
+.civictrace-dark-home .overview-hero h1,
+.civictrace-dark-home .overview-hero p {
+    color: #f8fbff;
+}
+
+/* Hero logo panel */
+.civictrace-dark-home .overview-hero .container > div:first-child {
+    background: rgba(255,255,255,.96) !important;
+    border: 1px solid rgba(80,210,255,.45) !important;
+    box-shadow: 0 12px 35px rgba(0,0,0,.25) !important;
+}
+
+/* Section headings */
+.civictrace-dark-home .overview-heading h2 {
+    color: #f1f7ff;
+}
+
+.civictrace-dark-home .overview-heading p {
+    color: #a9bad0;
+}
+
+.civictrace-dark-home .overview-heading h2::after {
+    background: linear-gradient(90deg, #00c6ff, #38e0c5);
+    box-shadow: 0 0 12px rgba(0,198,255,.35);
+}
+
+/* Main content cards */
+.civictrace-dark-home .overview-card {
+    background: linear-gradient(145deg, #122640, #0d1d32);
+    border: 1px solid #263f5e;
+    box-shadow: 0 10px 28px rgba(0,0,0,.20);
+}
+
+.civictrace-dark-home .overview-card:hover {
+    border-color: #16b8dc;
+    box-shadow: 0 15px 35px rgba(0,180,230,.12);
+}
+
+.civictrace-dark-home .overview-card h3 {
+    color: #eaf5ff;
+}
+
+.civictrace-dark-home .overview-card p,
+.civictrace-dark-home .overview-card li {
+    color: #b5c6da;
+}
+
+/* Feature icons */
+.civictrace-dark-home .overview-icon {
+    background: linear-gradient(135deg, #123b62, #104b69);
+    border: 1px solid #22658c;
+    color: #52d9ff;
+    box-shadow: 0 5px 18px rgba(0,190,255,.10);
+}
+
+/* Workflow numbers */
+.civictrace-dark-home .overview-step-number {
+    background: linear-gradient(135deg, #087bbd, #00b9c7);
+    box-shadow: 0 0 18px rgba(0,190,255,.25);
+}
+
+/* Privacy panel */
+.civictrace-dark-home .overview-note {
+    background: linear-gradient(120deg, #102b49, #102039);
+    border: 1px solid #245276;
+    border-left: 5px solid #16c7e8;
+    color: #d9eaff;
+    box-shadow: 0 8px 25px rgba(0,0,0,.2);
+}
+
+.civictrace-dark-home .overview-note strong {
+    color: #55dfff;
+}
+
+.civictrace-dark-home .overview-note p {
+    color: #c2d2e5;
+}
+
+/* Before and After section */
+.civictrace-dark-home .before-after-kicker {
+    background: #103653;
+    color: #51dcff;
+    border: 1px solid #176087;
+}
+
+.civictrace-dark-home .before-after-shell {
+    background: linear-gradient(145deg, #102640, #0b1a2e);
+    border: 1px solid #284967;
+    box-shadow: 0 15px 35px rgba(0,0,0,.25);
+}
+
+.civictrace-dark-home .before-after-slide-card {
+    background: #10243b;
+    border: 1px solid #2b4968;
+}
+
+.civictrace-dark-home .before-after-caption h5 {
+    color: #edf6ff;
+}
+
+.civictrace-dark-home .before-after-caption p {
+    color: #afc2d8;
+}
+
+/* Carousel navigation */
+.civictrace-dark-home .before-after-carousel
+.carousel-control-prev-icon,
+.civictrace-dark-home .before-after-carousel
+.carousel-control-next-icon {
+    background-color: #087fa8;
+    box-shadow: 0 0 15px rgba(0,198,255,.22);
+}
+
+.civictrace-dark-home .before-after-carousel
+.carousel-indicators button {
+    background: #526982;
+}
+
+.civictrace-dark-home .before-after-carousel
+.carousel-indicators button.active {
+    background: #20d4e8;
+}
+
+/* Closing section */
+.civictrace-dark-home .overview-final {
+    background:
+        radial-gradient(circle at 90% 10%, rgba(0,220,255,.15), transparent 35%),
+        linear-gradient(125deg, #071426, #123c68, #07506b);
+    border: 1px solid #235579;
+    box-shadow: 0 16px 38px rgba(0,0,0,.3);
+}
+
+.civictrace-dark-home .overview-final h2 {
+    color: #f5fbff;
+}
+
+.civictrace-dark-home .overview-final p {
+    color: #c7d9ec;
+}
+
+/* Hero buttons */
+
+.civictrace-dark-home .overview-btn-primary {
+    background: linear-gradient(120deg, #36E7CA, #15B9DF) !important;
+    background-image: linear-gradient(120deg, #36E7CA, #15B9DF) !important;
+    color: #04213A !important;
+    border: 1px solid #42E7DC !important;
+    border-radius: 10px !important;
+    font-weight: 800 !important;
+}
+
+
+.civictrace-dark-home .overview-btn-outline {
+    background: rgba(0,190,230,.08);
+    border: 1px solid #48c9e9;
+    color: #e9faff;
+}
+
+.civictrace-dark-home .overview-btn:hover {
+    box-shadow: 0 0 20px rgba(0,198,255,.25);
+}
+
+/* Mobile */
+@@media (max-width: 767.98px) {
+    .civictrace-dark-home .overview-hero {
+        padding: 45px 15px;
+    }
+
+    .civictrace-dark-home .overview-card {
+        padding: 20px;
+    }
+}
+/* ==========================================
+   PREMIUM CIVICTRACE HERO DESIGN
+========================================== */
+
+.civictrace-dark-home .premium-hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 55px 25px;
+    min-height: 420px;
+    color: #ffffff;
+    background:
+        radial-gradient(circle at 78% 45%, rgba(0, 190, 255, .12), transparent 32%),
+        linear-gradient(115deg, #06142a, #092344 65%, #04172c);
+    border-bottom: 1px solid rgba(43, 210, 255, .18);
+}
+
+.premium-hero .container {
+    position: relative;
+    z-index: 2;
+}
+
+.premium-eyebrow {
+    color: #38e3d0;
+    font-size: .78rem;
+    font-weight: 850;
+    letter-spacing: 2px;
+    margin-bottom: 17px;
+}
+
+.premium-hero-title {
+    color: #f5f9ff;
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    font-weight: 850;
+    line-height: 1.12;
+    letter-spacing: -1.5px;
+    margin-bottom: 20px;
+}
+
+.premium-hero-title span {
+    display: block;
+    color: #36dfcc;
+}
+
+.premium-hero-description {
+    max-width: 540px;
+    color: #bacbe0;
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 26px;
+}
+
+.premium-hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.premium-report-button,
+.premium-track-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 43px;
+    padding: 11px 19px;
+    border-radius: 10px;
+    font-size: .88rem;
+    font-weight: 750;
+    text-decoration: none;
+    transition: .25s ease;
+}
+
+.premium-report-button {
+    color: #04213a;
+    background: linear-gradient(120deg, #36e7ca, #15b9df);
+    border: 1px solid #42e7dc;
+    box-shadow: 0 5px 22px rgba(0, 210, 220, .18);
+}
+
+.premium-track-button {
+    color: #e8f6ff;
+    background: rgba(7, 33, 59, .7);
+    border: 1px solid #247aa0;
+}
+
+.premium-report-button:hover,
+.premium-track-button:hover {
+    transform: translateY(-3px);
+    color: #ffffff;
+    box-shadow: 0 0 22px rgba(0, 210, 255, .25);
+}
+
+/* Location visual */
+
+.premium-location-visual {
+    position: relative;
+    min-height: 340px;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 20px;
+    background:
+        radial-gradient(ellipse at center, rgba(0, 184, 255, .18), transparent 48%),
+        linear-gradient(145deg, #092849, #06172d);
+    border: 1px solid rgba(44, 211, 255, .2);
+}
+
+.location-grid {
+    position: absolute;
+    inset: 20% -15% -20%;
+    opacity: .35;
+    transform: perspective(350px) rotateX(58deg);
+    transform-origin: center top;
+    background-image:
+        linear-gradient(rgba(0, 202, 255, .28) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 202, 255, .28) 1px, transparent 1px);
+    background-size: 35px 35px;
+}
+
+.location-orbit {
+    position: absolute;
+    left: 50%;
+    top: 49%;
+    border: 1px solid rgba(0, 216, 255, .45);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) rotateX(65deg);
+}
+
+.orbit-one {
+    width: 235px;
+    height: 235px;
+}
+
+.orbit-two {
+    width: 165px;
+    height: 165px;
+    border-color: rgba(0, 232, 203, .55);
+}
+
+.location-glow {
+    position: absolute;
+    left: 50%;
+    top: 49%;
+    width: 100px;
+    height: 100px;
+    background: #00c9ff;
+    filter: blur(65px);
+    opacity: .4;
+    transform: translate(-50%, -50%);
+}
+
+.location-pin {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+    width: 92px;
+    height: 92px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: radial-gradient(circle, #123f68, #06213c);
+    border: 2px solid #14d9eb;
+    box-shadow:
+        0 0 18px rgba(0, 210, 255, .65),
+        0 0 55px rgba(0, 210, 255, .25);
+}
+
+.location-pin span {
+    font-size: 48px;
+    filter: drop-shadow(0 0 10px rgba(0, 225, 255, .8));
+}
+
+.location-caption {
+    position: absolute;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    color: #7de9ef;
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    white-space: nowrap;
+}
+
+.location-live-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 7px;
+    border-radius: 50%;
+    background: #32e6b7;
+    box-shadow: 0 0 10px #32e6b7;
+}
+
+.location-info {
+    position: absolute;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 13px;
+    border: 1px solid rgba(67, 205, 255, .22);
+    border-radius: 9px;
+    background: rgba(5, 25, 47, .78);
+    backdrop-filter: blur(8px);
+}
+
+.location-info span {
+    color: #61dce8;
+    font-size: .6rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.location-info strong {
+    color: #e6f4ff;
+    font-size: .76rem;
+}
+
+.location-info-top {
+    top: 20px;
+    left: 20px;
+}
+
+.location-info-bottom {
+    right: 18px;
+    bottom: 55px;
+}
+
+/* Mobile layout */
+
+@@media (max-width: 767.98px) {
+    .civictrace-dark-home .premium-hero {
+        padding: 42px 18px;
+    }
+
+    .premium-location-visual {
+        min-height: 290px;
+        margin-top: 15px;
+    }
+
+    .premium-hero-title {
+        font-size: 2.35rem;
+    }
+
+    .premium-hero-buttons {
+        align-items: stretch;
+    }
+}
+/* ==========================================
+   PREMIUM STATISTICS CARDS
+========================================== */
+
+.civictrace-dark-home .premium-statistics {
+    position: relative;
+    z-index: 3;
+    padding: 22px 15px 35px;
+    background: #071426;
+}
+
+.premium-stat-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-height: 92px;
+    padding: 17px 20px;
+    background: linear-gradient(145deg, #122b48, #0b1c32);
+    border: 1px solid #274363;
+    border-radius: 14px;
+    box-shadow: 0 8px 22px rgba(0,0,0,.22);
+    transition: .25s ease;
+}
+
+.premium-stat-card:hover {
+    transform: translateY(-4px);
+    border-color: #20c9e5;
+    box-shadow: 0 10px 27px rgba(0,190,255,.13);
+}
+
+.premium-stat-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    font-size: 1.65rem;
+    font-weight: 900;
+}
+
+.stat-blue {
+    color: #57baff;
+    background: rgba(40,145,255,.15);
+}
+
+.stat-green {
+    color: #35e5c0;
+    background: rgba(35,220,175,.13);
+}
+
+.stat-yellow {
+    color: #ffc447;
+    background: rgba(255,190,50,.13);
+}
+
+.premium-stat-card h3 {
+    color: #f5faff;
+    font-size: 1.7rem;
+    font-weight: 850;
+    margin: 0 0 3px;
+    line-height: 1.1;
+}
+
+.premium-stat-card p {
+    color: #a9bfd6;
+    font-size: .82rem;
+    margin: 0;
+}
+
+@@media (max-width: 767.98px) {
+    .premium-statistics {
+        padding-top: 15px;
+    }
+
+    .premium-stat-card {
+        min-height: 78px;
+    }
+}
+.location-logo-caption {
+    bottom: 12px;
+    padding: 6px 12px;
+    background: #ffffff;
+    border: 1px solid #37d8eb;
+    border-radius: 10px;
+    box-shadow: 0 0 18px rgba(0, 210, 255, .18);
+}
+
+.location-logo-caption img {
+    display: block;
+    width: 175px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+/* PREMIUM CIVICTRACE BRAND VISUAL */
+
+.premium-brand-visual {
+    min-height: 340px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    padding: 25px;
+    background:
+        radial-gradient(circle, rgba(0,205,255,.13), transparent 65%),
+        linear-gradient(145deg, #092849, #06172d);
+    border: 1px solid rgba(44,211,255,.22);
+    border-radius: 20px;
+}
+
+.premium-brand-logo-card {
+    width: min(100%, 530px);
+    padding: 28px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border: 1px solid #36d7eb;
+    border-radius: 18px;
+    box-shadow: 0 0 35px rgba(0,200,255,.20);
+}
+
+.premium-brand-logo {
+    width: 100%;
+    max-width: 470px;
+    height: auto;
+    object-fit: contain;
+}
+
+.premium-brand-caption {
+    color: #70e8ee;
+    font-size: .78rem;
+    font-weight: 850;
+    letter-spacing: 1.5px;
+    text-align: center;
+}
+
+@@media (max-width: 767.98px) {
+    .premium-brand-visual {
+        min-height: 260px;
+    }
+
+    .premium-brand-logo-card {
+        padding: 22px 15px;
+    }
+}
+/* ==========================================
+   DARK THEME - ALL HOMEPAGE SECTIONS
+========================================== */
+
+.civictrace-dark-home {
+    background: #071426 !important;
+    color: #e7f1ff !important;
+}
+
+/* Main content background */
+.civictrace-dark-home .overview-container {
+    background: #071426 !important;
+}
+
+/* About, features, workflow and roles cards */
+.civictrace-dark-home .overview-card {
+    background: linear-gradient(145deg, #122640, #0c1b30) !important;
+    border: 1px solid #29435f !important;
+    color: #dcecff !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,.25) !important;
+}
+
+.civictrace-dark-home .overview-card h3 {
+    color: #eaf6ff !important;
+}
+
+.civictrace-dark-home .overview-card p,
+.civictrace-dark-home .overview-card li {
+    color: #afc3da !important;
+}
+
+/* All section headings */
+.civictrace-dark-home .overview-heading h2 {
+    color: #f2f8ff !important;
+}
+
+.civictrace-dark-home .overview-heading p {
+    color: #a9bfd6 !important;
+}
+
+/* Workflow steps */
+.civictrace-dark-home .overview-step-number {
+    background: linear-gradient(135deg, #087bbd, #00b9c7) !important;
+    color: #ffffff !important;
+}
+
+/* Privacy section */
+.civictrace-dark-home .overview-note {
+    background: linear-gradient(135deg, #102b49, #0b1c31) !important;
+    border: 1px solid #275071 !important;
+    border-left: 5px solid #19cce4 !important;
+    color: #e3f1ff !important;
+}
+
+.civictrace-dark-home .overview-note strong {
+    color: #50dff0 !important;
+}
+
+.civictrace-dark-home .overview-note p {
+    color: #b8cce1 !important;
+}
+
+/* Before and After section */
+.civictrace-dark-home .before-after-section {
+    background: #071426 !important;
+}
+
+.civictrace-dark-home .before-after-shell {
+    background: linear-gradient(145deg, #102640, #0b1a2e) !important;
+    border: 1px solid #294967 !important;
+}
+
+.civictrace-dark-home .before-after-slide-card {
+    background: #10243b !important;
+    border: 1px solid #294967 !important;
+}
+
+.civictrace-dark-home .before-after-caption h5 {
+    color: #eff7ff !important;
+}
+
+.civictrace-dark-home .before-after-caption p {
+    color: #afc2d8 !important;
+}
+
+/* Closing section */
+
+/* CIVICTRACE CLOSING SECTION - DARK PREMIUM */
+
+.civictrace-dark-home .overview-final {
+    background: linear-gradient(
+        145deg,
+        #122640 0%,
+        #0c1b30 100%
+    ) !important;
+
+    border: 1px solid #294967 !important;
+    border-radius: 18px !important;
+    padding: 40px 25px !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22) !important;
+}
+
+.civictrace-dark-home .overview-final h2 {
+    color: #FFFFFF !important;
+}
+
+.civictrace-dark-home .overview-final p {
+    color: #CBD5E1 !important;
+}
+
+.civictrace-dark-home .overview-final .overview-btn-primary {
+    background: #20D7E8 !important;
+    color: #071426 !important;
+    border: 1px solid #20D7E8 !important;
+    font-weight: 800 !important;
+    border-radius: 10px !important;
+}
+
+.civictrace-dark-home .overview-final .overview-btn-primary:hover {
+    background: #36E7CA !important;
+    color: #071426 !important;
+    transform: translateY(-3px);
+}
+
+
+/* Keep the lower page from appearing white */
+.civictrace-dark-home section {
+    color: #e7f1ff;
+}
+/* FINAL DARK THEME OVERRIDE */
+
+body:has(.civictrace-dark-home) {
+    background: #071426 !important;
+}
+
+.civictrace-dark-home,
+.civictrace-dark-home .overview-container,
+.civictrace-dark-home .before-after-section {
+    background: #071426 !important;
+    color: #e7f1ff !important;
+}
+
+.civictrace-dark-home .overview-card,
+.civictrace-dark-home .before-after-shell,
+.civictrace-dark-home .before-after-slide-card {
+    background: linear-gradient(145deg, #122640, #0c1b30) !important;
+    border: 1px solid #29435f !important;
+    color: #e7f1ff !important;
+}
+
+.civictrace-dark-home .overview-card h3,
+.civictrace-dark-home .before-after-caption h5 {
+    color: #f1f7ff !important;
+}
+
+.civictrace-dark-home .overview-card p,
+.civictrace-dark-home .overview-card li,
+.civictrace-dark-home .overview-heading p,
+.civictrace-dark-home .before-after-caption p {
+    color: #b5c6da !important;
+}
+
+.civictrace-dark-home .overview-heading h2 {
+    color: #f1f7ff !important;
+}
+
+.civictrace-dark-home .overview-note {
+    background: #102b49 !important;
+    color: #e7f1ff !important;
+}
+/* LIGHT TEXT FOR DARK PREMIUM THEME */
+
+.civictrace-dark-home .overview-heading h2,
+.civictrace-dark-home .overview-card h3,
+.civictrace-dark-home .overview-step h3,
+.civictrace-dark-home .overview-final h2 {
+    color: #EAF6FF !important;
+}
+
+/* Section descriptions */
+.civictrace-dark-home .overview-heading p,
+.civictrace-dark-home .overview-card p,
+.civictrace-dark-home .overview-card li,
+.civictrace-dark-home .overview-step p {
+    color: #B8CBE0 !important;
+}
+
+/* Cyan heading underline */
+.civictrace-dark-home .overview-heading h2::after {
+    background: linear-gradient(90deg, #20D7E8, #42E6C4) !important;
+    box-shadow: 0 0 12px rgba(32, 215, 232, .35);
+}
+
+/* ==========================================
+   FIX: HOW THE WEBSITE WORKS - TEXT VISIBILITY
+========================================== */
+
+.civictrace-dark-home .overview-step h3 {
+    color: #FFFFFF !important;
+    font-weight: 750;
+}
+
+.civictrace-dark-home .overview-step p {
+    color: #CBD5E1 !important;
+    line-height: 1.8;
+}
+
+/* Keep workflow card consistent with dark theme */
+.civictrace-dark-home .overview-step {
+    color: #EAF6FF;
+}
+
+/* Improve workflow section heading */
+.civictrace-dark-home .overview-heading h2 {
+    color: #38BDF8 !important;
+}
+
+.civictrace-dark-home .overview-heading p {
+    color: #B8CBE0 !important;
+}
+
+/* ==========================================
+   FINAL OVERRIDE - CIVICTRACE CLOSING SECTION
+========================================== */
+
+.civictrace-dark-home section.overview-final {
+    background: #ff00ff!important;
+    background-image: none !important;
+    border: 1px solid #294967 !important;
+    border-radius: 18px !important;
+    padding: 40px 25px !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25) !important;
+}
+
+.civictrace-dark-home section.overview-final h2 {
+    color: #FFFFFF !important;
+}
+
+.civictrace-dark-home section.overview-final p {
+    color: #CBD5E1 !important;
+}
+
+.civictrace-dark-home section.overview-final a.overview-btn-primary {
+    background: #20D7E8 !important;
+    background-image: none !important;
+    color: #071426 !important;
+    border: 1px solid #20D7E8 !important;
+    border-radius: 10px !important;
+    font-weight: 800 !important;
+}
+
+/* Match Get Started button with Create Account button */
+
+.civictrace-dark-home .overview-final .overview-btn-primary {
+    background: linear-gradient(120deg, #36E7CA, #15B9DF) !important;
+    background-image: linear-gradient(120deg, #36E7CA, #15B9DF) !important;
+    color: #04213A !important;
+    border: 1px solid #42E7DC !important;
+    border-radius: 10px !important;
+    font-weight: 800 !important;
+    padding: 12px 22px;
+}
+
+.civictrace-dark-home .overview-final .overview-btn-primary:hover {
+    background: linear-gradient(120deg, #20DCC5, #0DAFD8) !important;
+    color: #04213A !important;
+    transform: translateY(-2px);
+}
+
 </style>
 
-<div class="overview-page">
+<div class="overview-page civictrace-dark-home">
 
 @if (TempData["LogoutMessage"] is string logoutMessage)
 {
@@ -349,59 +1220,166 @@
     </div>
 }
 
-    <!-- Introduction -->
-    <section class="overview-hero civictrace-hero">
-        <div class="container">
+    <!-- PREMIUM DARK HERO SECTION -->
+<section class="premium-hero">
 
+    <div class="container">
 
-<div class="mb-4"
-    style="width: min(560px, 100%);
-            margin: 0 auto 28px;
-            padding: 18px 22px;
-            background: #ffffff;
-            border: 1px solid #e2eaf5;
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(10, 30, 60, 0.14);">
+        <div class="row align-items-center g-4">
 
-    <img src="~/images/civictrace-logo.png"
-        alt="CivicTrace - Report, Track, Build Better Communities"
-        style="display: block;
-                width: 100%;
-                max-width: 520px;
-                height: auto;
-                margin: 0 auto;
-                object-fit: contain;" />
+            <!-- LEFT: HERO CONTENT -->
+            <div class="col-lg-6">
+
+                <div class="premium-eyebrow">
+                    PUBLIC GRIEVANCE PLATFORM —
+                </div>
+
+                <h1 class="premium-hero-title">
+                    Report Local Issues.
+                    <span>Track Real Action.</span>
+                </h1>
+
+                <p class="premium-hero-description">
+                    Report civic problems, share their location and evidence,
+                    and follow the action taken by the concerned authorities
+                    in real time.
+                </p>
+
+                <div class="premium-hero-buttons">
+
+                    @if (User.Identity?.IsAuthenticated != true)
+                    {
+                        <a asp-area="Identity"
+   asp-page="/Account/Register"
+   class="premium-report-button">
+    Create Account
+</a>
+
+<a asp-area="Identity"
+   asp-page="/Account/LoginChoice"
+   class="premium-track-button">
+    Login
+</a>
+                    }
+                    else if (User.IsInRole("Citizen"))
+                    {
+                        <a asp-controller="Complaints"
+                           asp-action="Create"
+                           class="premium-report-button">
+                            <span>＋</span> Report an Issue
+                        </a>
+
+                        <a asp-controller="Citizen"
+                           asp-action="Index"
+                           class="premium-track-button">
+                            ◉ My Dashboard
+                        </a>
+                    }
+                    else if (User.IsInRole("Admin"))
+                    {
+                        <a asp-controller="Admin"
+                           asp-action="Index"
+                           class="premium-report-button">
+                            Authority Dashboard
+                        </a>
+                    }
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT: LOCATION VISUAL -->
+            <div class="col-lg-6">
+
+                <div class="premium-brand-visual">
+
+    <div class="premium-brand-logo-card">
+
+        <img src="~/images/civictrace-logo.png"
+             alt="CivicTrace Logo"
+             class="premium-brand-logo" />
+
+    </div>
+
+    <div class="premium-brand-caption">
+        <span class="location-live-dot"></span>
+        REPORT • TRACK • BUILD BETTER COMMUNITIES
+    </div>
+
 </div>
 
+                    
 
+                    
 
-            <p>
-                A digital platform designed to help citizens report public
-                problems, share their locations, upload supporting photographs,
-                and follow the progress of their complaints. It also helps
-                authorized officials organize complaints and update their
-                resolution status.
-            </p>
+                </div>
 
-
-@if (User.Identity?.IsAuthenticated != true)
-{
-    <a asp-area="Identity"
-    asp-page="/Account/Register"
-    class="overview-btn overview-btn-primary">
-        📝 Create Account
-    </a>
-
-    <a asp-area="Identity"
-    asp-page="/Account/LoginChoice"
-    class="overview-btn overview-btn-primary">
-        🔐 Login
-    </a>
-}
+            </div>
 
         </div>
-    </section>
 
+    </div>
+
+</section>
+<!-- PREMIUM HOMEPAGE STATISTICS -->
+
+<section class="premium-statistics">
+    <div class="container">
+
+        <div class="row g-3">
+
+            <!-- TOTAL COMPLAINTS -->
+            <div class="col-md-4">
+                <div class="premium-stat-card">
+
+                    <div class="premium-stat-icon stat-blue">
+                        ▤
+                    </div>
+
+                    <div>
+                        <h3>@ViewBag.TotalComplaints</h3>
+                        <p>Total Complaints</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- RESOLVED COMPLAINTS -->
+            <div class="col-md-4">
+                <div class="premium-stat-card">
+
+                    <div class="premium-stat-icon stat-green">
+                        ✓
+                    </div>
+
+                    <div>
+                        <h3>@ViewBag.ResolvedComplaints</h3>
+                        <p>Resolved</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- IN PROGRESS COMPLAINTS -->
+            <div class="col-md-4">
+                <div class="premium-stat-card">
+
+                    <div class="premium-stat-icon stat-yellow">
+                        ◷
+                    </div>
+
+                    <div>
+                        <h3>@ViewBag.InProgressComplaints</h3>
+                        <p>In Progress</p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
     <div class="overview-container">
 
         <!-- About the project -->
@@ -847,11 +1825,14 @@
 
 @if (User.Identity?.IsAuthenticated != true)
 {
-    <a asp-area="Identity"
-    asp-page="/Account/Register"
-    class="overview-btn overview-btn-primary">
-        Get Started
-    </a>
+    
+<a asp-area="Identity"
+   asp-page="/Account/Register"
+   class="overview-btn overview-btn-primary"
+   style="background: linear-gradient(120deg, #36E7CA, #15B9DF) !important; color: #04213A !important; border: 1px solid #42E7DC !important; border-radius: 10px !important; font-weight: 800 !important;">
+    Get Started
+</a>
+
 }
 
         </section>
