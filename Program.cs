@@ -44,6 +44,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<AIComplaintClassifier>();
 builder.Services.AddScoped<DuplicateComplaintDetector>();
 builder.Services.AddScoped<AISeverityPredictor>();
+builder.Services.AddScoped<PendingComplaintUploadStore>();
 builder.Services.AddHttpClient<AIImageAnalyzer>(client =>
 {
     client.Timeout = TimeSpan.FromSeconds(40);
