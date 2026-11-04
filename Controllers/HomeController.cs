@@ -48,7 +48,17 @@ public class HomeController : Controller
         .ToListAsync();
 
     ViewBag.BeforeAfterSlides = beforeAfterSlides;
+// Homepage statistics
+ViewBag.TotalComplaints =
+    await _context.Complaints.CountAsync();
 
+ViewBag.ResolvedComplaints =
+    await _context.Complaints.CountAsync(
+        c => c.Status == "Resolved");
+
+ViewBag.InProgressComplaints =
+    await _context.Complaints.CountAsync(
+        c => c.Status == "In Progress");
     return View();
 }
     public IActionResult Privacy()
