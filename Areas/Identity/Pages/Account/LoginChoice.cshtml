@@ -4,51 +4,225 @@
     ViewData["Title"] = "Choose Login";
 }
 
-<div class="container py-5 civictrace-login-choice">
-    <div class="text-center mb-5">
-        <h1 class="fw-bold login-choice-title">Welcome to CivicTrace</h1>
-        <p class="text-muted fs-5">
+<style>
+    /* CivicTrace Login Choice - Dark Premium Theme */
+
+    .civictrace-login-choice-page {
+        background: #071426 !important;
+        color: #EAF6FF !important;
+        min-height: 100vh;
+        width: 100vw;
+        max-width: 100vw;
+        position: relative;
+        left: 50%;
+        margin-left: -50vw;
+        padding: 65px 20px 80px;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    .login-choice-title {
+        color: #38DDF0 !important;
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 850 !important;
+        margin-bottom: 14px;
+    }
+
+    .login-choice-subtitle {
+        color: #C4D3E3 !important;
+        font-size: 1.1rem;
+        line-height: 1.8;
+    }
+
+    .login-choice-cards {
+        max-width: 1000px;
+        margin: 45px auto 0;
+    }
+
+    .civictrace-role-card {
+        height: 100%;
+        min-height: 390px;
+        background: linear-gradient(145deg, #142E4B, #0D1F34) !important;
+        border: 1px solid #294967 !important;
+        border-radius: 20px !important;
+        padding: 28px 24px !important;
+        color: #EAF6FF !important;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22) !important;
+        transition: transform 0.25s ease, border-color 0.25s ease,
+                    box-shadow 0.25s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .civictrace-role-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #36E7CA, #15B9DF);
+    }
+
+    .civictrace-role-card:hover {
+        transform: translateY(-7px);
+        border-color: #20D7E8 !important;
+        box-shadow: 0 18px 35px rgba(0, 190, 220, 0.12) !important;
+    }
+
+    .login-choice-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 105px;
+        height: 105px;
+        margin: 10px auto 22px;
+        border-radius: 24px;
+        background: rgba(32, 215, 232, 0.12);
+        border: 1px solid rgba(32, 215, 232, 0.30);
+        font-size: 48px;
+    }
+
+    .civictrace-role-card h3 {
+        color: #F5FBFF !important;
+        font-size: 1.65rem;
+        font-weight: 850 !important;
+        margin-bottom: 15px;
+    }
+
+    .civictrace-role-card p {
+        color: #C4D3E3 !important;
+        font-size: 1rem;
+        line-height: 1.9;
+        min-height: 95px;
+    }
+
+    .civictrace-role-button {
+        display: block;
+        width: 100%;
+        padding: 13px 18px !important;
+        border-radius: 11px !important;
+        border: 1px solid #42E7DC !important;
+        background: linear-gradient(120deg, #36E7CA, #15B9DF) !important;
+        color: #04213A !important;
+        font-size: 1rem !important;
+        font-weight: 850 !important;
+        text-decoration: none !important;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .civictrace-role-button:hover {
+        background: linear-gradient(120deg, #20DCC5, #0DAFD8) !important;
+        color: #04213A !important;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(32, 215, 232, 0.20);
+    }
+
+    .login-choice-footer {
+        text-align: center;
+        margin-top: 42px;
+        color: #9FB5CB !important;
+        font-size: 0.95rem;
+    }
+
+    @@media (max-width: 767.98px) {
+        .civictrace-login-choice-page {
+            padding: 42px 15px 55px;
+        }
+
+        .login-choice-cards {
+            margin-top: 30px;
+        }
+
+        .civictrace-role-card {
+            min-height: auto;
+            padding: 25px 20px !important;
+        }
+
+        .civictrace-role-card p {
+            min-height: auto;
+        }
+
+        .login-choice-icon {
+            width: 85px;
+            height: 85px;
+            font-size: 40px;
+        }
+    }
+</style>
+
+<div class="civictrace-login-choice-page">
+
+    <div class="text-center">
+        <h1 class="login-choice-title">
+            Welcome to CivicTrace
+        </h1>
+
+        <p class="login-choice-subtitle">
             Choose how you want to sign in to your account.
         </p>
     </div>
 
-    <div class="row justify-content-center g-4">
-        <div class="col-md-5 col-lg-4">
-            <div class="card h-100 shadow-sm border-0 p-4 text-center civictrace-role-card">
+    <div class="row justify-content-center g-4 login-choice-cards">
+
+        <!-- Admin Login -->
+        <div class="col-md-5 col-lg-5">
+            <div class="card civictrace-role-card text-center">
                 <div class="card-body">
-                    <div class="login-choice-icon mb-3">🏛️</div>
-                    <h3 class="fw-bold">Admin Login</h3>
-                    <p class="text-muted my-3">
+
+                    <div class="login-choice-icon">
+                        🏛️
+                    </div>
+
+                    <h3>Admin Login</h3>
+
+                    <p>
                         Access the authority dashboard to manage complaints,
                         assign departments, and update complaint status.
                     </p>
+
                     <a asp-area="Identity"
-                    asp-page="/Account/Login"
-                    asp-route-loginType="Admin"
-                    class="btn btn-lg w-100 mt-3 civictrace-role-button">
+                       asp-page="/Account/Login"
+                       asp-route-loginType="Admin"
+                       class="btn btn-lg civictrace-role-button mt-3">
                         Login as Admin
                     </a>
+
                 </div>
             </div>
         </div>
 
-        <div class="col-md-5 col-lg-4">
-            <div class="card h-100 shadow-sm border-0 p-4 text-center civictrace-role-card">
+        <!-- Citizen Login -->
+        <div class="col-md-5 col-lg-5">
+            <div class="card civictrace-role-card text-center">
                 <div class="card-body">
-                    <div class="login-choice-icon mb-3">👤</div>
-                    <h3 class="fw-bold">Citizen Login</h3>
-                    <p class="text-muted my-3">
+
+                    <div class="login-choice-icon">
+                        👤
+                    </div>
+
+                    <h3>Citizen Login</h3>
+
+                    <p>
                         Sign in to submit public grievances, track complaints,
                         and view updates on your requests.
                     </p>
+
                     <a asp-area="Identity"
-                    asp-page="/Account/Login"
-                    asp-route-loginType="Citizen"
-                    class="btn btn-lg w-100 mt-3 civictrace-role-button">
+                       asp-page="/Account/Login"
+                       asp-route-loginType="Citizen"
+                       class="btn btn-lg civictrace-role-button mt-3">
                         Login as Citizen
                     </a>
+
                 </div>
             </div>
         </div>
+
     </div>
+
+    <div class="login-choice-footer">
+        Report • Track • Build Better Communities
+    </div>
+
 </div>
