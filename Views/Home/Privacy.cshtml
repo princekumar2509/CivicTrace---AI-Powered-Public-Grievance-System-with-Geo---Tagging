@@ -3,50 +3,75 @@
 }
 
 <style>
+    /* CivicTrace Privacy page - matching the homepage and Help page */
     .privacy-page {
-        background: #f5f8ff;
-        color: #27364b;
+        background: #071426 !important;
+        color: #EAF6FF !important;
         padding-bottom: 45px;
+        min-height: 100vh;
+
+        /* Break out of the layout's centered Bootstrap container */
+        position: relative;
+        left: 50%;
+        width: 100vw !important;
+        max-width: 100vw !important;
+        margin-left: -50vw !important;
+        box-sizing: border-box;
     }
 
     .privacy-hero {
-        background: linear-gradient(135deg, #12376b, #2874c8);
-        color: white;
-        padding: 48px 20px;
+        background:
+            radial-gradient(circle at 85% 15%, rgba(32, 215, 232, 0.13), transparent 34%),
+            linear-gradient(145deg, #122D4D 0%, #0B1B30 100%) !important;
+        color: #F5FBFF !important;
+        padding: 54px 20px;
         text-align: center;
+        border: 1px solid #244967;
         border-radius: 0 0 25px 25px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.20);
     }
 
     .privacy-hero h1 {
+        color: #38DDF0 !important;
         font-size: clamp(2rem, 5vw, 2.8rem);
-        font-weight: 800;
+        font-weight: 850;
         margin-bottom: 12px;
     }
 
     .privacy-hero p {
         max-width: 750px;
         margin: auto;
-        color: #edf5ff;
+        color: #CBD5E1 !important;
         line-height: 1.8;
     }
 
     .privacy-container {
-        max-width: 1000px;
+        max-width: 1100px;
+        width: 100%;
         margin: auto;
-        padding: 32px 18px 0;
+        padding: 36px 18px 0;
+        box-sizing: border-box;
     }
 
     .privacy-card {
-        background: white;
-        border: 1px solid #e2eaf5;
-        border-radius: 15px;
+        background: linear-gradient(145deg, #122A44, #0D1F34) !important;
+        color: #EAF6FF !important;
+        border: 1px solid #294967 !important;
+        border-radius: 16px;
         padding: 25px;
         margin-bottom: 20px;
-        box-shadow: 0 5px 18px rgba(25, 55, 95, 0.05);
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .privacy-card:hover {
+        transform: translateY(-2px);
+        border-color: #20BFD5 !important;
+        box-shadow: 0 12px 28px rgba(0, 190, 220, 0.10);
     }
 
     .privacy-card h2 {
-        color: #193f70;
+        color: #F5FBFF !important;
         font-size: 1.25rem;
         font-weight: 800;
         margin-bottom: 13px;
@@ -54,9 +79,13 @@
 
     .privacy-card p,
     .privacy-card li {
-        color: #596a80;
+        color: #C4D3E3 !important;
         line-height: 1.8;
         font-size: 0.97rem;
+    }
+
+    .privacy-card strong {
+        color: #EAF6FF !important;
     }
 
     .privacy-card ul {
@@ -70,26 +99,42 @@
     }
 
     .privacy-notice {
-        background: #eaf3ff;
-        border-left: 4px solid #2874c8;
-        border-radius: 10px;
+        background: linear-gradient(145deg, #122A44, #0D1F34) !important;
+        border: 1px solid #2B5877 !important;
+        border-left: 4px solid #20D7E8 !important;
+        border-radius: 12px;
         padding: 20px;
-        color: #294b77;
+        color: #DCEAF7 !important;
         line-height: 1.8;
         margin-bottom: 25px;
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16);
+    }
+
+    .privacy-notice strong {
+        color: #38DDF0 !important;
+        font-weight: 800;
+    }
+
+    .privacy-notice p {
+        color: #C4D3E3 !important;
     }
 
     @@media (max-width: 767.98px) {
         .privacy-hero {
             padding: 38px 16px;
+            border-radius: 0 0 20px 20px;
         }
 
         .privacy-container {
-            padding: 22px 13px 0;
+            padding: 24px 13px 0;
         }
 
         .privacy-card {
             padding: 19px;
+        }
+
+        .privacy-notice {
+            padding: 17px;
         }
     }
 </style>
