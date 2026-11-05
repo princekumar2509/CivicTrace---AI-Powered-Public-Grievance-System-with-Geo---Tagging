@@ -1,4 +1,3 @@
-
 @page
 @model PublicGrievanceSystem.Areas.Identity.Pages.Account.LoginModel
 
@@ -6,142 +5,342 @@
     ViewData["Title"] = Model.PageTitle;
 }
 
-<div class="container py-5 civictrace-login-page">
-    <div class="row justify-content-center">
-        <div class="col-12 col-sm-10 col-md-7 col-lg-5">
-            <div class="card border-0 shadow-lg rounded-4 civictrace-login-card">
-                <div class="card-body p-4 p-md-5">
-                    @if (TempData["ErrorMessage"] is string errorMessage)
-{
-    <div class="alert alert-danger" role="alert">
-        @errorMessage
-    </div>
-}
+<style>
+    /* CivicTrace Login page - matching the homepage dark theme */
 
-                    <div class="text-center mb-4">
-                        <div class="civictrace-login-icon">
-    @(Model.LoginType == "Admin" ? "🏛️" : "👤")
-</div>
+    .civictrace-login-page {
+        position: relative;
+        left: 50%;
+        width: 100vw !important;
+        max-width: 100vw !important;
+        margin-left: -50vw !important;
+        min-height: 100vh;
+        box-sizing: border-box;
+        padding: 55px 16px 70px;
+        overflow-x: hidden;
+        background:
+            radial-gradient(circle at 15% 15%, rgba(32, 215, 232, 0.08), transparent 30%),
+            radial-gradient(circle at 85% 80%, rgba(54, 231, 202, 0.07), transparent 28%),
+            #071426 !important;
+        color: #EAF6FF !important;
+    }
 
-                        <h2 class="fw-bold mt-2">@Model.PageTitle</h2>
+    .civictrace-login-card {
+        background: linear-gradient(145deg, #142E4B, #0D1F34) !important;
+        border: 1px solid #294967 !important;
+        border-radius: 22px !important;
+        color: #EAF6FF !important;
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.30) !important;
+        overflow: hidden;
+    }
 
-                        <p class="text-muted">
-                            Sign in to your CivicTrace account
-                        </p>
-                    </div>
+    .civictrace-login-card .card-body {
+        padding: 38px !important;
+    }
 
-                    <form method="post">
-                        <input type="hidden"
-                            asp-for="LoginType" />
+    .civictrace-login-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 92px;
+        height: 92px;
+        margin: 0 auto 18px;
+        border-radius: 23px;
+        background: rgba(32, 215, 232, 0.12);
+        border: 1px solid rgba(32, 215, 232, 0.35);
+        font-size: 43px;
+    }
 
-                        <input type="hidden"
-                            asp-for="ReturnUrl" />
+    .civictrace-login-card h2 {
+        color: #38DDF0 !important;
+        font-weight: 850 !important;
+        font-size: clamp(1.8rem, 4vw, 2.25rem);
+    }
 
-                        <div asp-validation-summary="ModelOnly"
-                            class="text-danger mb-3"
-                            role="alert"></div>
+    .civictrace-login-card .text-muted {
+        color: #B8CBE0 !important;
+    }
 
-                        <div class="mb-3">
-                            <label asp-for="Input.Email"
-                                class="form-label fw-semibold">
-                                Email Address
-                            </label>
+    .civictrace-login-card .form-label {
+        display: block;
+        color: #F1F7FF !important;
+        font-weight: 700 !important;
+        margin-bottom: 9px;
+    }
 
-                            <input asp-for="Input.Email"
-                                class="form-control form-control-lg"
-                                autocomplete="username"
-                                placeholder="Enter your email address" />
+    .civictrace-login-card .form-control {
+        min-height: 56px;
+        background: #091A2D !important;
+        color: #F5FBFF !important;
+        border: 1px solid #34516D !important;
+        border-radius: 11px !important;
+        padding: 12px 16px;
+        box-shadow: none !important;
+    }
 
-                            <span asp-validation-for="Input.Email"
-                                class="text-danger"></span>
+    .civictrace-login-card .form-control::placeholder {
+        color: #8FA7BF !important;
+        opacity: 1;
+    }
+
+    .civictrace-login-card .form-control:focus {
+        border-color: #20D7E8 !important;
+        box-shadow: 0 0 0 3px rgba(32, 215, 232, 0.13) !important;
+    }
+
+    .civictrace-login-card .form-check {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding-left: 0;
+    }
+
+    .civictrace-login-card .form-check-input {
+        float: none;
+        margin: 0;
+        width: 18px;
+        height: 18px;
+        background-color: #091A2D;
+        border: 1px solid #66839E;
+        box-shadow: none;
+        cursor: pointer;
+    }
+
+    .civictrace-login-card .form-check-input:checked {
+        background-color: #19CDBD;
+        border-color: #19CDBD;
+    }
+
+    .civictrace-login-card .form-check-label {
+        color: #CBD9E8 !important;
+        cursor: pointer;
+    }
+
+    .civictrace-login-submit {
+        min-height: 54px;
+        border: 1px solid #42E7DC !important;
+        border-radius: 11px !important;
+        background: linear-gradient(120deg, #36E7CA, #15B9DF) !important;
+        color: #04213A !important;
+        font-weight: 850 !important;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .civictrace-login-submit:hover {
+        background: linear-gradient(120deg, #20DCC5, #0DAFD8) !important;
+        color: #04213A !important;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(32, 215, 232, 0.20);
+    }
+
+    .civictrace-google-button {
+        min-height: 52px;
+        background: #F5F9FF !important;
+        color: #17375B !important;
+        border: 1px solid #C7D7E8 !important;
+        border-radius: 11px !important;
+        font-weight: 750 !important;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .civictrace-google-button:hover {
+        background: #E8F2FF !important;
+        color: #17375B !important;
+        transform: translateY(-2px);
+        box-shadow: 0 7px 18px rgba(0, 0, 0, 0.18);
+    }
+
+    .civictrace-login-divider {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #8FA7BF !important;
+        font-size: 0.9rem;
+    }
+
+    .civictrace-login-divider::before,
+    .civictrace-login-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #294967;
+    }
+
+    .civictrace-login-link {
+        color: #38DDF0 !important;
+        font-weight: 650;
+        text-decoration: none !important;
+    }
+
+    .civictrace-login-link:hover {
+        color: #75F1E4 !important;
+        text-decoration: underline !important;
+    }
+
+    .civictrace-login-footer-text {
+        color: #B8CBE0 !important;
+    }
+
+    .civictrace-login-card .text-danger {
+        color: #FF9B9B !important;
+    }
+
+    .civictrace-login-card .alert-danger {
+        color: #FFD7D7 !important;
+        background: rgba(150, 35, 48, 0.20) !important;
+        border: 1px solid rgba(255, 120, 130, 0.45) !important;
+        border-radius: 10px;
+    }
+
+    @@media (max-width: 575.98px) {
+        .civictrace-login-page {
+            padding: 30px 12px 45px;
+        }
+
+        .civictrace-login-card .card-body {
+            padding: 27px 21px !important;
+        }
+
+        .civictrace-login-icon {
+            width: 78px;
+            height: 78px;
+            font-size: 36px;
+        }
+    }
+</style>
+
+<div class="civictrace-login-page">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-5">
+
+                <div class="card civictrace-login-card">
+                    <div class="card-body">
+
+                        @if (TempData["ErrorMessage"] is string errorMessage)
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                @errorMessage
+                            </div>
+                        }
+
+                        <div class="text-center mb-4">
+                            <div class="civictrace-login-icon">
+                                @(Model.LoginType == "Admin" ? "🏛️" : "👤")
+                            </div>
+
+                            <h2 class="mt-2">@Model.PageTitle</h2>
+
+                            <p class="text-muted mb-0">
+                                Sign in to your CivicTrace account
+                            </p>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Input.Password"
-                                class="form-label fw-semibold">
-                                Password
-                            </label>
+                        <form method="post">
+                            <input type="hidden" asp-for="LoginType" />
+                            <input type="hidden" asp-for="ReturnUrl" />
 
-                            <input asp-for="Input.Password"
-                                class="form-control form-control-lg"
-                                autocomplete="current-password"
-                                placeholder="Enter your password" />
+                            <div asp-validation-summary="ModelOnly"
+                                 class="text-danger mb-3"
+                                 role="alert"></div>
 
-                            <span asp-validation-for="Input.Password"
-                                class="text-danger"></span>
+                            <div class="mb-3">
+                                <label asp-for="Input.Email" class="form-label">
+                                    Email Address
+                                </label>
+
+                                <input asp-for="Input.Email"
+                                       class="form-control form-control-lg"
+                                       autocomplete="username"
+                                       placeholder="Enter your email address" />
+
+                                <span asp-validation-for="Input.Email"
+                                      class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Input.Password" class="form-label">
+                                    Password
+                                </label>
+
+                                <input asp-for="Input.Password"
+                                       class="form-control form-control-lg"
+                                       autocomplete="current-password"
+                                       placeholder="Enter your password" />
+
+                                <span asp-validation-for="Input.Password"
+                                      class="text-danger"></span>
+                            </div>
+
+                            <div class="form-check mb-4">
+                                <input asp-for="Input.RememberMe"
+                                       class="form-check-input" />
+
+                                <label asp-for="Input.RememberMe"
+                                       class="form-check-label">
+                                </label>
+                            </div>
+
+                            <button type="submit"
+                                    class="btn btn-lg w-100 civictrace-login-submit">
+                                Login as @Model.LoginType
+                            </button>
+                        </form>
+
+                        <div class="civictrace-login-divider my-4">
+                            <span>or continue with</span>
                         </div>
 
-                        <div class="form-check mb-4">
-                            <input asp-for="Input.RememberMe"
-                                class="form-check-input" />
+                        <form asp-area="Identity"
+                              asp-page="/Account/ExternalLogin"
+                              asp-route-returnUrl="@Model.ReturnUrl"
+                              asp-route-loginType="@Model.LoginType"
+                              method="post">
 
-                            <label asp-for="Input.RememberMe"
-                                class="form-check-label">
-                            </label>
+                            <button type="submit"
+                                    name="provider"
+                                    value="Google"
+                                    class="btn btn-lg w-100 d-flex align-items-center justify-content-center civictrace-google-button">
+
+                                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                                     alt=""
+                                     aria-hidden="true"
+                                     style="width: 24px; height: 24px; margin-right: 12px; flex-shrink: 0;" />
+
+                                Continue with Google
+                            </button>
+                        </form>
+
+                        <div class="text-center mt-3">
+                            <a asp-page="/Account/ForgotPassword"
+                               asp-route-loginType="@Model.LoginType"
+                               asp-route-returnUrl="@Model.ReturnUrl"
+                               class="civictrace-login-link">
+                                Forgot Password?
+                            </a>
                         </div>
 
-                        <button type="submit"
-        class="btn btn-lg w-100 civictrace-login-submit">
-    Login as @Model.LoginType
-</button>
-                    </form>
+                        <div class="text-center mt-4">
+                            <a asp-page="/Account/LoginChoice"
+                               class="civictrace-login-link">
+                                ← Back to login options
+                            </a>
+                        </div>
 
-<div class="text-center my-3">
-    <span class="text-muted">— or continue with —</span>
-</div>
+                        <div class="text-center mt-3">
+                            <span class="civictrace-login-footer-text">
+                                Don't have an account?
+                            </span>
 
-<form asp-area="Identity"
-    asp-page="/Account/ExternalLogin"
-    asp-route-returnUrl="@Model.ReturnUrl"
-    asp-route-loginType="@Model.LoginType"
-    method="post">
+                            <a asp-page="/Account/Register"
+                               class="civictrace-login-link">
+                                Register
+                            </a>
+                        </div>
 
-    <button type="submit"
-            name="provider"
-            value="Google"
-            class="btn btn-lg w-100 d-flex align-items-center justify-content-center gap-2 civictrace-google-button">
-
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-    alt=""
-    aria-hidden="true"
-    style="width: 24px;
-            height: 24px;
-            margin-right: 12px;
-            flex-shrink: 0;" />
-
-        Continue with Google
-    </button>
-</form>
-
-<div class="text-center mt-3">
-    <a asp-page="/Account/ForgotPassword"
-    asp-route-loginType="@Model.LoginType"
-    asp-route-returnUrl="@Model.ReturnUrl"
-    class="text-decoration-none">
-        Forgot Password?
-    </a>
-</div>
-
-
-                    <div class="text-center mt-4">
-                        <a asp-page="/Account/LoginChoice"
-                        class="text-decoration-none">
-                            ← Back to login options
-                        </a>
                     </div>
-
-                    <div class="text-center mt-3">
-                        <span class="text-muted">
-                            Don't have an account?
-                        </span>
-
-                        <a asp-page="/Account/Register"
-                           class="text-decoration-none fw-semibold">
-                            Register
-                        </a>
-                    </div>
-
                 </div>
+
             </div>
         </div>
     </div>
