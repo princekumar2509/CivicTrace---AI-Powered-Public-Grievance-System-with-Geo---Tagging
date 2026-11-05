@@ -4,62 +4,83 @@
 }
 
 <style>
-    .help-page {
-        background: #f5f8ff;
-        color: #263449;
-        padding-bottom: 45px;
-    }
+    /* CivicTrace Help page - dark premium theme */
+    
+.help-page {
+    background: #071426 !important;
+    color: #EAF6FF !important;
+    padding-bottom: 45px;
+    min-height: 100vh;
+
+    /* Full browser width */
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+    box-sizing: border-box;
+    position: relative;
+}
+
 
     .help-hero {
-        background: linear-gradient(135deg, #12376b, #2874c8);
-        color: white;
-        padding: 48px 20px;
+        background:
+            radial-gradient(circle at 85% 15%, rgba(32, 215, 232, 0.13), transparent 34%),
+            linear-gradient(145deg, #122D4D 0%, #0B1B30 100%) !important;
+        color: #F5FBFF !important;
+        padding: 54px 20px;
         text-align: center;
+        border: 1px solid #244967;
         border-radius: 0 0 25px 25px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.20);
     }
 
     .help-hero h1 {
+        color: #38DDF0 !important;
         font-size: clamp(2rem, 5vw, 2.8rem);
-        font-weight: 800;
+        font-weight: 850;
         margin-bottom: 12px;
     }
 
     .help-hero p {
         max-width: 760px;
         margin: auto;
-        color: #edf5ff;
+        color: #CBD5E1 !important;
         line-height: 1.8;
     }
 
     .help-container {
-        max-width: 1050px;
+        max-width: 1150px;
         margin: auto;
-        padding: 32px 18px 0;
+        padding: 38px 18px 0;
     }
 
     .help-card {
         height: 100%;
         padding: 24px;
-        background: white;
-        border: 1px solid #e2eaf5;
-        border-radius: 15px;
-        box-shadow: 0 5px 18px rgba(25, 55, 95, 0.05);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        background: linear-gradient(145deg, #122A44, #0D1F34) !important;
+        color: #EAF6FF !important;
+        border: 1px solid #294967 !important;
+        border-radius: 16px;
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .help-card:hover {
         transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(25, 55, 95, 0.09);
+        border-color: #20BFD5 !important;
+        box-shadow: 0 12px 28px rgba(0, 190, 220, 0.10);
     }
 
     .help-icon {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 50px;
-        height: 50px;
-        background: #eaf2ff;
-        border-radius: 13px;
+        width: 52px;
+        height: 52px;
+        background: rgba(32, 215, 232, 0.12) !important;
+        border: 1px solid rgba(32, 215, 232, 0.35);
+        color: #38DDF0 !important;
+        border-radius: 14px;
         font-size: 25px;
         margin-bottom: 16px;
     }
@@ -67,13 +88,13 @@
     .help-card h2 {
         font-size: 1.15rem;
         font-weight: 800;
-        color: #193f70;
+        color: #F5FBFF !important;
         margin-bottom: 12px;
     }
 
     .help-card p,
     .help-card li {
-        color: #596a80;
+        color: #C4D3E3 !important;
         line-height: 1.8;
     }
 
@@ -88,112 +109,110 @@
     }
 
     .help-heading h2 {
-        color: #193f70;
-        font-weight: 800;
+        color: #38DDF0 !important;
+        font-weight: 850;
+        margin-bottom: 8px;
     }
 
     .help-heading p {
-        color: #64748b;
+        color: #AFC2D7 !important;
         line-height: 1.7;
     }
 
     .help-faq {
-        padding: 20px;
-        border-bottom: 1px solid #e5edf7;
+        padding: 20px 22px;
+        border-bottom: 1px solid #29445F !important;
     }
 
     .help-faq:last-child {
-        border-bottom: none;
+        border-bottom: none !important;
     }
 
     .help-faq h3 {
         font-size: 1rem;
-        color: #193f70;
+        color: #F5FBFF !important;
         font-weight: 800;
         margin-bottom: 9px;
     }
 
     .help-faq p {
-        color: #596a80;
+        color: #C4D3E3 !important;
         line-height: 1.8;
         margin-bottom: 0;
     }
 
-
-.help-cta {
-    position: relative;
-    display: block;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    clear: both;
-    background: linear-gradient(135deg, #153b6d, #2874c8);
-    color: white;
-    text-align: center;
-    padding: 32px 20px;
-    margin: 0 0 20px;
-    border-radius: 18px;
-    overflow-wrap: anywhere;
-}
-
-.help-cta h2,
-.help-cta p {
-    position: static;
-    max-width: 100%;
-}
-
-.help-container {
-    position: relative;
-    display: flow-root;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.help-page {
-    position: relative;
-    display: flow-root;
-    width: 100%;
-    box-sizing: border-box;
-}
-
+    .help-cta {
+        position: relative;
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        clear: both;
+        background:
+            radial-gradient(circle at 85% 10%, rgba(32, 215, 232, 0.12), transparent 35%),
+            linear-gradient(145deg, #122A44, #0B1B30) !important;
+        color: #F5FBFF !important;
+        text-align: center;
+        padding: 38px 22px;
+        margin: 0 0 20px;
+        border: 1px solid #294967 !important;
+        border-radius: 18px;
+        overflow-wrap: anywhere;
+        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.20);
+    }
 
     .help-cta h2 {
-        font-weight: 800;
+        position: static;
+        max-width: 100%;
+        color: #FFFFFF !important;
+        font-weight: 850;
         margin-bottom: 12px;
     }
 
     .help-cta p {
-        color: #edf5ff;
+        position: static;
+        max-width: 760px;
+        margin: 0 auto 20px;
+        color: #CBD5E1 !important;
         line-height: 1.8;
     }
 
     .help-btn {
         display: inline-block;
-        padding: 11px 20px;
+        padding: 12px 22px;
         margin: 5px;
-        border-radius: 9px;
-        font-weight: 700;
+        border-radius: 10px;
+        font-weight: 800;
         text-decoration: none;
-        background: white;
-        color: #17477f;
+        background: linear-gradient(120deg, #36E7CA, #15B9DF) !important;
+        color: #04213A !important;
+        border: 1px solid #42E7DC !important;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .help-btn:hover {
-        background: #eaf2ff;
-        color: #12376b;
+        background: linear-gradient(120deg, #20DCC5, #0DAFD8) !important;
+        color: #04213A !important;
+        transform: translateY(-2px);
+        box-shadow: 0 7px 18px rgba(32, 215, 232, 0.20);
     }
 
     @@media (max-width: 767.98px) {
         .help-hero {
             padding: 38px 16px;
+            border-radius: 0 0 20px 20px;
         }
 
         .help-container {
-            padding: 22px 13px 0;
+            padding: 24px 13px 0;
         }
 
         .help-card {
             padding: 19px;
+        }
+
+        .help-cta {
+            padding: 30px 17px;
         }
     }
 </style>
@@ -406,6 +425,99 @@
                         administrator with a description of the problem.
                     </p>
                 </div>
+                
+<div class="help-faq">
+    <h3>What happens after I submit a complaint?</h3>
+    <p>
+        After submission, the system stores your complaint and uses
+        its classification logic to suggest a category, department,
+        and priority. Authorized officials can then review and
+        process the complaint.
+    </p>
+</div>
+
+<div class="help-faq">
+    <h3>How is my complaint category selected?</h3>
+    <p>
+        CivicTrace uses AI-assisted classification to analyze
+        the complaint description and suggest a suitable category
+        and department. The suggestions can be reviewed by officials.
+    </p>
+</div>
+
+<div class="help-faq">
+    <h3>Can I upload multiple photographs?</h3>
+    <p>
+        Yes, if multiple image uploads are enabled. The number
+        of photographs and supported file formats depend on
+        the system settings.
+    </p>
+</div>
+
+<div class="help-faq">
+    <h3>How is complaint priority determined?</h3>
+    <p>
+        The system can suggest a priority based on the complaint
+        category and description. Authorized officials can review
+        and update the priority when required.
+    </p>
+</div>
+
+<div class="help-faq">
+    <h3>What does complaint escalation mean?</h3>
+    <p>
+        Escalation is a process for bringing overdue complaints
+        to the attention of responsible officials so that
+        necessary action can be taken.
+    </p>
+</div>
+
+<div class="help-faq">
+    <h3>What is a resolution deadline?</h3>
+    <p>
+        A resolution deadline is the expected time for resolving
+        a complaint. CivicTrace can configure different resolution
+        targets for High, Medium, and Low priority complaints.
+    </p>
+</div>
+
+<div class="help-faq">
+    <h3>How will I know if my complaint is resolved?</h3>
+    <p>
+        You can visit your Citizen Dashboard or complaint tracking
+        page to check the latest status and available complaint
+        history.
+    </p>
+</div>
+
+<div class="help-faq">
+    <h3>Why was my complaint identified as a possible duplicate?</h3>
+    <p>
+        CivicTrace checks whether a newly submitted complaint
+        appears similar to an existing complaint. You can review
+        the warning and use the available submission options.
+    </p>
+</div>
+
+<div class="help-faq">
+    <h3>Is my personal information visible to other citizens?</h3>
+    <p>
+        Citizen-facing complaint pages are designed to restrict
+        access according to complaint ownership. Citizens should
+        only be able to access their own complaint details.
+    </p>
+</div>
+
+<div class="help-faq">
+    <h3>Can I reopen a resolved complaint?</h3>
+    <p>
+        Reopening depends on the system settings configured by
+        the administrator. If this option is enabled, eligible
+        resolved complaints can be reopened according to the
+        configured rules.
+    </p>
+</div>
+
 
             </div>
         </section>
