@@ -1,556 +1,1307 @@
-﻿
+
+
 @page
+
 @model RegisterModel
 
+
+
 @{
+
     ViewData["Title"] = "Register";
+
 }
 
+
+
 <style>
+
     .civic-register-page {
+
         padding: 42px 16px 55px;
+
         background: linear-gradient(145deg, #f2f7ff 0%, #f8fbff 55%, #e8f1ff 100%);
+
         min-height: 72vh;
+
+    }
+
+
+
+    .civic-register-card {
+
+        max-width: 1050px;
+
+        margin: 0 auto;
+
+        overflow: hidden;
+
+        background: #fff;
+
+        border: 1px solid #e0e9f5;
+
+        border-radius: 22px;
+
+        box-shadow: 0 18px 55px rgba(20, 45, 78, 0.10);
+
+    }
+
+
+
+    .civic-register-main {
+
+        padding: 42px;
+
+    }
+
+
+
+    .civic-register-tag {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        padding: 7px 12px;
+
+        margin-bottom: 18px;
+
+        border: 1px solid #d7e7ff;
+
+        border-radius: 30px;
+
+        background: #eff6ff;
+
+        color: #245ca8;
+
+        font-size: .76rem;
+
+        font-weight: 800;
+
+        letter-spacing: 1px;
+
+        text-transform: uppercase;
+
+    }
+
+
+
+    .civic-register-title {
+
+        margin-bottom: 10px;
+
+        color: #142d4e;
+
+        font-size: 2rem;
+
+        font-weight: 800;
+
+        letter-spacing: -.7px;
+
+    }
+
+
+
+    .civic-register-subtitle {
+
+        margin-bottom: 27px;
+
+        color: #64748b;
+
+        line-height: 1.7;
+
+        font-size: .95rem;
+
+    }
+
+
+
+    .civic-register-label {
+
+        display: block;
+
+        margin-bottom: 8px;
+
+        color: #243b53;
+
+        font-size: .88rem;
+
+        font-weight: 700;
+
+    }
+
+
+
+    .civic-register-page .form-control {
+
+        min-height: 52px;
+
+        border: 1px solid #d5dfec;
+
+        border-radius: 10px;
+
+        background: #fff;
+
+        color: #1e293b;
+
+        padding: 12px 14px;
+
+        box-shadow: none;
+
+        transition: border-color .2s ease, box-shadow .2s ease;
+
+    }
+
+
+
+    .civic-register-page .form-control:focus {
+
+        border-color: #4f8be8;
+
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, .11);
+
+    }
+
+
+
+    .civic-register-page .form-control::placeholder {
+
+        color: #94a3b8;
+
+    }
+
+
+
+    .civic-register-page .text-danger {
+
+        display: block;
+
+        margin-top: 6px;
+
+        font-size: .82rem;
+
+    }
+
+
+
+    .civic-register-page .validation-summary-errors {
+
+        padding: 12px 16px;
+
+        margin-bottom: 20px;
+
+        border: 1px solid #fecaca;
+
+        border-radius: 10px;
+
+        background: #fff1f2;
+
+        color: #b91c1c;
+
+        font-size: .9rem;
+
+    }
+
+
+
+    .civic-register-submit {
+
+        width: 100%;
+
+        min-height: 52px;
+
+        margin-top: 5px;
+
+        border: 0;
+
+        border-radius: 10px;
+
+        background: linear-gradient(120deg, #245ca8, #1769dc);
+
+        color: #fff;
+
+        font-weight: 750;
+
+        font-size: 1rem;
+
+        box-shadow: 0 5px 13px rgba(37, 99, 235, .18);
+
+        transition: transform .2s ease, box-shadow .2s ease;
+
+    }
+
+
+
+    .civic-register-submit:hover {
+
+        background: linear-gradient(120deg, #1b4c91, #1557bb);
+
+        color: #fff;
+
+        transform: translateY(-1px);
+
+        box-shadow: 0 8px 18px rgba(37, 99, 235, .24);
+
+    }
+
+
+
+    .civic-register-divider {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 13px;
+
+        margin: 24px 0 18px;
+
+        color: #8492a6;
+
+        font-size: .82rem;
+
+        white-space: nowrap;
+
+    }
+
+
+
+    .civic-register-divider::before,
+
+    .civic-register-divider::after {
+
+        content: "";
+
+        flex: 1;
+
+        height: 1px;
+
+        background: #e4eaf2;
+
+    }
+
+
+
+    .civic-google-button {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 11px;
+
+        width: 100%;
+
+        min-height: 51px;
+
+        padding: 11px 16px;
+
+        border: 1px solid #d6e0ed;
+
+        border-radius: 10px;
+
+        background: #fff;
+
+        color: #26384d;
+
+        font-weight: 700;
+
+        transition: background .2s ease, border-color .2s ease, transform .2s ease;
+
+    }
+
+
+
+    .civic-google-button:hover {
+
+        background: #f7faff;
+
+        border-color: #a9c6f0;
+
+        color: #142d4e;
+
+        transform: translateY(-1px);
+
+    }
+
+
+
+    .civic-google-mark {
+
+        font-family: Arial, sans-serif;
+
+        font-size: 1.35rem;
+
+        font-weight: 800;
+
+        color: #4285f4;
+
+    }
+
+
+
+    .civic-register-login {
+
+        margin: 25px 0 0;
+
+        text-align: center;
+
+        color: #64748b;
+
+        font-size: .9rem;
+
+    }
+
+
+
+    .civic-register-login a {
+
+        color: #245ca8;
+
+        font-weight: 750;
+
+        text-decoration: none;
+
+    }
+
+
+
+    .civic-register-login a:hover {
+
+        text-decoration: underline;
+
+    }
+
+
+
+    .civic-register-aside {
+
+        position: relative;
+
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: center;
+
+        overflow: hidden;
+
+        min-height: 100%;
+
+        padding: 42px 34px;
+
+        background: linear-gradient(150deg, #142d4e 0%, #245ca8 65%, #3479ca 100%);
+
+        color: #fff;
+
+    }
+
+
+
+    .civic-register-aside::before {
+
+        content: "";
+
+        position: absolute;
+
+        top: -75px;
+
+        right: -75px;
+
+        width: 230px;
+
+        height: 230px;
+
+        border: 1px solid rgba(255, 255, 255, .15);
+
+        border-radius: 50%;
+
+        box-shadow: 0 0 0 28px rgba(255, 255, 255, .035),
+
+                    0 0 0 58px rgba(255, 255, 255, .025);
+
+        pointer-events: none;
+
+    }
+
+
+
+    .civic-register-aside-content {
+
+        position: relative;
+
+        z-index: 1;
+
+    }
+
+
+
+    .civic-register-aside-icon {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        width: 66px;
+
+        height: 66px;
+
+        margin-bottom: 25px;
+
+        border: 1px solid rgba(255, 255, 255, .25);
+
+        border-radius: 18px;
+
+        background: rgba(255, 255, 255, .12);
+
+        font-size: 2rem;
+
+    }
+
+
+
+    .civic-register-aside h2 {
+
+        margin-bottom: 13px;
+
+        color: #fff;
+
+        font-size: 1.8rem;
+
+        line-height: 1.3;
+
+        font-weight: 800;
+
+    }
+
+
+
+    .civic-register-aside > .civic-register-aside-content > p {
+
+        color: #dbeafe;
+
+        font-size: .94rem;
+
+        line-height: 1.8;
+
+    }
+
+
+
+    .civic-register-benefit {
+
+        display: flex;
+
+        align-items: flex-start;
+
+        gap: 12px;
+
+        margin-top: 24px;
+
+        color: #f1f7ff;
+
+        font-size: .9rem;
+
+        line-height: 1.6;
+
+    }
+
+
+
+    .civic-register-benefit-icon {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        flex: 0 0 30px;
+
+        width: 30px;
+
+        height: 30px;
+
+        border-radius: 9px;
+
+        background: rgba(255, 255, 255, .14);
+
+        color: #bfdbfe;
+
+        font-weight: 800;
+
+    }
+
+
+
+    .civic-register-aside-note {
+
+        margin-top: 35px;
+
+        padding-top: 20px;
+
+        border-top: 1px solid rgba(255, 255, 255, .2);
+
+        color: #c6ddfa;
+
+        font-size: .79rem;
+
+        line-height: 1.7;
+
+    }
+
+
+
+    @@media (max-width: 767.98px) {
+
+        .civic-register-page {
+
+            padding: 22px 12px 32px;
+
+        }
+
+
+
+        .civic-register-card {
+
+            border-radius: 16px;
+
+        }
+
+
+
+        .civic-register-main {
+
+            padding: 27px 21px;
+
+        }
+
+
+
+        .civic-register-title {
+
+            font-size: 1.7rem;
+
+        }
+
+
+
+        .civic-register-aside {
+
+            min-height: auto;
+
+            padding: 30px 24px;
+
+        }
+
+
+
+        .civic-register-aside-icon {
+
+            width: 54px;
+
+            height: 54px;
+
+            margin-bottom: 18px;
+
+            border-radius: 14px;
+
+            font-size: 1.6rem;
+
+        }
+
+
+
+        .civic-register-aside h2 {
+
+            font-size: 1.5rem;
+
+        }
+
+
+
+        .civic-register-benefit {
+
+            margin-top: 17px;
+
+        }
+
+    }
+
+
+
+/\* Compact CivicTrace logo \*/
+
+.civic-register-logo {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 400px;
+
+    height: 110px;
+
+    max-width: 100%;
+
+    padding: 5px;
+
+    margin-bottom: 22px;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    overflow: hidden;
+
+}
+
+
+
+.civic-register-logo img {
+
+    display: block;
+
+    width: 100%;
+
+    height: 100%;
+
+    max-width: 100%;
+
+    object-fit: contain;
+
+}
+
+
+
+
+
+    /* CivicTrace dark theme overrides */
+    .civic-register-page {
+        position: relative;
+        left: 50%;
+        width: 100vw !important;
+        max-width: 100vw !important;
+        margin-left: -50vw !important;
+        min-height: calc(100vh - 96px);
+        padding: 48px 18px 65px;
+        overflow-x: hidden;
+        background:
+            radial-gradient(circle at 12% 12%, rgba(32, 215, 232, .08), transparent 30%),
+            radial-gradient(circle at 88% 85%, rgba(54, 231, 202, .07), transparent 28%),
+            #071426 !important;
+        color: #EAF6FF;
+        box-sizing: border-box;
+    }
+
+    .civic-register-page > .container {
+        width: 100%;
+        max-width: 1320px;
     }
 
     .civic-register-card {
-        max-width: 1050px;
-        margin: 0 auto;
-        overflow: hidden;
-        background: #fff;
-        border: 1px solid #e0e9f5;
-        border-radius: 22px;
-        box-shadow: 0 18px 55px rgba(20, 45, 78, 0.10);
+        max-width: 1180px;
+        background: #10263F !important;
+        border: 1px solid #294967 !important;
+        border-radius: 24px !important;
+        box-shadow: 0 20px 55px rgba(0, 0, 0, .32) !important;
     }
 
     .civic-register-main {
-        padding: 42px;
+        background: linear-gradient(145deg, #142E4B, #0D1F34);
+        color: #EAF6FF;
     }
 
     .civic-register-tag {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 7px 12px;
-        margin-bottom: 18px;
-        border: 1px solid #d7e7ff;
-        border-radius: 30px;
-        background: #eff6ff;
-        color: #245ca8;
-        font-size: .76rem;
-        font-weight: 800;
-        letter-spacing: 1px;
-        text-transform: uppercase;
+        background: rgba(32, 215, 232, .10) !important;
+        border-color: rgba(32, 215, 232, .35) !important;
+        color: #38DDF0 !important;
     }
 
     .civic-register-title {
-        margin-bottom: 10px;
-        color: #142d4e;
-        font-size: 2rem;
-        font-weight: 800;
-        letter-spacing: -.7px;
+        color: #38DDF0 !important;
     }
 
     .civic-register-subtitle {
-        margin-bottom: 27px;
-        color: #64748b;
-        line-height: 1.7;
-        font-size: .95rem;
+        color: #B8CBE0 !important;
     }
 
     .civic-register-label {
-        display: block;
-        margin-bottom: 8px;
-        color: #243b53;
-        font-size: .88rem;
-        font-weight: 700;
+        color: #F1F7FF !important;
     }
 
     .civic-register-page .form-control {
-        min-height: 52px;
-        border: 1px solid #d5dfec;
-        border-radius: 10px;
-        background: #fff;
-        color: #1e293b;
-        padding: 12px 14px;
-        box-shadow: none;
-        transition: border-color .2s ease, box-shadow .2s ease;
-    }
-
-    .civic-register-page .form-control:focus {
-        border-color: #4f8be8;
-        box-shadow: 0 0 0 4px rgba(37, 99, 235, .11);
+        background: #091A2D !important;
+        color: #F5FBFF !important;
+        border: 1px solid #34516D !important;
+        border-radius: 11px !important;
     }
 
     .civic-register-page .form-control::placeholder {
-        color: #94a3b8;
+        color: #8FA7BF !important;
+        opacity: 1;
+    }
+
+    .civic-register-page .form-control:focus {
+        border-color: #20D7E8 !important;
+        box-shadow: 0 0 0 3px rgba(32, 215, 232, .14) !important;
     }
 
     .civic-register-page .text-danger {
-        display: block;
-        margin-top: 6px;
-        font-size: .82rem;
+        color: #FF9B9B !important;
     }
 
     .civic-register-page .validation-summary-errors {
-        padding: 12px 16px;
-        margin-bottom: 20px;
-        border: 1px solid #fecaca;
-        border-radius: 10px;
-        background: #fff1f2;
-        color: #b91c1c;
-        font-size: .9rem;
+        background: rgba(150, 35, 48, .20) !important;
+        border-color: rgba(255, 120, 130, .45) !important;
+        color: #FFD7D7 !important;
     }
 
     .civic-register-submit {
-        width: 100%;
-        min-height: 52px;
-        margin-top: 5px;
-        border: 0;
-        border-radius: 10px;
-        background: linear-gradient(120deg, #245ca8, #1769dc);
-        color: #fff;
-        font-weight: 750;
-        font-size: 1rem;
-        box-shadow: 0 5px 13px rgba(37, 99, 235, .18);
-        transition: transform .2s ease, box-shadow .2s ease;
+        border: 1px solid #42E7DC !important;
+        border-radius: 11px !important;
+        background: linear-gradient(120deg, #36E7CA, #15B9DF) !important;
+        color: #04213A !important;
+        box-shadow: 0 7px 18px rgba(32, 215, 232, .16) !important;
+        font-weight: 850 !important;
     }
 
     .civic-register-submit:hover {
-        background: linear-gradient(120deg, #1b4c91, #1557bb);
-        color: #fff;
-        transform: translateY(-1px);
-        box-shadow: 0 8px 18px rgba(37, 99, 235, .24);
+        background: linear-gradient(120deg, #20DCC5, #0DAFD8) !important;
+        color: #04213A !important;
+        box-shadow: 0 9px 22px rgba(32, 215, 232, .23) !important;
     }
 
     .civic-register-divider {
-        display: flex;
-        align-items: center;
-        gap: 13px;
-        margin: 24px 0 18px;
-        color: #8492a6;
-        font-size: .82rem;
-        white-space: nowrap;
+        color: #8FA7BF !important;
     }
 
     .civic-register-divider::before,
     .civic-register-divider::after {
-        content: "";
-        flex: 1;
-        height: 1px;
-        background: #e4eaf2;
+        background: #294967 !important;
     }
 
     .civic-google-button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 11px;
-        width: 100%;
-        min-height: 51px;
-        padding: 11px 16px;
-        border: 1px solid #d6e0ed;
-        border-radius: 10px;
-        background: #fff;
-        color: #26384d;
-        font-weight: 700;
-        transition: background .2s ease, border-color .2s ease, transform .2s ease;
+        background: #F5F9FF !important;
+        border-color: #C7D7E8 !important;
+        color: #17375B !important;
+        border-radius: 11px !important;
     }
 
     .civic-google-button:hover {
-        background: #f7faff;
-        border-color: #a9c6f0;
-        color: #142d4e;
-        transform: translateY(-1px);
-    }
-
-    .civic-google-mark {
-        font-family: Arial, sans-serif;
-        font-size: 1.35rem;
-        font-weight: 800;
-        color: #4285f4;
+        background: #E8F2FF !important;
+        color: #17375B !important;
     }
 
     .civic-register-login {
-        margin: 25px 0 0;
-        text-align: center;
-        color: #64748b;
-        font-size: .9rem;
+        color: #B8CBE0 !important;
     }
 
     .civic-register-login a {
-        color: #245ca8;
-        font-weight: 750;
-        text-decoration: none;
+        color: #38DDF0 !important;
     }
 
     .civic-register-login a:hover {
-        text-decoration: underline;
+        color: #75F1E4 !important;
     }
 
     .civic-register-aside {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        overflow: hidden;
-        min-height: 100%;
-        padding: 42px 34px;
-        background: linear-gradient(150deg, #142d4e 0%, #245ca8 65%, #3479ca 100%);
-        color: #fff;
-    }
-
-    .civic-register-aside::before {
-        content: "";
-        position: absolute;
-        top: -75px;
-        right: -75px;
-        width: 230px;
-        height: 230px;
-        border: 1px solid rgba(255, 255, 255, .15);
-        border-radius: 50%;
-        box-shadow: 0 0 0 28px rgba(255, 255, 255, .035),
-                    0 0 0 58px rgba(255, 255, 255, .025);
-        pointer-events: none;
-    }
-
-    .civic-register-aside-content {
-        position: relative;
-        z-index: 1;
-    }
-
-    .civic-register-aside-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 66px;
-        height: 66px;
-        margin-bottom: 25px;
-        border: 1px solid rgba(255, 255, 255, .25);
-        border-radius: 18px;
-        background: rgba(255, 255, 255, .12);
-        font-size: 2rem;
+        background: linear-gradient(150deg, #102B49 0%, #123D68 58%, #0B263F 100%) !important;
+        border-left: 1px solid rgba(56, 221, 240, .16);
     }
 
     .civic-register-aside h2 {
-        margin-bottom: 13px;
-        color: #fff;
-        font-size: 1.8rem;
-        line-height: 1.3;
-        font-weight: 800;
+        color: #FFFFFF !important;
     }
 
     .civic-register-aside > .civic-register-aside-content > p {
-        color: #dbeafe;
-        font-size: .94rem;
-        line-height: 1.8;
+        color: #D1E3F5 !important;
     }
 
     .civic-register-benefit {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        margin-top: 24px;
-        color: #f1f7ff;
-        font-size: .9rem;
-        line-height: 1.6;
+        color: #EAF6FF !important;
     }
 
     .civic-register-benefit-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex: 0 0 30px;
-        width: 30px;
-        height: 30px;
-        border-radius: 9px;
-        background: rgba(255, 255, 255, .14);
-        color: #bfdbfe;
-        font-weight: 800;
+        background: rgba(32, 215, 232, .13) !important;
+        color: #38DDF0 !important;
+        border: 1px solid rgba(32, 215, 232, .24);
     }
 
     .civic-register-aside-note {
-        margin-top: 35px;
-        padding-top: 20px;
-        border-top: 1px solid rgba(255, 255, 255, .2);
-        color: #c6ddfa;
-        font-size: .79rem;
-        line-height: 1.7;
+        border-top-color: rgba(56, 221, 240, .22) !important;
+        color: #B8D7EC !important;
+    }
+
+    .civic-register-logo {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
     }
 
     @@media (max-width: 767.98px) {
         .civic-register-page {
-            padding: 22px 12px 32px;
+            padding: 24px 12px 38px;
         }
 
         .civic-register-card {
-            border-radius: 16px;
-        }
-
-        .civic-register-main {
-            padding: 27px 21px;
-        }
-
-        .civic-register-title {
-            font-size: 1.7rem;
+            border-radius: 17px !important;
         }
 
         .civic-register-aside {
-            min-height: auto;
-            padding: 30px 24px;
-        }
-
-        .civic-register-aside-icon {
-            width: 54px;
-            height: 54px;
-            margin-bottom: 18px;
-            border-radius: 14px;
-            font-size: 1.6rem;
-        }
-
-        .civic-register-aside h2 {
-            font-size: 1.5rem;
-        }
-
-        .civic-register-benefit {
-            margin-top: 17px;
+            border-left: 0;
+            border-top: 1px solid rgba(56, 221, 240, .16);
         }
     }
-
-/* Compact CivicTrace logo */
 .civic-register-logo {
+    background: #ffffff !important;
+    padding: 25px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 480px;
+    margin-bottom: 25px;
     display: flex;
-    align-items: center;
     justify-content: center;
-    width: 400px;
-    height: 110px;
-    max-width: 100%;
-    padding: 5px;
-    margin-bottom: 22px;
-    border-radius: 10px;
-    background: #ffffff;
-    overflow: hidden;
+    align-items: center;
 }
 
 .civic-register-logo img {
     display: block;
     width: 100%;
-    height: 100%;
-    max-width: 100%;
+    max-width: 420px;
+    height: auto;
     object-fit: contain;
 }
-
 </style>
 
+
+
 <div class="civic-register-page">
+
     <div class="container">
+
         <div class="civic-register-card">
+
             <div class="row g-0">
 
+
+
                 <!-- Registration Form -->
+
                 <div class="col-lg-7">
+
                     <div class="civic-register-main">
 
+
+
                         <div class="civic-register-tag">
+
                             <span aria-hidden="true">✦</span>
+
                             Citizen Account
+
                         </div>
+
+
 
                         <h1 class="civic-register-title">
+
                             Create your account
+
                         </h1>
 
+
+
                         <p class="civic-register-subtitle">
+
                             Join CivicTrace to report public issues, track your complaints,
+
                             and stay informed about their progress.
+
                         </p>
+
+
 
                         <form id="registerForm"
+
                             asp-route-returnUrl="@Model.ReturnUrl"
+
                             method="post">
 
+
+
                             <div asp-validation-summary="ModelOnly"
+
                                 class="text-danger"
+
                                 role="alert"></div>
 
+
+
 <div class="mb-3">
+
     <label asp-for="Input.Name" class="civic-register-label">
+
         Full Name
+
     </label>
 
+
+
     <input asp-for="Input.Name"
+
         class="form-control"
+
         autocomplete="name"
+
         aria-required="true"
+
         placeholder="Enter your full name" />
 
+
+
     <span asp-validation-for="Input.Name"
+
         class="text-danger"></span>
+
 </div>
 
 
+
+
+
                             <div class="mb-3">
+
                                 <label asp-for="Input.Email"
+
                                     class="civic-register-label">
+
                                     Email Address
+
                                 </label>
+
+
 
                                 <input asp-for="Input.Email"
+
                                     class="form-control"
+
                                     autocomplete="username"
+
                                     aria-required="true"
+
                                     placeholder="name@example.com" />
 
+
+
                                 <span asp-validation-for="Input.Email"
+
                                     class="text-danger"></span>
+
                             </div>
+
+
 
                             <div class="mb-3">
+
                                 <label asp-for="Input.Password"
+
                                     class="civic-register-label">
+
                                     Password
+
                                 </label>
+
+
 
                                 <input asp-for="Input.Password"
+
                                     class="form-control"
+
                                     autocomplete="new-password"
+
                                     aria-required="true"
+
                                     placeholder="Create a password" />
 
+
+
                                 <span asp-validation-for="Input.Password"
+
                                     class="text-danger"></span>
+
                             </div>
+
+
 
                             <div class="mb-4">
+
                                 <label asp-for="Input.ConfirmPassword"
+
                                        class="civic-register-label">
+
                                     Confirm Password
+
                                 </label>
 
+
+
                                 <input asp-for="Input.ConfirmPassword"
+
                                        class="form-control"
+
                                        autocomplete="new-password"
+
                                        aria-required="true"
+
                                        placeholder="Enter your password again" />
 
+
+
                                 <span asp-validation-for="Input.ConfirmPassword"
+
                                       class="text-danger"></span>
+
                             </div>
+
+
 
                             <button id="registerSubmit"
+
                                     type="submit"
+
                                     class="civic-register-submit">
+
                                 Create CivicTrace Account
+
                                 <span aria-hidden="true"> →</span>
+
                             </button>
+
                         </form>
 
+
+
                         <div class="civic-register-divider">
+
                             Or register with
+
                         </div>
+
+
 
                         @{
+
                             if ((Model.ExternalLogins?.Count ?? 0) == 0)
+
                             {
+
                                 <p class="text-muted small mb-0">
+
                                     Google registration is currently unavailable.
+
                                     You can create an account using your email and password.
+
                                 </p>
+
                             }
+
                             else
+
                             {
+
                                 <form id="external-account"
+
                                       asp-page="./ExternalLogin"
+
                                       asp-route-returnUrl="@Model.ReturnUrl"
+
                                       asp-route-loginType="Citizen"
+
                                       method="post">
 
+
+
                                     @foreach (var provider in Model.ExternalLogins!)
+
                                     {
+
                                         <button type="submit"
+
                                                 class="civic-google-button mb-2"
+
                                                 name="provider"
+
                                                 value="@provider.Name"
+
                                                 title="Register using your @provider.DisplayName account">
 
+
+
                                             @if (provider.Name.Equals("Google", StringComparison.OrdinalIgnoreCase))
+
                                             {
+
                                                 <span class="civic-google-mark"
+
                                                       aria-hidden="true">G</span>
+
                                             }
 
+
+
                                             Continue with @provider.DisplayName
+
                                         </button>
+
                                     }
+
                                 </form>
+
                             }
+
                         }
 
+
+
                         <p class="civic-register-login">
+
                             Already have an account?
+
                             <a asp-page="./LoginChoice">Sign in</a>
+
                         </p>
 
+
+
                     </div>
+
                 </div>
+
+
 
                 <!-- CivicTrace Welcome Panel -->
+
                 <div class="col-lg-5">
+
                     <aside class="civic-register-aside">
+
                         <div class="civic-register-aside-content">
 
+
+
                             <div class="civic-register-logo">
-    <img src="~/images/civictrace-logo.png"
+
+    <img src="@Url.Content("~/images/civictrace-logo.png")"
+
         alt="CivicTrace logo" />
+
 </div>
+
+
 
                             <h2>
+
                                 Your voice can make a difference.
+
                             </h2>
 
+
+
                             <p>
+
                                 Help build better communities by reporting public
+
                                 problems and staying connected to the actions
+
                                 taken by the concerned departments.
+
                             </p>
 
+
+
                             <div class="civic-register-benefit">
+
                                 <div class="civic-register-benefit-icon">✓</div>
+
                                 <div>
+
                                     <strong>Report public issues</strong><br />
+
                                     Share a complaint and its location.
+
                                 </div>
+
                             </div>
 
+
+
                             <div class="civic-register-benefit">
+
                                 <div class="civic-register-benefit-icon">✓</div>
+
                                 <div>
+
                                     <strong>Track your complaints</strong><br />
+
                                     Follow the status of your requests.
+
                                 </div>
+
                             </div>
 
+
+
                             <div class="civic-register-benefit">
+
                                 <div class="civic-register-benefit-icon">✓</div>
+
                                 <div>
+
                                     <strong>Stay informed</strong><br />
+
                                     View updates as your complaints progress.
+
                                 </div>
+
                             </div>
+
+
 
                             <div class="civic-register-aside-note">
+
                                 CivicTrace — Report • Track • Build Better Communities
+
                             </div>
 
+
+
                         </div>
+
                     </aside>
+
                 </div>
 
+
+
             </div>
+
         </div>
+
     </div>
+
 </div>
 
+
+
 @section Scripts {
+
     <partial name="_ValidationScriptsPartial" />
+
 }
